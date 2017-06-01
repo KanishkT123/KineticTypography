@@ -1,0 +1,47 @@
+/*@import url(http://fonts.googleapis.com/css?family=Chango);
+*/
+body {
+  padding-top:50px;
+  background:url(http://1920x1080hdwallpapers.com/image/201605/anime/6612/plane-broken-long-hair-smile-art.jpg);
+  /*background: -webkit-linear-gradient(black, white);*/
+
+  /* make our image 100% width */
+  background-size:cover; 
+}
+
+h1 {
+  font-family:'Arial';
+  /* set the background image */
+  /* background:url(http://i.imgur.com/ciKtRzL.jpg);
+  background-position:bottom;
+  background-size:cover;
+  padding: 2em;*/
+
+  background: -webkit-linear-gradient(top, #2c539e 0%,#37AAC6 50%,#2c539e 100%);
+
+  /*background: -webkit-linear-gradient(black, white);*/
+  -webkit-animation: moving 20s ease infinite;
+  
+  text-align: center;
+  color: black;
+  font-size:50px;  
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+/* create the animation */
+@-webkit-keyframes moving {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 500px;
+  }
+}​
+
+
+/* handle what happens on hover */
+h1:hover {
+  background-position:top;
+}
