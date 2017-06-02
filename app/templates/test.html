@@ -1,6 +1,10 @@
 <html>
-<!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"> -->
+<link rel=stylesheet href="{{ url_for('static', filename='css/style.css') }}">
 <head>
-	<h1>"The moment you doubt whether you can fly, you cease for ever to be able to do it." <small>- J.M. Barrie</small></h1>
+	{% for email in logins %}
+		{% if loop.last %}
+			<h1>{{email}}<h1>
+		{% endif %}
+	{% endfor %}
 </head>
 </html>
