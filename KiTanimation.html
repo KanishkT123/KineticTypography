@@ -1,0 +1,117 @@
+<div id = "container">
+  <div class = "up">
+    k
+  </div>
+  <div class = "down" id = "down1">
+    i
+  </div>
+  <div class = "up" id = "up2">
+    n
+  </div>
+  <div class = "down" id = "down2">
+    e
+  </div>
+  <div class = "up" id = "up3">
+    t
+  </div>
+  <div class = "down" id = "down3">
+    i
+  </div>
+  <div class = "up" id = "up4">
+    c
+  </div>
+  <div id = "static">
+    Typography
+  </div>
+</div>
+  
+<style>
+    #container {
+  width: 600px;
+  height: 400px;
+}
+
+div {
+  display: inline-block;
+  font-family: Helvetica, sans-serif;
+  font-size: 60px;
+  font-style: italic;
+  text-align: center;
+  top: 100px;
+  position: relative;
+  text-shadow: 3px 3px 1px #99a7a8;
+}
+
+#static {
+  display: block;
+  font-weight: bold;
+  font-style: normal;
+  letter-spacing: 3px;
+}
+
+#up2 {
+  -webkit-animation: bounceUp 1s linear 2s infinite alternate;
+  -moz-animation: bounceUp 1s linear 2s infinite alternate;
+  animation: bounceUp 1s linear 2s infinite alternate;
+}
+
+#up3 {
+  -webkit-animation: bounceUp 1s linear 3s infinite alternate;
+  -moz-animation: bounceUp 1s linear 3s infinite alternate;
+  animation: bounceUp 1s linear 3s infinite alternate;
+}
+
+#up4 {
+  -webkit-animation: bounceUp 1s linear 4s infinite alternate;
+  -moz-animation: bounceUp 1s linear 4s infinite alternate;
+  animation: bounceUp 1s linear 4s infinite alternate;
+}
+
+#down1 {
+  -webkit-animation: bounceDown 1s linear 1.5s infinite alternate;
+  -moz-animation: bounceDown 1s linear 1.5s infinite alternate;
+  animation: bounceDown 1s linear 1.5s infinite alternate;
+}
+
+#down2 {
+  -webkit-animation: bounceDown 1s linear 2.5s infinite alternate;
+  -moz-animation: bounceDown 1s linear 2.5s infinite alternate;
+  animation: bounceDown 1s linear 2.5s infinite alternate;
+}
+
+#down3 {
+  -webkit-animation: bounceDown 1s linear 3.5s infinite alternate;
+  -moz-animation: bounceDown 1s linear 3.5s infinite alternate;
+  animation: bounceDown 1s linear 3.5s infinite alternate;
+}
+
+#down4 {
+  -webkit-animation: bounceDown 1s linear 4.5s infinite alternate;
+  -moz-animation: bounceDown 1s linear 4.5s infinite alternate;
+  animation: bounceDown 1s linear 4.5s infinite alternate;
+}
+
+.up {
+  position: absolute
+  -webkit-animation: bounceUp 1s linear 1s infinite alternate;
+  -moz-animation: bounceUp 1s linear 1s infinite alternate;
+  animation: bounceUp 1s linear 1s infinite alternate;
+}
+
+.down {
+  position: absolute
+  -webkit-animation: bounceDown 1s linear 1s infinite alternate;
+  -moz-animation: bounceDown 1s linear 1s infinite alternate;
+  animation: bounceDown 1s linear 1s infinite alternate;
+}
+
+@keyframes bounceUp {
+  from {top: 100px;}
+  to {top: 70px;}
+}
+
+@keyframes bounceDown {
+  from {top: 100px;}
+  to {top: 70px;}
+}
+</style>
