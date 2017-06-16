@@ -30,6 +30,23 @@ def coreParser(inputString):
 			final += " " + word['word']
 	return final[1:]
 
+def nltkParser(inputString):
+	'''Takes an inputString and tries to identify interesting characteristics
+	by removing unnecessary words and punctuation by parsing with
+	NLTK UPENN Parser
+	Input: Sentence string
+	Output: String of keywords'''
+	tokenizedString = nltk.word_tokenize(inputString)
+	output = nltk.pos_tag(tokenizedString)
+	final = ""
+	for word in output:
+		if len(word[0]) < 4 and word[1] in ELIMINATION:
+			continue
+		else:
+			final += " " + word[0]
+	return final[1:]
+
+
 def pronounceParse(parsedString):
 	'''Takes an input string and passes it to the CMU pronounce dictionary
 	And outputs the pronunciations of each word
@@ -82,20 +99,17 @@ def filter(allitDict, alignDict, parsedList):
 			allitWords[key] = set([parsedList[pos] for pos in alignDict[key]])
 	print(allitWords)
 
-
-
-
 def main():
-	args = 'java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer'
-	args = shlex.split(args)
-	StanfordServer = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-	'''Main function, primarily takes input string
-	and outputs all the words involved in the alliteration.'''
+	#Requires Java Stanford core NLP to be in the same directory
+	#Starts the core NLP server
+	#args = 'java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer'
+	#args = shlex.split(args)
+	#StanfordServer = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 	while True:
 		inputString = input("Enter Sentence for detection: ")
 		print(inputString)
 		#Parse the string to remove determiners, etc
-		parsedString = coreParser(inputString)
+		parsedString = nltkParser(inputString)
 		print(parsedString)
 		unimportantString = [x if x not in parsedString else "" for x in inputString]
 		#Find the pronounciations of important words
@@ -108,12 +122,7 @@ def main():
 			continue
 		else:
 			break
-	StanfordServer.kill()
-
-
-
-
-
+	#StanfordServer.kill()
 
 if __name__=='__main__':
 	main()
