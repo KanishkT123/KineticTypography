@@ -96,7 +96,7 @@ def filter(allitDict, alignDict, parsedList):
 		if allitDict[key] < 2:
 			del alignDict[key]
 		else:
-			allitWords[key] = set([parsedList[pos] for pos in alignDict[key]])
+			allitWords[key] = [parsedList[pos] for pos in alignDict[key]]
 	return(allitWords)
 
 def main(inputString = False):

@@ -12,6 +12,7 @@ def login():
 	inputs = request.form
 	inputString = inputs.get('inputstring')
 	allitDict = allitdetect.main(inputString)
-	print(type(allitDict))
-	return render_template("stored.html", title="Success", allitDict = allitDict, inputString = inputString)
+	alliteratedWords = [item for sublist in allitDict.values() for item in sublist]
+	print(alliteratedWords)
+	return render_template("animation.html", title="Success", alliteratedWords = alliteratedWords, inputString = inputString)
 
