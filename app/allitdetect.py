@@ -132,6 +132,7 @@ def main(inputString = False):
 		allitDict, alignDict = alliterator(pronunciationsList)
 		finalOutput = filter(allitDict, alignDict, parsedString.split())
 		print(finalOutput)
+		return finalOutput
 		continueToken = input("Another sentence? (Y/N): ")
 		if continueToken in ("y", "Y", "yes", "YES", "Yes"):
 			continue
