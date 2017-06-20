@@ -1,117 +1,69 @@
-<div id = "container">
-  <div class = "up">
-    k
+<html>
+  <div id = "containerAnim">
+    <div id = "words">
+      <span id = "num1">k</span><!--
+  --><span id = "num2">i</span><!--
+  --><span id = "num3">n</span><!--
+  --><span id = "num4">e</span><!--
+  --><span id = "num5">t</span><!--
+  --><span id = "num6">i</span><!--
+  --><span id = "num7">c</span>
+      
+      <div id = "static">
+        Typography
+      </div>
+    </div>
   </div>
-  <div class = "down" id = "down1">
-    i
-  </div>
-  <div class = "up" id = "up2">
-    n
-  </div>
-  <div class = "down" id = "down2">
-    e
-  </div>
-  <div class = "up" id = "up3">
-    t
-  </div>
-  <div class = "down" id = "down3">
-    i
-  </div>
-  <div class = "up" id = "up4">
-    c
-  </div>
-  <div id = "static">
-    Typography
-  </div>
-</div>
-  
+
 <style>
-    #container {
-  width: 600px;
-  height: 400px;
-}
+    #containerAnim {
+      margin: 20px;
+      border: 4px double lightgrey;
+      font-family: Helvetica, sans-serif;
+      letter-spacing: 3px;
+      text-shadow: 3px 3px 1px #99a7a8;
+      font-size: 60px;
+      word-spacing: .1em;
+      text-align: center;
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      padding: 20px;
+    }
 
-div {
-  display: inline-block;
-  font-family: Helvetica, sans-serif;
-  font-size: 60px;
-  font-style: italic;
-  text-align: center;
-  top: 100px;
-  position: relative;
-  text-shadow: 3px 3px 1px #99a7a8;
-}
+  span {
+    font-style: italic;
+    position: relative;
+    display: inline-block;
+    animation-name: bounce;
+    animation-duration: .6s;
+    animation-iteration-count: 2;
+    animation-timing-function: ease;
+    animation-direction: alternate;
+  }
 
-#static {
-  display: block;
-  font-weight: bold;
-  font-style: normal;
-  letter-spacing: 3px;
-}
+  #words {
+    margin-top: 110px;
+  }
 
-#up2 {
-  -webkit-animation: bounceUp 1s linear 2s infinite alternate;
-  -moz-animation: bounceUp 1s linear 2s infinite alternate;
-  animation: bounceUp 1s linear 2s infinite alternate;
-}
+  #static {
+    position: relative;
+    font-weight: bold;
+  }
 
-#up3 {
-  -webkit-animation: bounceUp 1s linear 3s infinite alternate;
-  -moz-animation: bounceUp 1s linear 3s infinite alternate;
-  animation: bounceUp 1s linear 3s infinite alternate;
-}
+  #num1 { animation-delay: .5s }
+  #num2 { animation-delay:  1s }
+  #num3 { animation-delay: 1.5s}
+  #num4 { animation-delay:  2s }
+  #num5 { animation-delay: 2.5s}
+  #num6 { animation-delay:  3s }
+  #num7 { animation-delay: 3.5s}
 
-#up4 {
-  -webkit-animation: bounceUp 1s linear 4s infinite alternate;
-  -moz-animation: bounceUp 1s linear 4s infinite alternate;
-  animation: bounceUp 1s linear 4s infinite alternate;
-}
 
-#down1 {
-  -webkit-animation: bounceDown 1s linear 1.5s infinite alternate;
-  -moz-animation: bounceDown 1s linear 1.5s infinite alternate;
-  animation: bounceDown 1s linear 1.5s infinite alternate;
-}
-
-#down2 {
-  -webkit-animation: bounceDown 1s linear 2.5s infinite alternate;
-  -moz-animation: bounceDown 1s linear 2.5s infinite alternate;
-  animation: bounceDown 1s linear 2.5s infinite alternate;
-}
-
-#down3 {
-  -webkit-animation: bounceDown 1s linear 3.5s infinite alternate;
-  -moz-animation: bounceDown 1s linear 3.5s infinite alternate;
-  animation: bounceDown 1s linear 3.5s infinite alternate;
-}
-
-#down4 {
-  -webkit-animation: bounceDown 1s linear 4.5s infinite alternate;
-  -moz-animation: bounceDown 1s linear 4.5s infinite alternate;
-  animation: bounceDown 1s linear 4.5s infinite alternate;
-}
-
-.up {
-  position: absolute
-  -webkit-animation: bounceUp 1s linear 1s infinite alternate;
-  -moz-animation: bounceUp 1s linear 1s infinite alternate;
-  animation: bounceUp 1s linear 1s infinite alternate;
-}
-
-.down {
-  position: absolute
-  -webkit-animation: bounceDown 1s linear 1s infinite alternate;
-  -moz-animation: bounceDown 1s linear 1s infinite alternate;
-  animation: bounceDown 1s linear 1s infinite alternate;
-}
-
-@keyframes bounceUp {
-  from {top: 100px;}
-  to {top: 70px;}
-}
-
-@keyframes bounceDown {
-  from {top: 100px;}
-  to {top: 70px;}
-}
+  @keyframes bounce {
+      100% {transform: translateY(-20px);}
+  }
 </style>
+
+</html>
+

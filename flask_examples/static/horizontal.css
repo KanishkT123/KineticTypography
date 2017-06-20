@@ -1,0 +1,13 @@
+div {
+  font-family: Helvetica, sans serif;
+  font-size: 40px;
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  animation: horizontal 3s ease 2s 1 normal forwards;
+}
+
+@keyframes horizontal {
+  from {left: 50px;}
+  to {left: 500px;}
+}
