@@ -97,7 +97,7 @@ def filter(allitDict, alignDict, parsedList):
 			del alignDict[key]
 		else:
 			allitWords[key] = set([parsedList[pos] for pos in alignDict[key]])
-	return allitWords
+	return(allitWords)
 
 def main(inputString = False):
 	#Requires Java Stanford core NLP to be in the same directory
@@ -105,7 +105,22 @@ def main(inputString = False):
 	#args = 'java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer'
 	#args = shlex.split(args)
 	#StanfordServer = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+	#print(inputString)
 	if inputString:
+		#print(inputString)
+		#Parse the string to remove determiners, etc
+		parsedString = nltkParser(inputString)
+		#print(parsedString)
+		unimportantString = [x if x not in parsedString else "" for x in inputString]
+		#Find the pronounciations of important words
+		pronunciationsList = pronounceParse(parsedString)
+		#Find the alliterating letters and return as a dictionary
+		allitDict, alignDict = alliterator(pronunciationsList)
+		finalOutput = filter(allitDict, alignDict, parsedString.split())
+		#print(finalOutput)
+		return finalOutput
+	while True:
+		inputString = input("Enter Sentence for detection: ")
 		print(inputString)
 		#Parse the string to remove determiners, etc
 		parsedString = nltkParser(inputString)
@@ -117,27 +132,13 @@ def main(inputString = False):
 		allitDict, alignDict = alliterator(pronunciationsList)
 		finalOutput = filter(allitDict, alignDict, parsedString.split())
 		print(finalOutput)
-		return(finalOutput)
-	else:
-		while True:
-			inputString = input("Enter Sentence for detection: ")
-			print(inputString)
-			#Parse the string to remove determiners, etc
-			parsedString = nltkParser(inputString)
-			print(parsedString)
-			unimportantString = [x if x not in parsedString else "" for x in inputString]
-			#Find the pronounciations of important words
-			pronunciationsList = pronounceParse(parsedString)
-			#Find the alliterating letters and return as a dictionary
-			allitDict, alignDict = alliterator(pronunciationsList)
-			finalOutput = filter(allitDict, alignDict, parsedString.split())
-			print(finalOutput)
-			continueToken = input("Another sentence? (Y/N): ")
-			if continueToken in ("y", "Y", "yes", "YES", "Yes"):
-				continue
-			else:
-				break
-		#StanfordServer.kill()
+		return finalOutput
+		continueToken = input("Another sentence? (Y/N): ")
+		if continueToken in ("y", "Y", "yes", "YES", "Yes"):
+			continue
+		else:
+			break
+	#StanfordServer.kill()
 
 if __name__=='__main__':
 	main()

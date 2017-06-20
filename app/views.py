@@ -1,28 +1,17 @@
 from flask import Flask, render_template, flash, request, redirect
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 from app import app
-
-
+from . import allitdetect
 
 @app.route('/')
 @app.route('/index')
 def index():
 	return render_template('form.html', title="Login Page")
 
-
-logins = []
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-	user = request.form['u']
-	mypass = request.form['p']
-	logins.append(user + " " + mypass)
-	print(logins)
-	return redirect('/animation')
+	inputs = request.form
+	inputString = inputs.get('inputstring')
+	allitDict = allitdetect.main(inputString)
+	print(type(allitDict))
+	return render_template("stored.html", title="Success", allitDict = allitDict, inputString = inputString)
 
-@app.route('/stored', methods=['GET', 'POST'])
-def stored():
-	return render_template('stored.html', logins=logins)
-
-@app.route('/animation', methods=['GET', 'POST'])
-def animation():
-	return render_template('test.html', logins = logins)
