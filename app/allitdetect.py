@@ -1,34 +1,34 @@
 from nltk.corpus import cmudict
-from pycorenlp import StanfordCoreNLP
+#from pycorenlp import StanfordCoreNLP
 import nltk
 import shlex, subprocess
 
 #Global Constants
-SERVER = StanfordCoreNLP('http://localhost:9000')
+#SERVER = StanfordCoreNLP('http://localhost:9000')
 ELIMINATION = set(["DT", "IN", "PDT", "PRP$", "PRP" "CC", "POS", "TO", ",", ".", ")", "(", ":"])
 
 
-def coreParser(inputString):
-	'''Takes an inputString and tries to identify interesting characteristics
-	by removing unnecessary words and punctuation by parsing with
-	Stanford CORE NLP
-	Input: Sentence string
-	Output: String of keywords'''
+# def coreParser(inputString):
+# 	'''Takes an inputString and tries to identify interesting characteristics
+# 	by removing unnecessary words and punctuation by parsing with
+# 	Stanford CORE NLP
+# 	Input: Sentence string
+# 	Output: String of keywords'''
 
-	#This simply takes the word and parses it with CoreNLP, outputs in JSON
-	output = SERVER.annotate(inputString, properties={
-		'annotators': 'tokenize,ssplit,pos',
-		'outputFormat': 'json'
-		})
-	wordIndex = (output['sentences'][0]['tokens'])
-	final = ""
-	for word in wordIndex:
-		#Eliminate Determiners, prepositions, possessive pronouns, possessive or plural endings, etc
-		if len(word['word']) <4 and word['pos'] in ELIMINATION:
-			continue
-		else:
-			final += " " + word['word']
-	return final[1:]
+# 	#This simply takes the word and parses it with CoreNLP, outputs in JSON
+# 	output = SERVER.annotate(inputString, properties={
+# 		'annotators': 'tokenize,ssplit,pos',
+# 		'outputFormat': 'json'
+# 		})
+# 	wordIndex = (output['sentences'][0]['tokens'])
+# 	final = ""
+# 	for word in wordIndex:
+# 		#Eliminate Determiners, prepositions, possessive pronouns, possessive or plural endings, etc
+# 		if len(word['word']) <4 and word['pos'] in ELIMINATION:
+# 			continue
+# 		else:
+# 			final += " " + word['word']
+# 	return final[1:]
 
 def nltkParser(inputString):
 	'''Takes an inputString and tries to identify interesting characteristics

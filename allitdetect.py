@@ -1,5 +1,4 @@
 from nltk.corpus import cmudict
-#from pycorenlp import StanfordCoreNLP
 import nltk
 #import shlex, subprocess
 
