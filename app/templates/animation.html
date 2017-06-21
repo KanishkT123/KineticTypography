@@ -5,6 +5,8 @@
     {% for indiv in inputString.split() %}
       {% if indiv in alliteratedWords %}
         <div><span id = "num1">{{ indiv[0] }}</span><div id = "static">{{ indiv[1:]}}</div></div>
+      {% elif strip_punctuation(indiv) in alliteratedWords %}
+        <div><span id = "num1">{{ indiv[0] }}</span><div id = "static">{{ indiv[1:]}}</div></div>      
       {% else %}
         <div id = "static">{{ indiv }}</div>
       {% endif %}
