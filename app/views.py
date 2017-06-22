@@ -16,7 +16,7 @@ def strip_punctuation(inputString):
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('form.html', title="Login Page")
+	return render_template('form.html', title="Input Page")
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
