@@ -1,0 +1,69 @@
+<html>
+  <div id = "containerAnim">
+    <div id = "words">
+      <span id = "num1">k</span><!--
+  --><span id = "num2">i</span><!--
+  --><span id = "num3">n</span><!--
+  --><span id = "num4">e</span><!--
+  --><span id = "num5">t</span><!--
+  --><span id = "num6">i</span><!--
+  --><span id = "num7">c</span>
+      
+      <div id = "static">
+        Typography
+      </div>
+    </div>
+  </div>
+
+<style>
+    #containerAnim {
+      margin: 20px;
+      border: 4px double lightgrey;
+      font-family: Helvetica, sans-serif;
+      letter-spacing: 3px;
+      text-shadow: 3px 3px 1px #99a7a8;
+      font-size: 60px;
+      word-spacing: .1em;
+      text-align: center;
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      padding: 20px;
+    }
+
+  span {
+    font-style: italic;
+    position: relative;
+    display: inline-block;
+    animation-name: bounce;
+    animation-duration: .6s;
+    animation-iteration-count: 2;
+    animation-timing-function: ease;
+    animation-direction: alternate;
+  }
+
+  #words {
+    margin-top: 110px;
+  }
+
+  #static {
+    position: relative;
+    font-weight: bold;
+  }
+
+  #num1 { animation-delay: .5s }
+  #num2 { animation-delay:  1s }
+  #num3 { animation-delay: 1.5s}
+  #num4 { animation-delay:  2s }
+  #num5 { animation-delay: 2.5s}
+  #num6 { animation-delay:  3s }
+  #num7 { animation-delay: 3.5s}
+
+
+  @keyframes bounce {
+      100% {transform: translateY(-20px);}
+  }
+</style>
+
+</html>
+

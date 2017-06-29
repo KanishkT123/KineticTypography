@@ -1,28 +1,34 @@
 from flask import Flask, render_template, flash, request, redirect
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 from app import app
+from . import allitdetect, cssgen
+from string import punctuation
 
 
+def strip_punctuation(inputString):
+	'''Takes out all punctuation from the given string
+	and returns the new string'''
+	x = ""
+	for character in inputString:
+		if character in punctuation:
+			break
+		else:
+			x += character
+	print(x)
+	return x
+
+#Everything below this is for rendering different webpages in flask
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('form.html', title="Login Page")
+	return render_template('form.html', title="Input Page")
 
-
-logins = []
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-	user = request.form['u']
-	mypass = request.form['p']
-	logins.append(user + " " + mypass)
-	print(logins)
-	return redirect('/animation')
-
-@app.route('/stored', methods=['GET', 'POST'])
-def stored():
-	return render_template('stored.html', logins=logins)
-
-@app.route('/animation', methods=['GET', 'POST'])
-def animation():
-	return render_template('test.html', logins = logins)
+	inputs = request.form
+	inputString = inputs.get('inputstring')
+	allitDict = allitdetect.main(inputString)
+	alliteratedWords = [item for sublist in allitDict.values() for item in sublist]
+	print(alliteratedWords)
+	cssgen.main(len(alliteratedWords))
+	return render_template("animation.html", title="Success", alliteratedWords = alliteratedWords, inputString = inputString, strip_punctuation=strip_punctuation)

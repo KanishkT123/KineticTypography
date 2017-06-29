@@ -9,3 +9,4 @@ app.config.from_object('config')
 
 #importing views.py from app module
 from app import views
+from . import *
