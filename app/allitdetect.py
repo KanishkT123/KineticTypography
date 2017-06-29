@@ -68,6 +68,7 @@ def pronounceParse(parsedString):
 					break
 				except KeyError:
 					continue
+	print(pronunciations)
 	return pronunciations
 
 def alliterator(pronounceList):
@@ -76,7 +77,7 @@ def alliterator(pronounceList):
 	Input: List of pronunciations from CMU Dict
 	Output: A count of how often each sound appears, and the places where it appears'''
 	#Take the first syllable for every pronounciation
-	stressed = [x[0][0] for x in pronounceList]
+	stressed = [x[0] for x in pronounceList]
 	countDict = {}
 	syllDict = {}
 	#Populate dictionary with the stressed syllables and their positions
