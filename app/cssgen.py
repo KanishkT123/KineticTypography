@@ -2,7 +2,7 @@ import os
 import sass
 
 directory = os.path.dirname(__file__)
-filename = os.path.join(directory, 'static', 'animationstyle.css')
+filename = os.path.join(directory, 'static', 'css', 'generated.css')
 
 
 def main(spanNum):
@@ -10,6 +10,6 @@ def main(spanNum):
 	for x in range(1,spanNum+1):
 		overall += sass.compile(string = "#num" + str(x) + " { animation-delay: " + str(0.4 + 0.2*x) + "s; }")
 		overall += "\n"
-	with open(filename, 'a') as f:
+	with open(filename, 'w') as f:
 		f.write(overall)
 	return
