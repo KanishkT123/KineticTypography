@@ -9,6 +9,32 @@ from matplotlib import pyplot as plt
 # ******************************************************************************************************** #
 
 
+
+"""
+    Goes through a specific directory and applies a function to every file in the directory
+"""
+def loopDirectory(function):
+    rootDirectory = "./TextBoxes/examples/results"
+    for root, dirs, files in os.walk(rootDirectory):
+        for fileName in files:
+            filePath = os.path.join(root, fileName)
+            content = open(filePath, "r")
+            function(content)
+            content.close()
+
+
+"""
+    Takes in information and a file path and writes and saves that information as a file
+"""
+def saveInfo(information, fileName, filePath):
+    # Writes the path to save the file
+    savePath = os.path.join(filePath, fileName)
+
+    with open(savePath) as file:
+        file.write(information)
+
+
+
 """
     Goes through the results directory and returns a list of lists
     of textbox coordinates, with each separate image as an inner list
@@ -16,14 +42,14 @@ from matplotlib import pyplot as plt
 def getCoordinates():
     resultsDir = "./TextBoxes/examples/results"
     picList = [] # list of coordinates of every box in a specific picture
-    fileList = [] # list of image filepaths
+    fileList = [] # list of image filenames
 
     for root, dirs, files in os.walk(resultsDir):
         for filename in files:
             if filename != ".DS_Store":
                 filePath = os.path.join(root, filename)
                 coords = open(filePath, "r")
-                fileList.append(filePath)
+                fileList.append(filename)
                 boxList = []
                 for box in coords:
                     box = box.replace("\n", "")
@@ -50,6 +76,45 @@ def getImages():
     return imgList
 
 
+
+"""
+    Takes in the coordinates of the textbox and the image path and
+    saves the masked image.
+"""
+def createMask(imagePath, xMin, yMin, xMax, yMax):
+    
+    # Read in the image from the image path
+    image = cv2.imread(imagePath)
+
+    # Create the mask
+    mask = np.zeros(image.shape[:2], np.uint8)
+    mask[yMin:yMax, xMin:xMax] = 255
+
+    # Create masked image
+    plt.figure()
+    maskedImage = cv2.bitwise_and(image, image, mask = mask)
+    plt.imshow(cv2.cvtColor(maskedImage, cv2.COLOR_BGR2RGB))
+    # plt.figure()
+
+
+    # Make a file path for the masked image
+    savePath = imagePath.split("/")
+    imageFullName = savePath.pop() # Removes the last element of savePath and also saves it as imageFullName. ex: "000636.png"
+    imageFullName = imageFullName.split(".")
+    imageName = imageFullName[0]
+    imageExtension = imageFullName[1]
+
+    maskedImageName = imageName + "_masked." + imageExtension
+    savePath.append(maskedImageName)
+
+    savePath = "/".join(savePath)
+    # print(savePath)
+    plt.savefig(savePath)
+
+    # cv2.imwrite(savePath, maskedImage)
+
+
+
 """
     Takes in the coordinates of the textbox and the image path and outputs a plot 
     of the masked image (only showing textbox area) and its color histogram
@@ -69,6 +134,44 @@ def maskedHist(image, xMin, yMin, xMax, yMax):
         plt.xlim([0,256])
     plt.subplot(122), plt.imshow(cv2.cvtColor(masked_img, cv2.COLOR_BGR2RGB)) 
     plt.show() 
+
+
+""" 
+    Outputs a dictionary of histograms
+"""
+def histDict():
+    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
+    imgList = getImages()
+    index = {}
+    images = {}
+
+    for i in range(len(picList)):
+        image = imgList[i] # gets path of image
+        coordList = picList[i] # the list of box coordinates for that image
+
+        img = cv2.imread(image)
+        imageName = fileList[i]
+        images[imageName] = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        boxNum = 0
+        for box in coordList:
+            box = box.split(",") # makes the string into a list
+           
+            xMin = int(box[1])
+            yMin = int(box[2])
+            xMax = int(box[3])
+            yMax = int(box[4])
+
+            # create a mask
+            mask = np.zeros(img.shape[:2], np.uint8)
+            mask[yMin:yMax, xMin:xMax] = 255 # creates a mask that leaves only the textbox area
+
+            hist = cv2.calcHist([img], [0, 1, 2], mask, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+            hist = cv2.normalize(hist, None).flatten()
+            index[(imageName, boxNum)] = hist
+
+            boxNum += 1
+    
+    print(images, index)
 
 
 """ 
@@ -92,4 +195,14 @@ def wrapper():
             maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
 
     
-wrapper()
+
+if __name__=='__main__':
+    # wrapper()
+    # histDict()
+    # imagePath = "./TextBoxes/examples/img/000636.png"
+
+    # xMin = 30
+    # xMax = 471
+    # yMin = 57
+    # yMax = 248
+    # createMask(imagePath, xMin, yMin, xMax, yMax)
