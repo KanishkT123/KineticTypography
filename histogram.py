@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+import csv
 from matplotlib import pyplot as plt
 
 # ******************************************************************************************************** #
@@ -30,8 +31,9 @@ def saveInfo(information, fileName, filePath):
     # Writes the path to save the file
     savePath = os.path.join(filePath, fileName)
 
-    with open(savePath) as file:
-        file.write(information)
+    with open(savePath, "w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerows(information)
 
 
 
@@ -79,7 +81,7 @@ def getImages():
 
 """
     Takes in the coordinates of the textbox and the image path and
-    saves the masked image.
+    saves the masked image and returns it
 """
 def createMask(imagePath, xMin, yMin, xMax, yMax):
     
@@ -113,7 +115,21 @@ def createMask(imagePath, xMin, yMin, xMax, yMax):
 
     # cv2.imwrite(savePath, maskedImage)
 
+    return mask
 
+"""
+    Takes in the image path and the mask and then outputs the histogram information
+"""
+def getHistogram(imagePath, mask):
+    image = cv2.imread(imagePath)
+
+    hist = cv2.calcHist([image], [0, 1, 2], mask, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+    hist = cv2.normalize(hist, None)
+    hist.flatten()
+
+    # print(hist)
+    saveInfo(hist, "histogram.csv", "./TextBoxes/examples")
+    return hist 
 
 """
     Takes in the coordinates of the textbox and the image path and outputs a plot 
@@ -201,8 +217,19 @@ if __name__=='__main__':
     # histDict()
     # imagePath = "./TextBoxes/examples/img/000636.png"
 
+    imagePath = "./red.png"
+
     # xMin = 30
     # xMax = 471
     # yMin = 57
     # yMax = 248
-    # createMask(imagePath, xMin, yMin, xMax, yMax)
+    # mask = createMask(imagePath, xMin, yMin, xMax, yMax)
+    # getHistogram(imagePath, mask)
+
+    image = cv2.imread(imagePath)
+
+    hist = cv2.calcHist([image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+    hist = cv2.normalize(hist, None)
+    hist.flatten()
+
+    print(hist)
