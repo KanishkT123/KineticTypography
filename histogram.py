@@ -144,7 +144,7 @@ def maskedHist(image, xMin, yMin, xMax, yMax):
     masked_img = cv2.bitwise_and(img,img,mask = mask) # original image with the mask over it
 
     color = ('b','g','r')
-    for i,col in enumerate(color):
+    for i,col in enumerate(color):  
         hist_mask = cv2.calcHist([img],[i],mask,[256],[0,256])
         plt.subplot(121), plt.plot(hist_mask,color = col) # plots the histogram
         plt.xlim([0,256])
@@ -193,7 +193,7 @@ def histDict():
 """ 
     Wrapper function
 """
-def wrapper():
+def wrapper1():
     fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
     imgList = getImages()
 
@@ -211,13 +211,55 @@ def wrapper():
             maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
 
     
+def wrapper2():
+    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
+    imgList = getImages()
+    histDict = {}
+
+
+    for i in range(len(picList)):
+        image = imgList[i] # gets path of image
+        coordList = picList[i] # the list of box coordinates for that image
+
+        for i in range(len(coordList)):
+            box = coordList[i]
+            box = box.split(",") # makes the string into a list
+            # print(type(int(box[1])))
+            xMin = int(box[1])
+            yMin = int(box[2])
+            xMax = int(box[3])
+            yMax = int(box[4])
+
+            mask = createMask(image, xMin, yMin, xMax, yMax)
+            hist = getHistogram(image, mask)
+
+            key = str(i)
+            histDict[image + key] = hist
+
+    return histDict
+    
+def compare():
+    histDict = wrapper2()
+    method = [("Correlation", cv2.HISTCMP_CORREL),
+	            ("Chi-Squared", cv2.HISTCMP_CHISQR),
+	            ("Intersection", cv2.HISTCMP_INTERSECT), 
+	            ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
+    results = {}
+    reverse = False
+    for (key, value) in list(histDict.items()):
+        d = cv2.compareHist(histDict["./TextBoxes/examples/img/000636.png0"], value, method[1][1])
+        results[key] = d
+    
+    results = sorted([(v, k) for (k, v) in results.items()], reverse = reverse)
+
+    saveInfo(results, "distances.csv", "./TextBoxes/examples")
 
 if __name__=='__main__':
     # wrapper()
     # histDict()
     # imagePath = "./TextBoxes/examples/img/000636.png"
 
-    imagePath = "./red.png"
+    # imagePath = "./astronaut.png"
 
     # xMin = 30
     # xMax = 471
@@ -226,10 +268,10 @@ if __name__=='__main__':
     # mask = createMask(imagePath, xMin, yMin, xMax, yMax)
     # getHistogram(imagePath, mask)
 
-    image = cv2.imread(imagePath)
+    # image = cv2.imread(imagePath)
 
-    hist = cv2.calcHist([image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
-    hist = cv2.normalize(hist, None)
-    hist.flatten()
+    # hist = cv2.calcHist([image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+    # hist = cv2.normalize(hist, None)
+    # hist.flatten()
 
-    print(hist)
+    compare()
