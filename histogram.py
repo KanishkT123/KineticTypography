@@ -189,6 +189,11 @@ def histDict():
     
     print(images, index)
 
+""" 
+    Finds the vertical line that divides the textbox which has the lowest correlation in color histograms between the two boxes. (Greatest difference)
+"""
+def findDivide(imagePath, xMin, yMin, xMax, yMax):
+
 
 """ 
     Wrapper function
@@ -245,17 +250,18 @@ def compare():
 	            ("Intersection", cv2.HISTCMP_INTERSECT), 
 	            ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
     results = {}
-    reverse = False
+    reverse = True
     for (key, value) in list(histDict.items()):
-        d = cv2.compareHist(histDict["./TextBoxes/examples/img/000636.png0"], value, method[1][1])
+        d = cv2.compareHist(histDict["./TextBoxes/examples/img/frame423.jpg0"], value, method[0][1])
         results[key] = d
     
     results = sorted([(v, k) for (k, v) in results.items()], reverse = reverse)
 
     saveInfo(results, "distances.csv", "./TextBoxes/examples")
 
+
 if __name__=='__main__':
-    # wrapper()
+    wrapper1()
     # histDict()
     # imagePath = "./TextBoxes/examples/img/000636.png"
 
@@ -274,4 +280,4 @@ if __name__=='__main__':
     # hist = cv2.normalize(hist, None)
     # hist.flatten()
 
-    compare()
+    # compare()
