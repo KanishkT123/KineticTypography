@@ -93,29 +93,30 @@ def createMask(imagePath, xMin, yMin, xMax, yMax):
     mask[yMin:yMax, xMin:xMax] = 255
 
     # Create masked image
-    plt.figure()
-    maskedImage = cv2.bitwise_and(image, image, mask = mask)
-    plt.imshow(cv2.cvtColor(maskedImage, cv2.COLOR_BGR2RGB))
+    # plt.figure()
+    # maskedImage = cv2.bitwise_and(image, image, mask = mask)
+    # plt.imshow(cv2.cvtColor(maskedImage, cv2.COLOR_BGR2RGB))
     # plt.figure()
 
 
-    # Make a file path for the masked image
-    savePath = imagePath.split("/")
-    imageFullName = savePath.pop() # Removes the last element of savePath and also saves it as imageFullName. ex: "000636.png"
-    imageFullName = imageFullName.split(".")
-    imageName = imageFullName[0]
-    imageExtension = imageFullName[1]
+    # # Make a file path for the masked image
+    # savePath = imagePath.split("/")
+    # imageFullName = savePath.pop() # Removes the last element of savePath and also saves it as imageFullName. ex: "000636.png"
+    # imageFullName = imageFullName.split(".")
+    # imageName = imageFullName[0]
+    # imageExtension = imageFullName[1]
 
-    maskedImageName = imageName + "_masked." + imageExtension
-    savePath.append(maskedImageName)
+    # maskedImageName = imageName + "_masked." + imageExtension
+    # savePath.append(maskedImageName)
 
-    savePath = "/".join(savePath)
-    # print(savePath)
-    plt.savefig(savePath)
+    # savePath = "/".join(savePath)
+    # # print(savePath)
+    # plt.savefig(savePath)
 
     # cv2.imwrite(savePath, maskedImage)
 
     return mask
+
 
 """
     Takes in the image path and the mask and then outputs the histogram information
@@ -131,6 +132,33 @@ def getHistogram(imagePath, mask):
     saveInfo(hist, "histogram.csv", "./TextBoxes/examples")
     return hist 
 
+
+"""
+    Calculates a histogram for the red and green channel given an image path and a mask
+"""
+def twoHistogram(imagePath, mask):
+    img = cv2.imread(imagePath)
+
+    # create a mask
+    # mask = np.zeros(img.shape[:2], np.uint8)
+    # mask[yMin:yMax, xMin:xMax] = 255 # creates a mask that leaves only the textbox area
+    # masked_img = cv2.bitwise_and(img,img,mask = mask) # original image with the mask over it
+
+    color = ('b','g','r')
+    hist = cv2.calcHist([img],[1],mask,[256],[0,256])
+    hist = cv2.normalize(hist, None)
+    plt.plot(hist,color = 'g')
+
+    hist = cv2.calcHist([img],[2],mask,[256],[0,256])
+    hist = cv2.normalize(hist, None)
+    plt.plot(hist,color = 'r')
+     # plots the histogram
+    # plt.xlim([0,256])
+    # plt.subplot(122), plt.imshow(cv2.cvtColor(masked_img, cv2.COLOR_BGR2RGB)) 
+
+    # plt.show() 
+
+    print(hist)
 """
     Takes in the coordinates of the textbox and the image path and outputs a plot 
     of the masked image (only showing textbox area) and its color histogram
@@ -149,7 +177,28 @@ def maskedHist(image, xMin, yMin, xMax, yMax):
         plt.subplot(121), plt.plot(hist_mask,color = col) # plots the histogram
         plt.xlim([0,256])
     plt.subplot(122), plt.imshow(cv2.cvtColor(masked_img, cv2.COLOR_BGR2RGB)) 
+
     plt.show() 
+
+
+
+"""
+    Takes in the coordinates of the textbox and the image path and outputs a plot of the histograms for each
+    segment of the box
+"""
+def splitHist(imagePath, xMin, yMin, xMax, yMax):
+    numSplit = 20
+
+    width = xMax - xMin
+    splitWidth = width // numSplit
+    leftLine = xMin # Initial value of left
+
+    for rightLine in range(xMin+splitWidth, xMax, splitWidth):
+         mask = createMask(imagePath, leftLine, yMin, rightLine, yMax)
+         twoHistogram(imagePath, mask)
+         leftLine = rightLine
+
+
 
 
 """ 
@@ -191,8 +240,127 @@ def histDict():
 
 """ 
     Finds the vertical line that divides the textbox which has the lowest correlation in color histograms between the two boxes. (Greatest difference)
+    Returns the vertical line and the correlation between the two parts.
 """
 def findDivide(imagePath, xMin, yMin, xMax, yMax):
+    bestLine = 0
+    bestCorr = 1.0
+    
+    for line in range(xMin + 1, xMax): # skipping xMin because that would not divide the box at all
+        histDict = {}
+
+        leftMask = createMask(imagePath, xMin, yMin, line, yMax)
+        rightMask = createMask(imagePath, line, yMin, xMax, yMax)
+
+        leftHist = getHistogram(imagePath, leftMask)
+        rightHist = getHistogram(imagePath, rightMask)
+
+        histDict["leftHist"] = leftHist
+        histDict["rightHist"] = rightHist
+
+        corrList = compare(histDict, "leftHist")
+
+        correlation = corrList[1][0]
+
+        if correlation <= bestCorr:
+            bestCorr = correlation
+            bestLine = line
+    
+    info = [bestLine, bestCorr]
+
+    # saveInfo(info, "correlation.csv", "./TextBoxes/examples")
+
+    print(info)
+
+def findCorrelations(imagePath, xMin, yMin, xMax, yMax):
+    outputList = []
+    for line in range(xMin + 10, xMax - 10): # skipping xMin because that would not divide the box at all
+        histDict = {}
+
+        leftMask = createMask(imagePath, xMin, yMin, line, yMax)
+        rightMask = createMask(imagePath, line, yMin, xMax, yMax)
+
+        leftHist = getHistogram(imagePath, leftMask)
+        rightHist = getHistogram(imagePath, rightMask)
+
+        histDict["leftHist"] = leftHist
+        histDict["rightHist"] = rightHist
+
+        corrList = compare(histDict, "leftHist")
+
+        correlation = corrList[1][0]
+
+        outputList.append((line, correlation))
+
+
+    saveInfo(outputList, "correlation.csv", "./TextBoxes/examples")
+
+    # print(info)
+
+"""
+    ahhhhh
+"""
+def sumValue(image, xMin, yMin, xMax, yMax):
+    height = len(image)
+    width = len(image[0])
+    totalPix = height * width
+
+    blue = 0
+    green = 0
+    red = 0
+
+    for row in range(yMin, yMax + 1):
+        for col in range(xMin, xMax):
+            pixel = image[row][col]
+
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
+
+            blue += blueVal
+            green += greenVal
+            red += redVal
+
+    blue = blue/totalPix
+    green = green/totalPix
+    red = red/totalPix
+
+    return blue, green, red
+
+
+def segment(imagePath, xMin, yMin, xMax, yMax):
+    # The coordinates are for the textbox
+
+    image = cv2.imread(imagePath)
+    numSplit = 20
+
+    width = xMax - xMin
+    splitWidth = width // numSplit
+    leftLine = xMin # Initial value of left
+    blueList = []
+    greenList = []
+    redList = []
+
+    for rightLine in range(xMin, xMax + splitWidth, splitWidth):
+        blue, green, red = sumValue(image, leftLine, yMin, rightLine, yMax)
+
+        blueList.append(blue)
+        greenList.append(green)
+        redList.append(red)
+        
+        leftLine = rightLine
+    x = range(len(blueList))
+
+    # plt.subplot(131), plt.plot(x, blueList, color = "b")
+    # plt.subplot(132), plt.plot(x, greenList, color = "g")
+    # plt.subplot(133), plt.plot(x, redList, color = "r")
+
+    plt.plot(x, blueList, color = "b")
+    plt.plot(x, greenList, color = "g")
+    plt.plot(x, redList, color = "r")
+    plt.show()
+
+    # print(blueList)
 
 
 """ 
@@ -243,8 +411,8 @@ def wrapper2():
 
     return histDict
     
-def compare():
-    histDict = wrapper2()
+def compare(histDict, compareKey):
+    # histDict = wrapper2()
     method = [("Correlation", cv2.HISTCMP_CORREL),
 	            ("Chi-Squared", cv2.HISTCMP_CHISQR),
 	            ("Intersection", cv2.HISTCMP_INTERSECT), 
@@ -252,16 +420,18 @@ def compare():
     results = {}
     reverse = True
     for (key, value) in list(histDict.items()):
-        d = cv2.compareHist(histDict["./TextBoxes/examples/img/frame423.jpg0"], value, method[0][1])
+        d = cv2.compareHist(histDict[compareKey], value, method[0][1])
         results[key] = d
     
     results = sorted([(v, k) for (k, v) in results.items()], reverse = reverse)
 
-    saveInfo(results, "distances.csv", "./TextBoxes/examples")
+    # saveInfo(results, "distances.csv", "./TextBoxes/examples")
+
+    return results
 
 
 if __name__=='__main__':
-    wrapper1()
+    # wrapper1()
     # histDict()
     # imagePath = "./TextBoxes/examples/img/000636.png"
 
@@ -281,3 +451,26 @@ if __name__=='__main__':
     # hist.flatten()
 
     # compare()
+
+    # histDict = wrapper2()
+    # results = compare(histDict, "./TextBoxes/examples/img/frame423.jpg0")
+    # print(type(results))
+    # print(results)
+
+    # results are a list
+    # [(1.0, './TextBoxes/examples/img/frame423.jpg0'), (0.9857310647183112, './TextBoxes/examples/img/frame423.jpg1')]
+
+    imagePath = './TextBoxes/examples/img/cool.png'
+    xMin = 29
+    yMin = 56
+    xMax = 693
+    yMax = 101
+    # # line = 619
+
+    # # info = findDivide(imagePath, xMin, yMin, xMax, yMax)
+
+    # # findCorrelations(imagePath, xMin, yMin, xMax, yMax)
+    # maskedHist(imagePath, xMin, yMin, xMax, yMax)
+
+    # splitHist(imagePath, xMin, yMin, xMax, yMax)
+    segment(imagePath, xMin, yMin, xMax, yMax)

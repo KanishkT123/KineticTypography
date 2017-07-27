@@ -4,62 +4,57 @@ import numpy as np
 import argparse
 import glob
 import cv2
-from histogram import histDict
 
 
-images, index = histDict()
-lenInd = len(index)
+def sumValue(image, xMin, yMin, xMax, yMax):
+    height = len(image)
+    width = len(image[0])
+    totalPix = height * width
 
-# METHOD #1: UTILIZING OPENCV
-# initialize OpenCV methods for histogram comparison
-OPENCV_METHODS = (
-	("Correlation", cv2.HISTCMP_CORREL),
-	("Chi-Squared", cv2.HISTCMP_CHISQR),
-	("Intersection", cv2.HISTCMP_INTERSECT), 
-	("Hellinger", cv2.HISTCMP_BHATTACHARYYA))
- 
+    blue = 0
+    green = 0
+    red = 0
 
-compareBox = index[("000636.png", 0)]
-compImage = "./TextBoxes/examples/img/000636.png"
-# loop over the comparison methods
-for (methodName, method) in OPENCV_METHODS:
-	# initialize the results dictionary and the sort
-	# direction
-    results = {}
-    reverse = False
- 
-	# if we are using the correlation or intersection
-	# method, then sort the results in reverse order
-    if methodName in ("Correlation", "Intersection"):
-        reverse = True
- 
-    for (key, hist) in list(index.items()):
-        # compute the distance between the two histograms
-        # using the method and update the results dictionary
-        distance = cv2.compareHist(compareBox, hist, method)
-        results[key] = distance
-        
-    # sort the results
-    results = sorted([(value, key) for (key, value) in results.items()], reverse = reverse)
+    for row in range(yMin, yMax + 1):
+        for col in range(xMin, xMax):
+            pixel = image[row][col]
 
-    # show the query image
-    fig = plt.figure("Query")
-    axes = fig.add_subplot(1, 1, 1)
-    axes.imshow(images["000636.png"])
-    plt.axis("off")
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
 
-    # initialize the results figure
-    fig = plt.figure("Results: %s" % (methodName))
-    fig.suptitle(methodName, fontsize = 20)
+            blue += blueVal
+            green += greenVal
+            red += redVal
 
-    # loop over the results
-    for (index, (value, key)) in enumerate(results):
-        # show the result
-        axes = fig.add_subplot(1, lenInd, index + 1)
-        axes.set_title("%s: %.2f" % (key, value))
-        keyName = key[0]
-        plt.imshow(images[keyName])
-        plt.axis("off")
+    blue = blue/totalPix
+    green = green/totalPix
+    red = red/totalPix
 
-# show the OpenCV methods
-plt.show()
+    return blue, green, red
+
+
+def segment(imagePath, xMin, yMin, xMax, yMax):
+    # The coordinates are for the textbox
+
+    image = cv2.imread(imagePath)
+    numSplit = 20
+
+    width = xMax - xMin
+    splitWidth = width // numSplit
+    leftLine = xMin # Initial value of left
+    blueList = []
+    greenList = []
+    redList = []
+
+    for rightLine in range(xMin + splitWidth, xMax, splitWidth):
+        blue, green, red = sumValue(image, leftLine, yMin, rightLine, yMax)
+
+        blueList.append(blue)
+        greenList.append(green)
+        redList.append(red)
+    
+    x = range(len(blueList))
+
+    plt.plot(x, blueList, color = "b")
+    plt.show()
