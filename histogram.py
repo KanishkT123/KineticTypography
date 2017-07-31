@@ -1,3 +1,5 @@
+#!/usr/bin/env python3 
+
 import os
 import cv2
 import numpy as np
@@ -595,6 +597,7 @@ def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
 
     coordList2 = allCoords(image) # get color coordinates for all pixels
     pixArray = np.array(coordList2) # make it into numpy array
+    print(pixArray.shape)
 
     # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
@@ -607,7 +610,7 @@ def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
     Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
     prediction was yellow, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
 """
-def getColor(pixArray, imagePath):
+def getColor(pixArray, imagePath, clusterNumber):
     image = cv2.imread(imagePath)
     height, width, channels = image.shape 
 
@@ -617,15 +620,22 @@ def getColor(pixArray, imagePath):
     # locationList = []
 
     # 0 = blue, 1 = white, 2 = yellow
-    for i in range(len(pixArray)):
-        if pixArray[i] == 2:
-            row = i // height # PixArray is completely flat like: [1, 1, 0, 0, 0, 1, 2] so I thought this would give me the right x and y values
-            col = i % height
 
-            xList.append(row)
-            yList.append(col)
-            # pixCoords = [row, col]
-            # locationList.append(pixCoords)
+    for row in range(height):
+        for col in range(width): 
+            idx = row * width + col
+            if pixArray[idx] == clusterNumber: 
+                xList.append(col)
+                yList.append(row)
+
+    for i in range(len(pixArray)):
+        if pixArray[i] == clusterNumber:
+            # JM: Changed height to width here, since the arrays are one row at a time. 
+            row = i // width 
+            col = i % width
+
+            xList.append(col)
+            yList.append(row)
 
     # print(locationList)
     return xList, yList
@@ -684,7 +694,32 @@ if __name__=='__main__':
     # yMax = 201
 
     pixArray = findLines(imagePath, xMin, yMin, xMax, yMax, 3)
-    xList, yList = getColor(pixArray, imagePath)
 
+    # Plot all three clusters, since we don't know which one is the yellow one. 
+
+    plt.subplot(2, 2, 1)
+    xList, yList = getColor(pixArray, imagePath, 0)
     plt.scatter(xList, yList)
+    # JM: Set the plot axis ranges so they'd all be the same here. 
+    plt.ylim([1,yMax])
+    plt.xlim([1,xMax])
+    # JM: Since images count from the top, and graphs usually have 0 at the bottom, 
+    # we need to invert the axis or the image will look like it's upside down. 
+    plt.gca().invert_yaxis()
+
+    plt.subplot(2, 2, 2)
+    xList, yList = getColor(pixArray, imagePath, 1)
+    plt.scatter(xList, yList)
+    plt.ylim([1,yMax])
+    plt.xlim([1,xMax])
+    plt.gca().invert_yaxis()
+
+    plt.subplot(2, 2, 3)
+    xList, yList = getColor(pixArray, imagePath, 2)
+    plt.scatter(xList, yList)
+    plt.ylim([1,yMax])
+    plt.xlim([1,xMax])
+    plt.gca().invert_yaxis()
+
+
     plt.show()
