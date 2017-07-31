@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import csv
 from matplotlib import pyplot as plt
+from sklearn.cluster import KMeans
 
 # ******************************************************************************************************** #
 # *  The following code assumes that you are in the directory which contains the whole TextBoxes folder  * #
@@ -25,7 +26,7 @@ def loopDirectory(function):
 
 
 """
-    Takes in information and a file path and writes and saves that information as a file
+    Takes in information and a file path and writes and saves that information as a csv file
 """
 def saveInfo(information, fileName, filePath):
     # Writes the path to save the file
@@ -39,7 +40,7 @@ def saveInfo(information, fileName, filePath):
 
 """
     Goes through the results directory and returns a list of lists
-    of textbox coordinates, with each separate image as an inner list
+    of textbox coordinates, with each separate image as an inner list, as well as a list of image filenames
 """
 def getCoordinates():
     resultsDir = "./TextBoxes/examples/results"
@@ -81,7 +82,11 @@ def getImages():
 
 """
     Takes in the coordinates of the textbox and the image path and
-    saves the masked image and returns it
+    saves the masked image and returns it 
+
+    NOTE: all the stuff that's been commented out was because another function calls this 
+          multiple times and the computer can't handle making plots and saving each of the masks
+          Now it only returns the mask without saving or showing any plots.
 """
 def createMask(imagePath, xMin, yMin, xMax, yMax):
     
@@ -119,7 +124,7 @@ def createMask(imagePath, xMin, yMin, xMax, yMax):
 
 
 """
-    Takes in the image path and the mask and then outputs the histogram information
+    Takes in the image path and the mask and then returns the histogram information and saves it as a csv
 """
 def getHistogram(imagePath, mask):
     image = cv2.imread(imagePath)
@@ -128,9 +133,9 @@ def getHistogram(imagePath, mask):
     hist = cv2.normalize(hist, None)
     hist.flatten()
 
-    # print(hist)
     saveInfo(hist, "histogram.csv", "./TextBoxes/examples")
     return hist 
+
 
 
 """
@@ -139,26 +144,26 @@ def getHistogram(imagePath, mask):
 def twoHistogram(imagePath, mask):
     img = cv2.imread(imagePath)
 
-    # create a mask
-    # mask = np.zeros(img.shape[:2], np.uint8)
-    # mask[yMin:yMax, xMin:xMax] = 255 # creates a mask that leaves only the textbox area
-    # masked_img = cv2.bitwise_and(img,img,mask = mask) # original image with the mask over it
-
     color = ('b','g','r')
-    hist = cv2.calcHist([img],[1],mask,[256],[0,256])
+    hist = cv2.calcHist([img],[1],mask,[256],[0,256]) # green histogram
     hist = cv2.normalize(hist, None)
     plt.plot(hist,color = 'g')
 
-    hist = cv2.calcHist([img],[2],mask,[256],[0,256])
+    hist = cv2.calcHist([img],[2],mask,[256],[0,256]) # red histogram
     hist = cv2.normalize(hist, None)
     plt.plot(hist,color = 'r')
-     # plots the histogram
+
+    # plots the histogram
     # plt.xlim([0,256])
     # plt.subplot(122), plt.imshow(cv2.cvtColor(masked_img, cv2.COLOR_BGR2RGB)) 
 
     # plt.show() 
 
     print(hist)
+
+
+
+
 """
     Takes in the coordinates of the textbox and the image path and outputs a plot 
     of the masked image (only showing textbox area) and its color histogram
@@ -182,6 +187,7 @@ def maskedHist(image, xMin, yMin, xMax, yMax):
 
 
 
+
 """
     Takes in the coordinates of the textbox and the image path and outputs a plot of the histograms for each
     segment of the box
@@ -193,7 +199,7 @@ def splitHist(imagePath, xMin, yMin, xMax, yMax):
     splitWidth = width // numSplit
     leftLine = xMin # Initial value of left
 
-    for rightLine in range(xMin+splitWidth, xMax, splitWidth):
+    for rightLine in range(xMin + splitWidth, xMax, splitWidth):
          mask = createMask(imagePath, leftLine, yMin, rightLine, yMax)
          twoHistogram(imagePath, mask)
          leftLine = rightLine
@@ -238,6 +244,9 @@ def histDict():
     
     print(images, index)
 
+
+
+
 """ 
     Finds the vertical line that divides the textbox which has the lowest correlation in color histograms between the two boxes. (Greatest difference)
     Returns the vertical line and the correlation between the two parts.
@@ -272,9 +281,16 @@ def findDivide(imagePath, xMin, yMin, xMax, yMax):
 
     print(info)
 
+
+
+
+"""
+    Cutting off a width of 10 pixels from either side of the image, findCorrelations plots the correlation
+    between the left and right color histograms for every vertical splitting line in the image
+"""
 def findCorrelations(imagePath, xMin, yMin, xMax, yMax):
     outputList = []
-    for line in range(xMin + 10, xMax - 10): # skipping xMin because that would not divide the box at all
+    for line in range(xMin + 10, xMax - 10): 
         histDict = {}
 
         leftMask = createMask(imagePath, xMin, yMin, line, yMax)
@@ -297,13 +313,18 @@ def findCorrelations(imagePath, xMin, yMin, xMax, yMax):
 
     # print(info)
 
+
+
+
 """
-    ahhhhh
+    Takes in the image (not image path), and the coordinates of the text box, then returns an 
+    average color amount (per pixel) for the entirety of this text box
 """
 def sumValue(image, xMin, yMin, xMax, yMax):
-    height = len(image)
-    width = len(image[0])
-    totalPix = height * width
+    # height and width of the image
+    height = yMax - yMin
+    width = xMax - xMin
+    totalPix = height * width # total number of pixels
 
     blue = 0
     green = 0
@@ -328,6 +349,12 @@ def sumValue(image, xMin, yMin, xMax, yMax):
     return blue, green, red
 
 
+
+
+"""
+    Takes in the image path and textbox coordinates, then splits it up into 20 segments
+    and gets the average color amounts for each segment, then plots all of these values
+"""
 def segment(imagePath, xMin, yMin, xMax, yMax):
     # The coordinates are for the textbox
 
@@ -341,7 +368,7 @@ def segment(imagePath, xMin, yMin, xMax, yMax):
     greenList = []
     redList = []
 
-    for rightLine in range(xMin, xMax + splitWidth, splitWidth):
+    for rightLine in range(xMin + splitWidth, xMax, splitWidth):
         blue, green, red = sumValue(image, leftLine, yMin, rightLine, yMax)
 
         blueList.append(blue)
@@ -349,6 +376,7 @@ def segment(imagePath, xMin, yMin, xMax, yMax):
         redList.append(red)
         
         leftLine = rightLine
+
     x = range(len(blueList))
 
     # plt.subplot(131), plt.plot(x, blueList, color = "b")
@@ -363,10 +391,95 @@ def segment(imagePath, xMin, yMin, xMax, yMax):
     # print(blueList)
 
 
+
+
 """ 
-    Wrapper function
+    Takes in an image and textbox coordinates and returns coordinates signifying (R, G, B) values for all pixels in the text box
 """
-def wrapper1():
+def colorCoords(image, xMin, yMin, xMax, yMax):
+    height = yMax - yMin
+    width = xMax - xMin
+    totalPix = height * width
+
+    blue = 0
+    green = 0
+    red = 0
+
+    for row in range(yMin, yMax + 1):
+        for col in range(xMin, xMax):
+            pixel = image[row][col]
+
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
+
+            blue += blueVal
+            green += greenVal
+            red += redVal
+
+    blue = blue/totalPix
+    green = green/totalPix
+    red = red/totalPix
+
+    coords = [red, green, blue]
+    return coords
+
+
+
+
+""" 
+    Takes in image path, and coordinates of the textbox, then gets the average color values for each segment and returns
+    all of the color coordinates as a list
+"""
+def segmentedCoords(imagePath, xMin, yMin, xMax, yMax):
+    image = cv2.imread(imagePath)
+    numSplit = 20
+
+    width = xMax - xMin
+    splitWidth = width // numSplit
+    leftLine = xMin # Initial value of left
+
+    coordList = []
+
+    for rightLine in range(xMin + splitWidth, xMax, splitWidth):
+        coords = colorCoords(image, leftLine, yMin, rightLine, yMax)
+
+        coordList.append(coords)
+
+        leftLine = rightLine # Reset value of leftLine
+
+    return coordList
+
+
+
+
+"""
+    Takes in an image and returns all color coordinates for each pixel in the image as a list
+"""
+def allCoords(image):
+    height, width, channels = image.shape 
+
+    coordList = []
+
+    for row in range(height):
+        for col in range(width):
+            pixel = image[row][col]
+
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
+            
+            coords = [redVal, greenVal, blueVal]
+            coordList.append(coords)
+
+    return coordList
+
+
+
+""" 
+    Wrapper function: shows the masked histogram for every textbox for every image in the img directory
+"""
+def showHist():
     fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
     imgList = getImages()
 
@@ -383,8 +496,13 @@ def wrapper1():
             yMax = int(box[4])
             maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
 
-    
-def wrapper2():
+
+
+"""
+    Goes through all the images in the img directory then makes a histogram for each textbox in the image and adds it to a dictionary.
+    Returns a dictionary where the key is the image name and the textbox number and the value is the color histogram
+"""
+def getHistDict():
     fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
     imgList = getImages()
     histDict = {}
@@ -410,13 +528,21 @@ def wrapper2():
             histDict[image + key] = hist
 
     return histDict
-    
+
+
+
+
+"""
+    Takes in a dictionary of histograms and the key of the histogram to compare all others to, then uses correlation
+    to compare the histograms and returns the results sorted in reverse
+"""
 def compare(histDict, compareKey):
     # histDict = wrapper2()
     method = [("Correlation", cv2.HISTCMP_CORREL),
-	            ("Chi-Squared", cv2.HISTCMP_CHISQR),
-	            ("Intersection", cv2.HISTCMP_INTERSECT), 
-	            ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
+	          ("Chi-Squared", cv2.HISTCMP_CHISQR),
+	          ("Intersection", cv2.HISTCMP_INTERSECT), 
+	          ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
+
     results = {}
     reverse = True
     for (key, value) in list(histDict.items()):
@@ -430,47 +556,135 @@ def compare(histDict, compareKey):
     return results
 
 
+
+
+"""
+    Takes in the image path, textbox coordinates, and the number of clusters and does k-means clustering
+    on the color values of segments in the textbox.
+    Returns the inertia
+"""
+def wrapperForCluster(imagePath, xMin, yMin, xMax, yMax, numClusters):
+    coordList = segmentedCoords(imagePath, xMin, yMin, xMax, yMax)
+
+    xArray = np.array(coordList)
+
+    kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+
+    # print(kmeans.cluster_centers_)
+    # print(kmeans.labels_)
+    # print(kmeans.inertia_)
+
+    return kmeans.inertia_
+
+
+
+"""
+    Takes in the image path, the text box coordinates and the number of clusters then
+    does k-means clustering on the textbox's segmented color values. It then uses this model to 
+    predict the clusters for every pixel in the image.
+
+    Returns a list of predictions
+"""
+def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
+    coordList1 = segmentedCoords(imagePath, xMin, yMin, xMax, yMax) # get average colors for every segment
+
+    xArray = np.array(coordList1) # make it into numpy array
+
+    kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    image = cv2.imread(imagePath)
+
+    coordList2 = allCoords(image) # get color coordinates for all pixels
+    pixArray = np.array(coordList2) # make it into numpy array
+
+    # print(kmeans.cluster_centers_)
+    # print(kmeans.labels_)
+    # print(kmeans.inertia_)
+
+    return kmeans.predict(pixArray)
+
+
+"""
+    Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
+    prediction was yellow, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
+"""
+def getColor(pixArray, imagePath):
+    image = cv2.imread(imagePath)
+    height, width, channels = image.shape 
+
+    xList = []
+    yList = []
+
+    # locationList = []
+
+    # 0 = blue, 1 = white, 2 = yellow
+    for i in range(len(pixArray)):
+        if pixArray[i] == 2:
+            row = i // height # PixArray is completely flat like: [1, 1, 0, 0, 0, 1, 2] so I thought this would give me the right x and y values
+            col = i % height
+
+            xList.append(row)
+            yList.append(col)
+            # pixCoords = [row, col]
+            # locationList.append(pixCoords)
+
+    # print(locationList)
+    return xList, yList
+
+
+
+
+"""
+    For the numClusters, it calculates the inertia for each number of clusters from 1 to numClusters + 1 and returns the inertia as a list
+"""
+def inertiaTester(imagePath, xMin, yMin, xMax, yMax, numClusters):
+    inertiaList = []
+    for num in range(1, numClusters + 1):
+        inertia = wrapperForCluster(imagePath, xMin, yMin, xMax, yMax, num)
+        inertiaList.append(inertia)
+
+    return inertiaList
+
+
+
+
+"""
+    Takes in the list of inertia values and then plots the percent change
+"""
+def plotPercents(inertiaList):
+    percentList = []
+    for i in range(len(inertiaList) - 1):
+        percentChange = (inertiaList[i] - inertiaList[i + 1])/inertiaList[i]
+        percentList.append(percentChange)
+    
+    print(percentList)
+    xList = range(1, len(percentList) + 1)
+    plt.plot(xList, percentList)
+    plt.show()
+
+
+
+
 if __name__=='__main__':
-    # wrapper1()
-    # histDict()
-    # imagePath = "./TextBoxes/examples/img/000636.png"
-
-    # imagePath = "./astronaut.png"
-
-    # xMin = 30
-    # xMax = 471
-    # yMin = 57
-    # yMax = 248
-    # mask = createMask(imagePath, xMin, yMin, xMax, yMax)
-    # getHistogram(imagePath, mask)
-
-    # image = cv2.imread(imagePath)
-
-    # hist = cv2.calcHist([image], [0, 1, 2], None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
-    # hist = cv2.normalize(hist, None)
-    # hist.flatten()
-
-    # compare()
-
-    # histDict = wrapper2()
-    # results = compare(histDict, "./TextBoxes/examples/img/frame423.jpg0")
-    # print(type(results))
-    # print(results)
-
-    # results are a list
-    # [(1.0, './TextBoxes/examples/img/frame423.jpg0'), (0.9857310647183112, './TextBoxes/examples/img/frame423.jpg1')]
-
     imagePath = './TextBoxes/examples/img/cool.png'
     xMin = 29
-    yMin = 56
-    xMax = 693
+    yMin = 25
+    xMax = 716
     yMax = 101
-    # # line = 619
 
-    # # info = findDivide(imagePath, xMin, yMin, xMax, yMax)
+    # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
+    # yMin = 27
+    # xMax = 196
+    # yMax = 93
 
-    # # findCorrelations(imagePath, xMin, yMin, xMax, yMax)
-    # maskedHist(imagePath, xMin, yMin, xMax, yMax)
 
-    # splitHist(imagePath, xMin, yMin, xMax, yMax)
-    segment(imagePath, xMin, yMin, xMax, yMax)
+    # imagePath = './TextBoxes/examples/img/pink.png'
+    # xMin = 220
+    # yMin = 156
+    # xMax = 531
+    # yMax = 201
+
+    pixArray = findLines(imagePath, xMin, yMin, xMax, yMax, 3)
+    xList, yList = getColor(pixArray, imagePath)
+
+    plt.scatter(xList, yList)
+    plt.show()
