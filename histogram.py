@@ -456,6 +456,43 @@ def segmentedCoords(imagePath, xMin, yMin, xMax, yMax):
 
 
 """
+    Takes in image path, and coordinates of the textbox, then gets the average color values for each chunk and returns
+    all of the color coordinates as a list 
+"""
+def chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits):
+    image = cv2.imread(imagePath)
+
+    width = xMax - xMin
+    height = yMax - yMin
+
+    if height != 0 or width != 0:
+        numHorizSplits = 10 
+
+        splitWidth = width // numVertSplits
+        splitHeight = height // numHorizSplits
+
+        leftLine = xMin # Initial value of left
+        topLine = yMin # Initial value of top
+
+        coordList = []
+
+        for bottomLine in range(yMin + splitHeight, yMax, splitHeight):
+            for rightLine in range(xMin + splitWidth, xMax, splitWidth):
+                coords = colorCoords(image, leftLine, topLine, rightLine, bottomLine)
+
+                coordList.append(coords)
+
+                leftLine = rightLine # Reset value of leftLine
+
+            topLine = bottomLine # Reset value of topLine
+
+        return coordList
+
+
+
+
+
+"""
     Takes in an image and returns all color coordinates for each pixel in the image as a list
 """
 def allCoords(image):
@@ -575,7 +612,7 @@ def wrapperForCluster(imagePath, xMin, yMin, xMax, yMax, numClusters):
     # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
     # print(kmeans.inertia_)
-
+    
     return kmeans.inertia_
 
 
@@ -599,11 +636,36 @@ def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
     pixArray = np.array(coordList2) # make it into numpy array
     print(pixArray.shape)
 
-    # print(kmeans.cluster_centers_)
+    print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
     # print(kmeans.inertia_)
 
     return kmeans.predict(pixArray)
+
+
+"""
+    Does the same thing as findLines but using chunkyCoords instead of segmentedCoords
+"""
+def getPredictions(imagePath, xMin, yMin, xMax, yMax, numClusters):
+    numVertSplits = 20
+
+    coordListChunks = chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits) # get average colors for every segment
+
+    xArray = np.array(coordListChunks) # make it into numpy array
+
+    kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    image = cv2.imread(imagePath)
+
+    coordListAll = allCoords(image) # get color coordinates for all pixels
+    pixArray = np.array(coordListAll) # make it into numpy array
+    print(pixArray.shape)
+
+    print(kmeans.cluster_centers_)
+    # print(kmeans.labels_)
+    # print(kmeans.inertia_)
+
+    return kmeans.predict(pixArray)
+
 
 
 """
@@ -675,11 +737,27 @@ def plotPercents(inertiaList):
 
 
 if __name__=='__main__':
-    imagePath = './TextBoxes/examples/img/cool.png'
-    xMin = 29
-    yMin = 25
-    xMax = 716
-    yMax = 101
+    # imagePath = './TextBoxes/examples/img/cool.png'
+    # xMin = 29
+    # yMin = 25
+    # xMax = 716
+    # yMax = 101
+
+
+    # imagePath = './TextBoxes/examples/img/threecolors.png'
+    # xMin = 274
+    # yMin = 213
+    # xMax = 1265
+    # yMax = 420
+
+    imagePath = './TextBoxes/examples/img/000636.png'
+    image = cv2.imread(imagePath)
+    height, width, channels = image.shape
+
+    xMin = 0
+    yMin = 0
+    xMax = width
+    yMax = height
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
     # yMin = 27
@@ -693,7 +771,9 @@ if __name__=='__main__':
     # xMax = 531
     # yMax = 201
 
-    pixArray = findLines(imagePath, xMin, yMin, xMax, yMax, 3)
+    # pixArray = findLines(imagePath, xMin, yMin, xMax, yMax, 3)
+
+    pixArray = getPredictions(imagePath, xMin, yMin, xMax, yMax, 3)
 
     # Plot all three clusters, since we don't know which one is the yellow one. 
 
