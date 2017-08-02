@@ -435,7 +435,7 @@ def colorCoords(image, xMin, yMin, xMax, yMax):
 """
 def segmentedCoords(imagePath, xMin, yMin, xMax, yMax):
     image = cv2.imread(imagePath)
-    numSplit = 20
+    numSplit = 30
 
     width = xMax - xMin
     splitWidth = width // numSplit
@@ -466,7 +466,7 @@ def chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits):
     height = yMax - yMin
 
     if height != 0 or width != 0:
-        numHorizSplits = 10 
+        numHorizSplits = 12 
 
         splitWidth = width // numVertSplits
         splitHeight = height // numHorizSplits
@@ -646,25 +646,39 @@ def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
 """
     Does the same thing as findLines but using chunkyCoords instead of segmentedCoords
 """
-def getPredictions(imagePath, xMin, yMin, xMax, yMax, numClusters):
-    numVertSplits = 20
+# def getPredictions(imagePath, xMin, yMin, xMax, yMax, numClusters):
+#     numVertSplits = 20
 
-    coordListChunks = chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits) # get average colors for every segment
+#     coordListChunks = chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits) # get average colors for every segment
 
-    xArray = np.array(coordListChunks) # make it into numpy array
+#     xArray = np.array(coordListChunks) # make it into numpy array
+
+#     kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+#     image = cv2.imread(imagePath)
+
+#     coordListAll = allCoords(image) # get color coordinates for all pixels
+#     pixArray = np.array(coordListAll) # make it into numpy array
+#     print(pixArray.shape)
+
+#     print(kmeans.cluster_centers_)
+#     # print(kmeans.labels_)
+#     # print(kmeans.inertia_)
+
+#     return kmeans.predict(pixArray)
+
+def getPredictions(imagePath, numClusters):
+    image = cv2.imread(imagePath)
+    coordList = allCoords(image)
+    
+    xArray = np.array(coordList) # make it into numpy array
 
     kmeans = KMeans(n_clusters = numClusters).fit(xArray)
-    image = cv2.imread(imagePath)
 
-    coordListAll = allCoords(image) # get color coordinates for all pixels
-    pixArray = np.array(coordListAll) # make it into numpy array
-    print(pixArray.shape)
-
-    print(kmeans.cluster_centers_)
+    # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
     # print(kmeans.inertia_)
 
-    return kmeans.predict(pixArray)
+    return kmeans.labels_, kmeans.cluster_centers_
 
 
 
@@ -735,6 +749,140 @@ def plotPercents(inertiaList):
 
 
 
+"""
+    Gets color coordinates from all boxes
+"""
+def predictClusters(imageName, numClusters):
+    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
+    imgList = getImages()
+    imagePath = ""
+    segmentedList = []
+
+
+    for i in range(len(fileList)):
+        if fileList[i] == imageName:
+            boxList = picList[i]
+            imagePath = imgList[i]
+
+            for box in boxList:
+                box = box.split(",") # makes the string into a list
+                
+                xMin = int(box[1])
+                yMin = int(box[2])
+                xMax = int(box[3])
+                yMax = int(box[4])
+                
+                segCoords = segmentedCoords(imagePath, xMin, yMin, xMax, yMax)
+
+                segmentedList.extend(segCoords)
+    
+
+    xArray = np.array(segmentedList) # make it into numpy array
+
+    kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    image = cv2.imread(imagePath)
+
+    coordListAll = allCoords(image) # get color coordinates for all pixels
+    pixArray = np.array(coordListAll) # make it into numpy array
+
+    print(kmeans.cluster_centers_)
+    # print(kmeans.labels_)
+    # print(kmeans.inertia_)
+
+    return kmeans.predict(pixArray)
+
+
+
+"""
+    Get bounding box
+"""
+def getBounding(imagePath, numClusters):
+    image = cv2.imread(imagePath)
+    height, width, channels = image.shape 
+    labels, clusterCenters = getPredictions(imagePath, numClusters)
+
+    for cluster in range(numClusters):
+        mask = np.zeros(image.shape[:2], np.uint8)
+        xList, yList = getColor(labels, imagePath, cluster)
+        for i in range(len(xList)):
+            xVal = xList[i]
+            yVal = yList[i]
+
+            mask[yVal, xVal] = 255
+    
+        kernel = np.ones((5,5),np.uint8)
+        # mask = cv2.erode(mask, kernel, iterations = 2)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+        plt.imshow(mask, cmap = "gray") 
+        plt.show()
+
+        _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # print(len(contours))
+        # img = cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
+        # cv2.imshow("image", img)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        # cnt = contours[0]
+
+        for cnt in contours:
+            rectList = []
+
+            x,y,w,h = cv2.boundingRect(cnt)
+
+            if w not in range(width - 20, width + 1) and h not in range(height - 20, height + 1):
+                # rect = [x, y, w, h]
+                # rectList.append(rect)
+                image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
+
+                cv2.imshow("image", image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+            # for 
+
+                
+    # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
+
+    #             cv2.imshow("image", image)
+    #             cv2.waitKey(0)
+    #             cv2.destroyAllWindows()
+
+    # for center in clusterCenters:
+    #     red = center[0]
+    #     green = center[1]
+    #     blue = center[2]
+    #     tolerance = 15
+
+    #     lower = [red - tolerance, green - tolerance, blue - tolerance]
+    #     upper = [red + tolerance, green + tolerance, blue + tolerance]
+
+    #     for i in range(3):
+    #         if lower[i] < 0:
+    #             lower[i] = 0
+    #         if upper[i] > 255:
+    #             upper[i] = 255
+        
+    #     lower = tuple(lower)
+    #     upper = tuple(upper)
+        # lower = np.array(lower, dtype = "uint8")
+        # upper = np.array(upper, dtype = "uint8")
+
+        # mask = cv2.inRange(image, lower, upper)
+        # plt.imshow(mask) 
+        # plt.show()
+
+        # contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # cnt = contours[0]
+    
+        # x,y,w,h = cv2.boundingRect(cnt)
+
+        # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
+
+        # cv2.imshow("image", image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
 
 if __name__=='__main__':
     # imagePath = './TextBoxes/examples/img/cool.png'
@@ -745,12 +893,14 @@ if __name__=='__main__':
 
 
     # imagePath = './TextBoxes/examples/img/threecolors.png'
+    # source: "https://www.youtube.com/watch?v=IExGNeETVB0"
+
     # xMin = 274
     # yMin = 213
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './TextBoxes/examples/img/000636.png'
+    imagePath = './TextBoxes/examples/img/1.jpg'
     image = cv2.imread(imagePath)
     height, width, channels = image.shape
 
@@ -758,6 +908,10 @@ if __name__=='__main__':
     yMin = 0
     xMax = width
     yMax = height
+
+    # pixArray = getPredictions(imagePath, 4)
+
+    getBounding(imagePath, 2)
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
     # yMin = 27
@@ -771,35 +925,44 @@ if __name__=='__main__':
     # xMax = 531
     # yMax = 201
 
+    # pixArray = predictClusters("000636.png", 4)
+
     # pixArray = findLines(imagePath, xMin, yMin, xMax, yMax, 3)
 
-    pixArray = getPredictions(imagePath, xMin, yMin, xMax, yMax, 3)
+    # pixArray = getPredictions(imagePath, xMin, yMin, xMax, yMax, 3)
+
 
     # Plot all three clusters, since we don't know which one is the yellow one. 
 
-    plt.subplot(2, 2, 1)
-    xList, yList = getColor(pixArray, imagePath, 0)
-    plt.scatter(xList, yList)
-    # JM: Set the plot axis ranges so they'd all be the same here. 
-    plt.ylim([1,yMax])
-    plt.xlim([1,xMax])
-    # JM: Since images count from the top, and graphs usually have 0 at the bottom, 
-    # we need to invert the axis or the image will look like it's upside down. 
-    plt.gca().invert_yaxis()
+    # plt.subplot(2, 2, 1)
+    # xList, yList = getColor(pixArray, imagePath, 0)
+    # plt.scatter(xList, yList)
+    # # JM: Set the plot axis ranges so they'd all be the same here. 
+    # plt.ylim([1,yMax])
+    # plt.xlim([1,xMax])
+    # # JM: Since images count from the top, and graphs usually have 0 at the bottom, 
+    # # we need to invert the axis or the image will look like it's upside down. 
+    # plt.gca().invert_yaxis()
 
-    plt.subplot(2, 2, 2)
-    xList, yList = getColor(pixArray, imagePath, 1)
-    plt.scatter(xList, yList)
-    plt.ylim([1,yMax])
-    plt.xlim([1,xMax])
-    plt.gca().invert_yaxis()
+    # plt.subplot(2, 2, 2)
+    # xList, yList = getColor(pixArray, imagePath, 1)
+    # plt.scatter(xList, yList)
+    # plt.ylim([1,yMax])
+    # plt.xlim([1,xMax])
+    # plt.gca().invert_yaxis()
 
-    plt.subplot(2, 2, 3)
-    xList, yList = getColor(pixArray, imagePath, 2)
-    plt.scatter(xList, yList)
-    plt.ylim([1,yMax])
-    plt.xlim([1,xMax])
-    plt.gca().invert_yaxis()
+    # plt.subplot(2, 2, 3)
+    # xList, yList = getColor(pixArray, imagePath, 2)
+    # plt.scatter(xList, yList)
+    # plt.ylim([1,yMax])
+    # plt.xlim([1,xMax])
+    # plt.gca().invert_yaxis()
 
+    # plt.subplot(2, 2, 4)
+    # xList, yList = getColor(pixArray, imagePath, 3)
+    # plt.scatter(xList, yList)
+    # plt.ylim([1,yMax])
+    # plt.xlim([1,xMax])
+    # plt.gca().invert_yaxis()
 
-    plt.show()
+    # plt.show()
