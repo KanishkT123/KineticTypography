@@ -6,6 +6,7 @@ import numpy as np
 import csv
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
+from scipy.spatial import distance
 
 # ******************************************************************************************************** #
 # *  The following code assumes that you are in the directory which contains the whole TextBoxes folder  * #
@@ -524,6 +525,7 @@ def showHist():
 
     for i in range(len(picList)):
         image = imgList[i] # gets path of image
+        image = cv2.imread(image)
         coordList = picList[i] # the list of box coordinates for that image
 
         for box in coordList:
@@ -533,7 +535,13 @@ def showHist():
             yMin = int(box[2])
             xMax = int(box[3])
             yMax = int(box[4])
-            maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
+            # maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
+            topLeft = (xMin, yMin)
+            bottomRight = (xMax, yMax)
+            img = cv2.rectangle(image, topLeft, bottomRight, (0,0,255), 2)
+            cv2.imshow("image", img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
 
 
@@ -682,6 +690,11 @@ def getPredictions(imagePath, numClusters):
 
 
 
+
+
+
+
+
 """
     Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
     prediction was yellow, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
@@ -793,6 +806,33 @@ def predictClusters(imageName, numClusters):
 
 
 
+
+"""
+    Plot min distance between clusters vs. number of clusters
+"""
+def findNumCluster(imagePath, numClusters):
+    minDistList = []
+    for num in range(2, numClusters + 1):
+        distList = [] #list of distances
+        labels, clusterCenters = getPredictions(imagePath, num)
+
+        for i in range(num - 1): # last cluster center does not need to calculate any distances
+            for j in range(i + 1, num):
+                thisCluster = clusterCenters[i]
+                otherCluster = clusterCenters[j]
+                dist = distance.euclidean(thisCluster, otherCluster)
+                distList.append(dist)
+        minDist = min(distList)
+        minDistList.append(minDist)
+
+    xList = range(2, numClusters + 1)
+    plt.plot(xList, minDistList)
+    plt.show()
+    
+        
+
+
+
 """
     Get bounding box
 """
@@ -811,35 +851,90 @@ def getBounding(imagePath, numClusters):
             mask[yVal, xVal] = 255
     
         kernel = np.ones((5,5),np.uint8)
+        # mask = cv2.dilate(mask, kernel, iterations = 2)
         # mask = cv2.erode(mask, kernel, iterations = 2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    
 
-        plt.imshow(mask, cmap = "gray") 
-        plt.show()
+        # plt.imshow(mask, cmap = "gray") 
+        # plt.show()
 
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        # print(len(contours))
-        # img = cv2.drawContours(image, contours, -1, (0, 255, 0), 2)
-        # cv2.imshow("image", img)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        # cnt = contours[0]
 
         for cnt in contours:
             rectList = []
 
-            x,y,w,h = cv2.boundingRect(cnt)
+            # x,y,w,h = cv2.boundingRect(cnt)
 
-            if w not in range(width - 20, width + 1) and h not in range(height - 20, height + 1):
-                # rect = [x, y, w, h]
-                # rectList.append(rect)
-                image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
+            rect = cv2.minAreaRect(cnt)
+            h, w = rect[1] # get width and height of rectangle
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
+            rect = box.tolist() # save vertices as a python list
+            
+            # im = cv2.drawContours(image,[box],-1,(0,0,255),2)
+            # cv2.imshow("image", im)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+
+            if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
+                rectList.append(rect)
+                image = cv2.drawContours(image, [box], -1, (0,255,0), 2)
 
                 cv2.imshow("image", image)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
-            # for 
+            
+        #    for i in len(rectList):
+        #        if i + 1 < len(rectList):
+        #            currentRect = rectList[i]
+        #            nextRect = rectList[i + 1]
 
+        #            currCoords = findCorners(currentRect)
+        #            nextCoords = findCorners(nextRect)
+
+        #            currCoords = np.array(currCoords)
+        #            nextCoords = np.array(nextCoords)
+
+        #            dst = distance.euclidean(currCoords[2], nextCoords[0])
+
+        #            currCoords.tolist()
+        #            nextCoords.tolist()
+
+        #            if dst <= 10:
+        #                newRect = []
+        #                newRect.append(currCoords[0]) # top left of current
+        #                newRect.append()
+
+
+                   
+
+
+def findCorners(vertices):
+    sortedLeft = []
+    orderedCoords = []
+    length = len(vertices)
+
+    for i in range(length):
+        mostLeft = min(vertices)
+        sortedLeft.append(mostLeft)
+        vertices.pop(i) # remove from list
+    
+    if sortedLeft[0][1] < sortedLeft[1][1]:
+        orderedCoords[0] = sortedLeft[0]
+        orderedCoords[1] = sortedLeft[1]
+    else:
+        orderedCoords[0] = sortedLeft[1]
+        orderedCoords[1] = sortedLeft[0]
+
+    if sortedLeft[2][1] < sortedLeft[3][1]:
+        orderedCoords[2] = sortedLeft[2]
+        orderedCoords[3] = sortedLeft[3]
+    else: 
+        orderedCoords[2] = sortedLeft[3]
+        orderedCoords[3] = sortedLeft[2]
+    
+    return orderedCoords # topLeft, bottomLeft, topRIght, bottomRight
                 
     # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
 
@@ -847,36 +942,7 @@ def getBounding(imagePath, numClusters):
     #             cv2.waitKey(0)
     #             cv2.destroyAllWindows()
 
-    # for center in clusterCenters:
-    #     red = center[0]
-    #     green = center[1]
-    #     blue = center[2]
-    #     tolerance = 15
-
-    #     lower = [red - tolerance, green - tolerance, blue - tolerance]
-    #     upper = [red + tolerance, green + tolerance, blue + tolerance]
-
-    #     for i in range(3):
-    #         if lower[i] < 0:
-    #             lower[i] = 0
-    #         if upper[i] > 255:
-    #             upper[i] = 255
-        
-    #     lower = tuple(lower)
-    #     upper = tuple(upper)
-        # lower = np.array(lower, dtype = "uint8")
-        # upper = np.array(upper, dtype = "uint8")
-
-        # mask = cv2.inRange(image, lower, upper)
-        # plt.imshow(mask) 
-        # plt.show()
-
-        # contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        # cnt = contours[0]
-    
-        # x,y,w,h = cv2.boundingRect(cnt)
-
+   
         # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
 
         # cv2.imshow("image", image)
@@ -900,7 +966,7 @@ if __name__=='__main__':
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './TextBoxes/examples/img/1.jpg'
+    imagePath = './TextBoxes/examples/img/poison.png'
     image = cv2.imread(imagePath)
     height, width, channels = image.shape
 
@@ -910,8 +976,10 @@ if __name__=='__main__':
     yMax = height
 
     # pixArray = getPredictions(imagePath, 4)
+    # showHist()
 
-    getBounding(imagePath, 2)
+    # getBounding(imagePath, 2)
+    findNumCluster(imagePath, 10)
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
     # yMin = 27
