@@ -1,0 +1,7 @@
+This provides a description of the basic algorithm. As with the Perceptron, a NumPy
+implementation can take adwntage 0f wrious matrix multiplications, which makes things
+easy to read and faster to compute. The implementation on the website is a batch version
+of the algorithm, so that weight updates are made after all of the input vectors have been
+presented (as is described in Section 4.2.4). The central weight update computations for the
+algorithm can be implemented as:
+

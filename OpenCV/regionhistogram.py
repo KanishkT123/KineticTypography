@@ -1,1 +1,0 @@
-mask = np.zeros(img.shape[:2])

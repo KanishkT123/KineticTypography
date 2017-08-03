@@ -1,4 +1,4 @@
-ompiled source #
+# compiled source #
 ###################
 *.com
 *.class
@@ -36,3 +36,11 @@ ompiled source #
 ehthumbs.db
 Thumbs.db
 
+# Extraneous things #
+#####################
+*.mp4
+*.mp3
+*.jpg
+*.png
+*.exe
+*.box
