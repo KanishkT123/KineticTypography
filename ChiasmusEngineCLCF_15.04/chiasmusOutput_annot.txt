@@ -1,0 +1,645 @@
+<?xml version="1.0"?>
+%punctScore:-10
+ softPunctScore:-10
+ isInStopListA:-10
+ isInStopListB:-10
+ diffSize:-1
+ sameStringBetween:5
+ distance (between B and C) :-1
+ centralPunctScore:-5
+ hasConjBC:2
+ simScore:1
+ relativSimScore:1
+ hasNo:2
+ hasNot:2
+ hasNever:2
+ hasNothing:2
+ hasIntoTo:2
+ bigramScore:2
+ trigramScore:4
+simContCent:1
+hasMainsRep:-5
+
+					====*1*====+
+					  
+1. >love >hate
+2. Love as if you would one day hate , and hate as if you would one day love
+3. oath . " | " Love as if you would one day hate , and hate as if you would one day love . " | "
+4. 1
+
+					====*2*====+
+					  
+1. >man >hate
+2. man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men
+3. the man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men live that they may
+4. 2
+
+					====*3*====+
+					  
+1. >forget >remember
+2. forget what you want to remember , and you remember what you want to forget
+3. Kiss Fool You | You forget what you want to remember , and you remember what you want to forget . | But many
+4. 3
+
+					====*4*====+
+					  
+1. >black >white
+2. black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks
+3. to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let
+4. 4
+
+					====*5*====+
+					  
+1. >poor >rich
+2. poor people of a rich country and giving it to the rich people of a poor
+3. is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not
+4. 5
+
+					====*6*====+
+					  
+1. >tiger >jungle
+2. tiger out of the jungle , but you ca n’t take the jungle out of the tiger
+3. . You can take the tiger out of the jungle , but you ca n’t take the jungle out of the tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the
+4. 6
+
+					====*7*====+
+					  
+1. >in >do
+2. in a fate that will fall on us no matter what we do ; I do believe in a fate that will fall on us if we do nothing.| In
+3. country.| I do not believe in a fate that will fall on us no matter what we do ; I do believe in a fate that will fall on us if we do nothing.| In peace sons bury their
+4. 7
+
+					====*8*====+
+					  
+1. >man >hate
+2. man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men
+3. that makes us believe the man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men live that they may
+4. 8
+
+					====*9*====+
+					  
+1. >action >word
+2. action to the word , the word to the action
+3. tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the action to the word , the word to the action . Foul is fair
+4. 9
+
+					====*10*====+
+					  
+1. >care >know
+2. care about how much you know until they know how much you care
+3. . | They do n't care about how much you know until they know how much you care | The right to
+4. 10
+
+					====*11*====+
+					  
+1. >foul >fair
+2. Foul is fair and fair is foul
+3. word to the action . Foul is fair and fair is foul . Let us never
+4. 11
+
+					====*12*====+
+					  
+1. >power >example
+2. power of our example than by the example of our power
+3. been more impressed by the power of our example than by the example of our power . | My job
+4. 12
+
+					====*13*====+
+					  
+1. >eat >live
+2. eat to live , not live to eat
+3. things . | One should eat to live , not live to eat . | The instinct
+4. 13
+
+					====*14*====+
+					  
+1. >hard >good
+2. hard man is good to find。 A good man is hard
+3. shall be first . A hard man is good to find。 A good man is hard to find .
+4. 14
+
+					====*15*====+
+					  
+1. >darkness >light
+2. darkness for light and light for darkness
+3. good evil , who put darkness for light and light for darkness , who put bitter
+4. 15
+
+					====*16*====+
+					  
+1. >bitter >sweet
+2. bitter for sweet and sweet for bitter
+3. for darkness , who put bitter for sweet and sweet for bitter ! | " It
+4. 15
+
+					====*17*====+
+					  
+1. >live >eat
+2. live that they may eat and drink , whereas good men eat and drink that they may live
+3. " | " Bad men live that they may eat and drink , whereas good men eat and drink that they may live . " | You
+4. 16
+
+					====*18*====+
+					  
+1. >live >drink
+2. live that they may eat and drink , whereas good men eat and drink that they may live
+3. " | " Bad men live that they may eat and drink , whereas good men eat and drink that they may live . " | You
+4. 16
+
+					====*19*====+
+					  
+1. >order >change
+2. order amid change , and to preserve change amid order
+3. of progress is to preserve order amid change , and to preserve change amid order . | Do n't
+4. 17
+
+					====*20*====+
+					  
+1. >hate >love
+2. Hate to love the world , and love to hate
+3. . " | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure is
+4. 17
+
+					====*21*====+
+					  
+1. >produce >child
+2. produce children , but that children produce
+3. marriage is not that adults produce children , but that children produce adults . | The
+4. 18
+
+					====*22*====+
+					  
+1. >Fool >Kiss
+2. Fool Kiss You or a Kiss Fool
+3. . | Never Let a Fool Kiss You or a Kiss Fool You | You forget
+4. 18
+
+					====*23*====+
+					  
+1. >man >woman
+2. Men always want to be a woman 's first love ; women like to be a man
+3. ; others whenever they go.| Men always want to be a woman 's first love ; women like to be a man 's last romance.| If
+4. 19
+
+					====*24*====+
+					  
+1. >evil >good
+2. evil good and good evil
+3. Woe to those who call evil good and good evil , who put darkness
+4. 20
+
+					====*25*====+
+					  
+1. >adult >child
+2. adults produce children , but that children produce adults
+3. of marriage is not that adults produce children , but that children produce adults . | The art
+4. 21
+
+					====*26*====+
+					  
+1. >adult >produce
+2. adults produce children , but that children produce adults
+3. of marriage is not that adults produce children , but that children produce adults . | The art
+4. 22
+
+					====*27*====+
+					  
+1. >amid >change
+2. amid change , and to preserve change amid
+3. progress is to preserve order amid change , and to preserve change amid order . | Do
+4. 22
+
+					====*28*====+
+					  
+1. >live >simply
+2. Live simply so that others might simply live
+3. do n’t pet the sweaty Live simply so that others might simply live . Ask not what
+4. 22
+
+					====*29*====+
+					  
+1. >order >amid
+2. order amid change , and to preserve change amid order
+3. of progress is to preserve order amid change , and to preserve change amid order . | Do n't
+4. 23
+
+					====*30*====+
+					  
+1. >Washington >you
+2. Washington to you , but to represent you to Washington
+3. job is not to represent Washington to you , but to represent you to Washington . | Let us
+4. 24
+
+					====*31*====+
+					  
+1. >first >last
+2. first shall be last and the last shall be first
+3. | But many that are first shall be last and the last shall be first . | Make the
+4. 25
+
+					====*32*====+
+					  
+1. >religion >science
+2. religion was strong and science weak , men mistook magic for medicine ; Now , when science is strong and religion
+3. that pursues him . When religion was strong and science weak , men mistook magic for medicine ; Now , when science is strong and religion weak , men mistake
+4. 26
+
+					====*33*====+
+					  
+1. >Sabbath >man
+2. Sabbath was made for man , not man for the Sabbath
+3. industry rules commerce . The Sabbath was made for man , not man for the Sabbath . All for one
+4. 27
+
+					====*34*====+
+					  
+1. >first >last
+2. first shall be last , and the last shall be first
+3. negotiate . Many who are first shall be last , and the last shall be first . A hard man
+4. 28
+
+					====*35*====+
+					  
+1. >negotiate >fear
+2. negotiate out of fear , but let us never fear to negotiate
+3. . | Let us never negotiate out of fear , but let us never fear to negotiate . | If black
+4. 29
+
+					====*36*====+
+					  
+1. >negotiate >fear
+2. negotiate out of fear , but let us never fear to negotiate
+3. foul . Let us never negotiate out of fear , but let us never fear to negotiate . Many who are
+4. 29
+
+					====*37*====+
+					  
+1. >science >religion
+2. Science without religion is lame . Religion without science
+3. put an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/ Do
+4. 30
+
+					====*38*====+
+					  
+1. >commerce >industry
+2. commerce rules industry . In capitalist society , industry rules commerce
+3. pre-capitalist stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath was
+4. 30
+
+					====*39*====+
+					  
+1. >bear >arm
+2. bear arms is slightly less ridiculous than the right to arm bears
+3. care | The right to bear arms is slightly less ridiculous than the right to arm bears . | In the
+4. 31
+
+					====*40*====+
+					  
+1. >do >rich
+2. do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do
+3. it 's the parts I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not believe in a
+4. 31
+
+					====*41*====+
+					  
+1. >pursue >fly
+2. pursue everything that flies from him , and to fly from all that pursues
+3. of a man is to pursue everything that flies from him , and to fly from all that pursues him . When religion
+4. 32
+
+					====*42*====+
+					  
+1. >pursue >fly
+2. pursue everything that flies from him , and to fly from all that pursues
+3. of a man is to pursue everything that flies from him , and to fly from all that pursues him.| This is n't
+4. 32
+
+					====*43*====+
+					  
+1. >country >you
+2. country can do for you ; ask what you can do for your country
+3. . Ask not what your country can do for you ; ask what you can do for your country . In the pre-capitalist
+4. 33
+
+					====*44*====+
+					  
+1. >black >of
+2. black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks
+3. to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let
+4. 34
+
+					====*45*====+
+					  
+1. >want >remember
+2. want to remember , and you remember what you want
+3. | You forget what you want to remember , and you remember what you want to forget . |
+4. 34
+
+					====*46*====+
+					  
+1. >live >and
+2. live that they may eat and drink , whereas good men eat and drink that they may live
+3. " | " Bad men live that they may eat and drink , whereas good men eat and drink that they may live . " | You
+4. 34
+
+					====*47*====+
+					  
+1. >discard >the
+2. discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard
+3. reason we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily .
+4. 35
+
+					====*48*====+
+					  
+1. >thing >the
+2. things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things
+3. we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The
+4. 35
+
+					====*49*====+
+					  
+1. >black >the
+2. black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks
+3. to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let
+4. 36
+
+					====*50*====+
+					  
+1. >much >know
+2. much you know until they know how much
+3. do n't care about how much you know until they know how much you care | The
+4. 37
+
+					====*51*====+
+					  
+1. >I >rich
+2. I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I
+3. , it 's the parts I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not believe in
+4. 37
+
+					====*52*====+
+					  
+1. >bury >father
+2. bury their fathers , but in war fathers bury
+3. do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do
+4. 37
+
+					====*53*====+
+					  
+1. >end >war
+2. end to war , or war will put an end
+3. woman.| Mankind must put an end to war , or war will put an end to mankind.| Science without
+4. 37
+
+					====*54*====+
+					  
+1. >magic >medicine
+2. magic for medicine ; Now , when science is strong and religion weak , men mistake medicine for magic
+3. science weak , men mistook magic for medicine ; Now , when science is strong and religion weak , men mistake medicine for magic . http://examples.yourdictionary.com/chiasmus-examples.html The value
+4. 38
+
+					====*55*====+
+					  
+1. >eye >white
+2. eyes of the white men , of course the whites can have none in the eyes
+3. have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks .
+4. 39
+
+					====*56*====+
+					  
+1. >people >rich
+2. people of a rich country and giving it to the rich people
+3. taking money from the poor people of a rich country and giving it to the rich people of a poor country.|
+4. 40
+
+					====*57*====+
+					  
+1. >without >religion
+2. without religion is lame . Religion without
+3. an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/
+4. 40
+
+					====*58*====+
+					  
+1. >rule >industry
+2. rules industry . In capitalist society , industry rules
+3. stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath
+4. 40
+
+					====*59*====+
+					  
+1. >man >good
+2. man is good to find。 A good man
+3. be first . A hard man is good to find。 A good man is hard to find
+4. 40
+
+					====*60*====+
+					  
+1. >for >light
+2. for light and light for
+3. evil , who put darkness for light and light for darkness , who put
+4. 41
+
+					====*61*====+
+					  
+1. >for >sweet
+2. for sweet and sweet for
+3. darkness , who put bitter for sweet and sweet for bitter ! | "
+4. 41
+
+					====*62*====+
+					  
+1. >foul >be
+2. Foul is fair and fair is foul
+3. word to the action . Foul is fair and fair is foul . Let us never
+4. 41
+
+					====*63*====+
+					  
+1. >be >fair
+2. is fair and fair is
+3. to the action . Foul is fair and fair is foul . Let us
+4. 41
+
+					====*64*====+
+					  
+1. >day >hate
+2. day hate , and hate as if you would one day
+3. as if you would one day hate , and hate as if you would one day love.| Bad men live
+4. 42
+
+					====*65*====+
+					  
+1. >to >live
+2. to live , not live to
+3. . | One should eat to live , not live to eat . | The
+4. 42
+
+					====*66*====+
+					  
+1. >day >hate
+2. day hate , and hate as if you would one day
+3. as if you would one day hate , and hate as if you would one day love . " |
+4. 42
+
+					====*67*====+
+					  
+1. >be >sin
+2. is sin and sometimes sin is
+3. to hate it.| Sometimes​ pleasure is sin and sometimes sin is pleasure.| I do n't
+4. 42
+
+					====*68*====+
+					  
+1. >poor >people
+2. poor people of a rich country and giving it to the rich people of a poor
+3. is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not
+4. 42
+
+					====*69*====+
+					  
+1. >science >without
+2. Science without religion is lame . Religion without science
+3. put an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/ Do
+4. 42
+
+					====*70*====+
+					  
+1. >commerce >rule
+2. commerce rules industry . In capitalist society , industry rules commerce
+3. pre-capitalist stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath was
+4. 42
+
+					====*71*====+
+					  
+1. >for >man
+2. for man , not man for
+3. . The Sabbath was made for man , not man for the Sabbath . All
+4. 42
+
+					====*72*====+
+					  
+1. >hard >man
+2. hard man is good to find。 A good man is hard
+3. shall be first . A hard man is good to find。 A good man is hard to find .
+4. 42
+
+					====*73*====+
+					  
+1. >readily >the
+2. readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily
+3. this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The instinct of
+4. 43
+
+					====*74*====+
+					  
+1. >care >much
+2. care about how much you know until they know how much you care
+3. . | They do n't care about how much you know until they know how much you care | The right to
+4. 44
+
+					====*75*====+
+					  
+1. >forget >want
+2. forget what you want to remember , and you remember what you want to forget
+3. Kiss Fool You | You forget what you want to remember , and you remember what you want to forget . | But many
+4. 44
+
+					====*76*====+
+					  
+1. >darkness >for
+2. darkness for light and light for darkness
+3. good evil , who put darkness for light and light for darkness , who put bitter
+4. 44
+
+					====*77*====+
+					  
+1. >bitter >for
+2. bitter for sweet and sweet for bitter
+3. for darkness , who put bitter for sweet and sweet for bitter ! | " It
+4. 44
+
+					====*78*====+
+					  
+1. >love >beautiful
+2. love you because you ’re beautiful ? Or are you beautiful because I love
+3. his space . Do I love you because you ’re beautiful ? Or are you beautiful because I love you ? Some have
+4. 45
+
+					====*79*====+
+					  
+1. >eat >to
+2. eat to live , not live to eat
+3. things . | One should eat to live , not live to eat . | The instinct
+4. 46
+
+					====*80*====+
+					  
+1. >speech >deliver
+2. speeches a president delivers ; it ’s whether the president delivers on the speeches
+3. true test is not the speeches a president delivers ; it ’s whether the president delivers on the speeches . | People the
+4. 46
+
+					====*81*====+
+					  
+1. >to >love
+2. to love the world , and love to
+3. " | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure
+4. 46
+
+					====*82*====+
+					  
+1. >n't >have
+2. n't have a trillion-dollar debt because we have n't
+3. bury their sons.| We do n't have a trillion-dollar debt because we have n't taxed enough ; we
+4. 46
+
+					====*83*====+
+					  
+1. >readily >much
+2. readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily
+3. this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The instinct of
+4. 47
+
+					====*84*====+
+					  
+1. >tiger >the
+2. tiger out of the jungle , but you ca n’t take the jungle out of the tiger
+3. . You can take the tiger out of the jungle , but you ca n’t take the jungle out of the tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the
+4. 48
+
+					====*85*====+
+					  
+1. >do >father
+2. do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do
+3. fall on us if we do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do n't have a trillion-dollar
+4. 49
+
+					====*86*====+
+					  
+1. >thing >much
+2. things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things
+3. we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The
+4. 50
+
+					====*87*====+
+					  
+1. >speech >president
+2. speeches a president delivers ; it ’s whether the president delivers on the speeches
+3. true test is not the speeches a president delivers ; it ’s whether the president delivers on the speeches . | People the
+4. 51
+
+					====*88*====+
+					  
+1. >hate >to
+2. Hate to love the world , and love to hate
+3. . " | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure is
+4. 51
+
+					====*89*====+
+					  
+1. >want >government
+2. want to check government spending and they want to spend government checks.| If you want
+3. and us is that we want to check government spending and they want to spend government checks.| If you want anything said , ask
+4. 51
+

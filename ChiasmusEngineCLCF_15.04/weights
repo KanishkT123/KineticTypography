@@ -1,0 +1,22 @@
+%this values displays weights the of (in right order):
+%punctScore, softPunctScore, isInStopListA, isInStopListB, diffSize, sameStringBetween, distance (between B and C) , centralPunctScore, hasConjBC, simScore, relativSimScore, hasNo, hasNot, hasNever, hasNothing, hasIntoTo, bigramScore, trigramScore,simContCent,hasMainsRep
+-10:punctScore
+-10:softPunctScore
+-10:isInStopListA
+-10:isInStopListB
+-1:diffSize
+5:sameStringBetween
+-1:distance (between B and C)
+-5:centralPunctScore
+2:hasConjBC
+1:simScore
+1:relativSimScore
+2:hasNo
+2:hasNot
+2:hasNever
+2:hasNothing
+2:hasIntoTo
+2:bigramScore
+4:trigramScore
+1:simContCent
+-5:hasMainsRep

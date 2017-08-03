@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+%punctScore:-10
+ softPunctScore:-10
+ isInStopListA:-10
+ isInStopListB:-10
+ diffSize:-1
+ sameStringBetween:5
+ distance (between B and C) :-1
+ centralPunctScore:-5
+ hasConjBC:2
+ simScore:1
+ relativSimScore:1
+ hasNo:2
+ hasNot:2
+ hasNever:2
+ hasNothing:2
+ hasIntoTo:2
+ bigramScore:2
+ trigramScore:4
+simContCent:1
+hasMainsRep:-5
+
+					====*1*====+
+					  
+1. >country >you
+2. country can do for you ; ask what you can do for your country
+3. .
+4. 1
+

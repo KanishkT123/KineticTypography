@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!DOCTYPE output
+  SYSTEM 'dtd/output.dtd'>
+<output>
+	<weights>
+		<feature weight="-10">%punctScore</feature>
+		<feature weight="-10"> softPunctScore</feature>
+		<feature weight="-10"> isInStopListA</feature>
+		<feature weight="-10"> isInStopListB</feature>
+		<feature weight="-1"> diffSize</feature>
+		<feature weight="5"> sameStringBetween</feature>
+		<feature weight="-1"> distance (between B and C) </feature>
+		<feature weight="-5"> centralPunctScore</feature>
+		<feature weight="2"> hasConjBC</feature>
+		<feature weight="1"> simScore</feature>
+		<feature weight="1"> relativSimScore</feature>
+		<feature weight="2"> hasNo</feature>
+		<feature weight="2"> hasNot</feature>
+		<feature weight="2"> hasNever</feature>
+		<feature weight="2"> hasNothing</feature>
+		<feature weight="2"> hasIntoTo</feature>
+		<feature weight="2"> bigramScore</feature>
+		<feature weight="4"> trigramScore</feature>
+		<feature weight="1">simContCent</feature>
+		<feature weight="-5">hasMainsRep</feature>
+	</weights>
+	<tie rank="1" score="4.333333333333334">
+		<chiasm position="1">
+			<wA iA="4" iD="17">country</wA>
+			<wB iB="8" iC="12">you</wB>
+			<extract>country can do for you ; ask what you can do for your country</extract>
+			<context>.</context>
+		</chiasm>
+	</tie>
+</output>

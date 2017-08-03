@@ -1,0 +1,32 @@
+>>>   Chiasmus Retrieval Engine  <<<
+>>>    Chiasmus Retrieval Engine: readme file         <<<
+
+Version 15.04
+Released: April , 2015
+Language:English
+Programming language: Python 2.7
+Author: Marie Dubremetz
+Contact: marie.dubremetz@lingfil.uu.se
+Website: http://stp.lingfil.uu.se/~marie/chiasme.htm
+
+The goal of this software is to perform automatic recognition and ranking of chiasmi. Please read this documentation before you start the work.
+
+    1) INSTALLING
+    
+This programm requires that TreeTagger, including english parameter file, is installed on your machine.
+You can download tree-tagger on:
+http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+
+Check if you have correctly installed tree-tagger by this command:
+
+echo 'Hello world!' | tree-tagger-english 
+
+Note that the scripts are dependent on NLTK make sure this module of python is installed before running.
+
+    2) RUN SCRIPTS
+
+In a terminal run the programm this way:
+python Main.py MyInputFile MyOutputName
+
+for instance:
+python Main.py TheBibleKingJames.txt BibleOutput

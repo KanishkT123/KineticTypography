@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ELEMENT candidates (weights,tie+) >
+<!ELEMENT weights (feature+) >
+<!ELEMENT feature (#PCDATA) >
+<!ATTLIST feature weight CDATA #REQUIRED>
+<!ELEMENT tie (chiasm+) >
+<!ATTLIST tie rank CDATA #REQUIRED>
+<!ATTLIST tie score CDATA #REQUIRED>
+<!ELEMENT chiasm (wA,wB,extract,context)>
+<!ATTLIST chiasm position CDATA #REQUIRED>
+<!ELEMENT wA (#PCDATA) >
+<!ELEMENT wB (#PCDATA) >
+<!ELEMENT extract (#PCDATA) >
+<!ELEMENT context (#PCDATA) >

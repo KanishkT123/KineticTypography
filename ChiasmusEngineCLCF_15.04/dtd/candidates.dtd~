@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!ELEMENT candidates (category+) >
+<!ATTLIST category name ID #REQUIRED>
+<!ELEMENT category (chiasm+) >
+<!ELEMENT chiasm (wA,wB,extract,context)>
+<!ATTLIST chiasm position CDATA #REQUIRED>
+<!ELEMENT wA (#PCDATA) >
+<!ELEMENT wB (#PCDATA) >
+<!ELEMENT extract (#PCDATA) >
+<!ELEMENT context (#PCDATA) >

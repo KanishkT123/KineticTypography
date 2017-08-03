@@ -1,0 +1,663 @@
+<?xml version="1.0" ?>
+<!DOCTYPE output
+  SYSTEM 'dtd/output.dtd'>
+<output>
+	<weights>
+		<feature weight="-10">%punctScore</feature>
+		<feature weight="-10"> softPunctScore</feature>
+		<feature weight="-10"> isInStopListA</feature>
+		<feature weight="-10"> isInStopListB</feature>
+		<feature weight="-1"> diffSize</feature>
+		<feature weight="5"> sameStringBetween</feature>
+		<feature weight="-1"> distance (between B and C) </feature>
+		<feature weight="-5"> centralPunctScore</feature>
+		<feature weight="2"> hasConjBC</feature>
+		<feature weight="1"> simScore</feature>
+		<feature weight="1"> relativSimScore</feature>
+		<feature weight="2"> hasNo</feature>
+		<feature weight="2"> hasNot</feature>
+		<feature weight="2"> hasNever</feature>
+		<feature weight="2"> hasNothing</feature>
+		<feature weight="2"> hasIntoTo</feature>
+		<feature weight="2"> bigramScore</feature>
+		<feature weight="4"> trigramScore</feature>
+		<feature weight="1">simContCent</feature>
+		<feature weight="-5">hasMainsRep</feature>
+	</weights>
+	<tie rank="1" score="45.285714285714285">
+		<chiasm position="1">
+			<wA iA="600" iD="617">love</wA>
+			<wB iB="607" iC="610">hate</wB>
+			<extract>Love as if you would one day hate , and hate as if you would one day love</extract>
+			<context>oath . &quot; | &quot; Love as if you would one day hate , and hate as if you would one day love . &quot; | &quot;</context>
+		</chiasm>
+	</tie>
+	<tie rank="2" score="44.15789473684211">
+		<chiasm position="2">
+			<wA iA="15" iD="37">man</wA>
+			<wB iB="25" iC="28">hate</wB>
+			<extract>man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men</extract>
+			<context>the man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men live that they may</context>
+		</chiasm>
+	</tie>
+	<tie rank="3" score="38.0">
+		<chiasm position="3">
+			<wA iA="473" iD="487">forget</wA>
+			<wB iB="478" iC="482">remember</wB>
+			<extract>forget what you want to remember , and you remember what you want to forget</extract>
+			<context>Kiss Fool You | You forget what you want to remember , and you remember what you want to forget . | But many</context>
+		</chiasm>
+	</tie>
+	<tie rank="4" score="32.631578947368425">
+		<chiasm position="4">
+			<wA iA="432" iD="457">black</wA>
+			<wB iB="442" iC="448">white</wB>
+			<extract>black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks</extract>
+			<context>to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let</context>
+		</chiasm>
+	</tie>
+	<tie rank="5" score="29.75">
+		<chiasm position="5">
+			<wA iA="804" iD="819">poor</wA>
+			<wB iB="808" iC="815">rich</wB>
+			<extract>poor people of a rich country and giving it to the rich people of a poor</extract>
+			<context>is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not</context>
+		</chiasm>
+	</tie>
+	<tie rank="6" score="26.75">
+		<chiasm position="6">
+			<wA iA="1054" iD="1070">tiger</wA>
+			<wB iB="1058" iC="1066">jungle</wB>
+			<extract>tiger out of the jungle , but you ca n’t take the jungle out of the tiger</extract>
+			<context>. You can take the tiger out of the jungle , but you ca n’t take the jungle out of the tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the</context>
+		</chiasm>
+	</tie>
+	<tie rank="7" score="26.076923076923077">
+		<chiasm position="7">
+			<wA iA="825" iD="854">in</wA>
+			<wB iB="837" iC="840">do</wB>
+			<extract>in a fate that will fall on us no matter what we do ; I do believe in a fate that will fall on us if we do nothing.| In</extract>
+			<context>country.| I do not believe in a fate that will fall on us no matter what we do ; I do believe in a fate that will fall on us if we do nothing.| In peace sons bury their</context>
+		</chiasm>
+	</tie>
+	<tie rank="8" score="23.608695652173914">
+		<chiasm position="8">
+			<wA iA="11" iD="37">man</wA>
+			<wB iB="25" iC="28">hate</wB>
+			<extract>man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men</extract>
+			<context>that makes us believe the man , but the man the oath.| Love as if you would one day hate , and hate as if you would one day love.| Bad men live that they may</context>
+		</chiasm>
+	</tie>
+	<tie rank="9" score="22.333333333333336">
+		<chiasm position="9">
+			<wA iA="1075" iD="1084">action</wA>
+			<wB iB="1078" iC="1081">word</wB>
+			<extract>action to the word , the word to the action</extract>
+			<context>tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the action to the word , the word to the action . Foul is fair</context>
+		</chiasm>
+	</tie>
+	<tie rank="10" score="21.333333333333336">
+		<chiasm position="10">
+			<wA iA="315" iD="327">care</wA>
+			<wB iB="320" iC="323">know</wB>
+			<extract>care about how much you know until they know how much you care</extract>
+			<context>. | They do n't care about how much you know until they know how much you care | The right to</context>
+		</chiasm>
+	</tie>
+	<tie rank="11" score="20.5">
+		<chiasm position="11">
+			<wA iA="1086" iD="1092">foul</wA>
+			<wB iB="1088" iC="1090">fair</wB>
+			<extract>Foul is fair and fair is foul</extract>
+			<context>word to the action . Foul is fair and fair is foul . Let us never</context>
+		</chiasm>
+	</tie>
+	<tie rank="12" score="20.333333333333336">
+		<chiasm position="12">
+			<wA iA="383" iD="393">power</wA>
+			<wB iB="386" iC="390">example</wB>
+			<extract>power of our example than by the example of our power</extract>
+			<context>been more impressed by the power of our example than by the example of our power . | My job</context>
+		</chiasm>
+	</tie>
+	<tie rank="13" score="19.5">
+		<chiasm position="13">
+			<wA iA="258" iD="265">eat</wA>
+			<wB iB="260" iC="263">live</wB>
+			<extract>eat to live , not live to eat</extract>
+			<context>things . | One should eat to live , not live to eat . | The instinct</context>
+		</chiasm>
+	</tie>
+	<tie rank="14" score="19.333333333333336">
+		<chiasm position="14">
+			<wA iA="1126" iD="1136">hard</wA>
+			<wB iB="1129" iC="1133">good</wB>
+			<extract>hard man is good to find。 A good man is hard</extract>
+			<context>shall be first . A hard man is good to find。 A good man is hard to find .</context>
+		</chiasm>
+	</tie>
+	<tie rank="15" score="18.5">
+		<chiasm position="15">
+			<wA iA="559" iD="565">darkness</wA>
+			<wB iB="561" iC="563">light</wB>
+			<extract>darkness for light and light for darkness</extract>
+			<context>good evil , who put darkness for light and light for darkness , who put bitter</context>
+		</chiasm>
+		<chiasm position="16">
+			<wA iA="569" iD="575">bitter</wA>
+			<wB iB="571" iC="573">sweet</wB>
+			<extract>bitter for sweet and sweet for bitter</extract>
+			<context>for darkness , who put bitter for sweet and sweet for bitter ! | &quot; It</context>
+		</chiasm>
+	</tie>
+	<tie rank="16" score="18.0">
+		<chiasm position="17">
+			<wA iA="624" iD="641">live</wA>
+			<wB iB="628" iC="635">eat</wB>
+			<extract>live that they may eat and drink , whereas good men eat and drink that they may live</extract>
+			<context>&quot; | &quot; Bad men live that they may eat and drink , whereas good men eat and drink that they may live . &quot; | You</context>
+		</chiasm>
+		<chiasm position="18">
+			<wA iA="624" iD="641">live</wA>
+			<wB iB="630" iC="637">drink</wB>
+			<extract>live that they may eat and drink , whereas good men eat and drink that they may live</extract>
+			<context>&quot; | &quot; Bad men live that they may eat and drink , whereas good men eat and drink that they may live . &quot; | You</context>
+		</chiasm>
+	</tie>
+	<tie rank="17" score="17.5">
+		<chiasm position="19">
+			<wA iA="228" iD="237">order</wA>
+			<wB iB="230" iC="235">change</wB>
+			<extract>order amid change , and to preserve change amid order</extract>
+			<context>of progress is to preserve order amid change , and to preserve change amid order . | Do n't</context>
+		</chiasm>
+		<chiasm position="20">
+			<wA iA="647" iD="656">hate</wA>
+			<wB iB="649" iC="654">love</wB>
+			<extract>Hate to love the world , and love to hate</extract>
+			<context>. &quot; | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure is</context>
+		</chiasm>
+	</tie>
+	<tie rank="18" score="16.0">
+		<chiasm position="21">
+			<wA iA="211" iD="217">produce</wA>
+			<wB iB="212" iC="216">child</wB>
+			<extract>produce children , but that children produce</extract>
+			<context>marriage is not that adults produce children , but that children produce adults . | The</context>
+		</chiasm>
+		<chiasm position="22">
+			<wA iA="463" iD="469">Fool</wA>
+			<wB iB="464" iC="468">Kiss</wB>
+			<extract>Fool Kiss You or a Kiss Fool</extract>
+			<context>. | Never Let a Fool Kiss You or a Kiss Fool You | You forget</context>
+		</chiasm>
+	</tie>
+	<tie rank="19" score="15.727272727272727">
+		<chiasm position="23">
+			<wA iA="734" iD="750">man</wA>
+			<wB iB="740" iC="745">woman</wB>
+			<extract>Men always want to be a woman 's first love ; women like to be a man</extract>
+			<context>; others whenever they go.| Men always want to be a woman 's first love ; women like to be a man 's last romance.| If</context>
+		</chiasm>
+	</tie>
+	<tie rank="20" score="15.0">
+		<chiasm position="24">
+			<wA iA="551" iD="555">evil</wA>
+			<wB iB="552" iC="554">good</wB>
+			<extract>evil good and good evil</extract>
+			<context>Woe to those who call evil good and good evil , who put darkness</context>
+		</chiasm>
+	</tie>
+	<tie rank="21" score="14.5">
+		<chiasm position="25">
+			<wA iA="210" iD="218">adult</wA>
+			<wB iB="212" iC="216">child</wB>
+			<extract>adults produce children , but that children produce adults</extract>
+			<context>of marriage is not that adults produce children , but that children produce adults . | The art</context>
+		</chiasm>
+	</tie>
+	<tie rank="22" score="14.0">
+		<chiasm position="26">
+			<wA iA="210" iD="218">adult</wA>
+			<wB iB="211" iC="217">produce</wB>
+			<extract>adults produce children , but that children produce adults</extract>
+			<context>of marriage is not that adults produce children , but that children produce adults . | The art</context>
+		</chiasm>
+		<chiasm position="27">
+			<wA iA="229" iD="236">amid</wA>
+			<wB iB="230" iC="235">change</wB>
+			<extract>amid change , and to preserve change amid</extract>
+			<context>progress is to preserve order amid change , and to preserve change amid order . | Do</context>
+		</chiasm>
+		<chiasm position="28">
+			<wA iA="973" iD="980">live</wA>
+			<wB iB="974" iC="979">simply</wB>
+			<extract>Live simply so that others might simply live</extract>
+			<context>do n’t pet the sweaty Live simply so that others might simply live . Ask not what</context>
+		</chiasm>
+	</tie>
+	<tie rank="23" score="12.0">
+		<chiasm position="29">
+			<wA iA="228" iD="237">order</wA>
+			<wB iB="229" iC="236">amid</wB>
+			<extract>order amid change , and to preserve change amid order</extract>
+			<context>of progress is to preserve order amid change , and to preserve change amid order . | Do n't</context>
+		</chiasm>
+	</tie>
+	<tie rank="24" score="11.5">
+		<chiasm position="30">
+			<wA iA="402" iD="411">Washington</wA>
+			<wB iB="404" iC="409">you</wB>
+			<extract>Washington to you , but to represent you to Washington</extract>
+			<context>job is not to represent Washington to you , but to represent you to Washington . | Let us</context>
+		</chiasm>
+	</tie>
+	<tie rank="25" score="11.333333333333334">
+		<chiasm position="31">
+			<wA iA="494" iD="503">first</wA>
+			<wB iB="497" iC="500">last</wB>
+			<extract>first shall be last and the last shall be first</extract>
+			<context>| But many that are first shall be last and the last shall be first . | Make the</context>
+		</chiasm>
+	</tie>
+	<tie rank="26" score="10.75">
+		<chiasm position="32">
+			<wA iA="173" iD="193">religion</wA>
+			<wB iB="177" iC="189">science</wB>
+			<extract>religion was strong and science weak , men mistook magic for medicine ; Now , when science is strong and religion</extract>
+			<context>that pursues him . When religion was strong and science weak , men mistook magic for medicine ; Now , when science is strong and religion weak , men mistake</context>
+		</chiasm>
+	</tie>
+	<tie rank="27" score="10.428571428571429">
+		<chiasm position="33">
+			<wA iA="1021" iD="1031">Sabbath</wA>
+			<wB iB="1025" iC="1028">man</wB>
+			<extract>Sabbath was made for man , not man for the Sabbath</extract>
+			<context>industry rules commerce . The Sabbath was made for man , not man for the Sabbath . All for one</context>
+		</chiasm>
+	</tie>
+	<tie rank="28" score="10.333333333333334">
+		<chiasm position="34">
+			<wA iA="1113" iD="1123">first</wA>
+			<wB iB="1116" iC="1120">last</wB>
+			<extract>first shall be last , and the last shall be first</extract>
+			<context>negotiate . Many who are first shall be last , and the last shall be first . A hard man</context>
+		</chiasm>
+	</tie>
+	<tie rank="29" score="10.0">
+		<chiasm position="35">
+			<wA iA="417" iD="428">negotiate</wA>
+			<wB iB="420" iC="426">fear</wB>
+			<extract>negotiate out of fear , but let us never fear to negotiate</extract>
+			<context>. | Let us never negotiate out of fear , but let us never fear to negotiate . | If black</context>
+		</chiasm>
+		<chiasm position="36">
+			<wA iA="1097" iD="1108">negotiate</wA>
+			<wB iB="1100" iC="1106">fear</wB>
+			<extract>negotiate out of fear , but let us never fear to negotiate</extract>
+			<context>foul . Let us never negotiate out of fear , but let us never fear to negotiate . Many who are</context>
+		</chiasm>
+	</tie>
+	<tie rank="30" score="9.5">
+		<chiasm position="37">
+			<wA iA="948" iD="956">science</wA>
+			<wB iB="950" iC="954">religion</wB>
+			<extract>Science without religion is lame . Religion without science</extract>
+			<context>put an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/ Do</context>
+		</chiasm>
+		<chiasm position="38">
+			<wA iA="1008" iD="1018">commerce</wA>
+			<wB iB="1010" iC="1016">industry</wB>
+			<extract>commerce rules industry . In capitalist society , industry rules commerce</extract>
+			<context>pre-capitalist stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath was</context>
+		</chiasm>
+	</tie>
+	<tie rank="31" score="9.0">
+		<chiasm position="39">
+			<wA iA="332" iD="343">bear</wA>
+			<wB iB="333" iC="342">arm</wB>
+			<extract>bear arms is slightly less ridiculous than the right to arm bears</extract>
+			<context>care | The right to bear arms is slightly less ridiculous than the right to arm bears . | In the</context>
+		</chiasm>
+		<chiasm position="40">
+			<wA iA="795" iD="822">do</wA>
+			<wB iB="808" iC="815">rich</wB>
+			<extract>do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do</extract>
+			<context>it 's the parts I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not believe in a</context>
+		</chiasm>
+	</tie>
+	<tie rank="32" score="8.428571428571429">
+		<chiasm position="41">
+			<wA iA="156" iD="169">pursue</wA>
+			<wB iB="159" iC="165">fly</wB>
+			<extract>pursue everything that flies from him , and to fly from all that pursues</extract>
+			<context>of a man is to pursue everything that flies from him , and to fly from all that pursues him . When religion</context>
+		</chiasm>
+		<chiasm position="42">
+			<wA iA="275" iD="288">pursue</wA>
+			<wB iB="278" iC="284">fly</wB>
+			<extract>pursue everything that flies from him , and to fly from all that pursues</extract>
+			<context>of a man is to pursue everything that flies from him , and to fly from all that pursues him.| This is n't</context>
+		</chiasm>
+	</tie>
+	<tie rank="33" score="8.333333333333334">
+		<chiasm position="43">
+			<wA iA="986" iD="999">country</wA>
+			<wB iB="990" iC="994">you</wB>
+			<extract>country can do for you ; ask what you can do for your country</extract>
+			<context>. Ask not what your country can do for you ; ask what you can do for your country . In the pre-capitalist</context>
+		</chiasm>
+	</tie>
+	<tie rank="34" score="8.0">
+		<chiasm position="44">
+			<wA iA="432" iD="457">black</wA>
+			<wB iB="440" iC="445">of</wB>
+			<extract>black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks</extract>
+			<context>to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let</context>
+		</chiasm>
+		<chiasm position="45">
+			<wA iA="476" iD="485">want</wA>
+			<wB iB="478" iC="482">remember</wB>
+			<extract>want to remember , and you remember what you want</extract>
+			<context>| You forget what you want to remember , and you remember what you want to forget . |</context>
+		</chiasm>
+		<chiasm position="46">
+			<wA iA="624" iD="641">live</wA>
+			<wB iB="629" iC="636">and</wB>
+			<extract>live that they may eat and drink , whereas good men eat and drink that they may live</extract>
+			<context>&quot; | &quot; Bad men live that they may eat and drink , whereas good men eat and drink that they may live . &quot; | You</context>
+		</chiasm>
+	</tie>
+	<tie rank="35" score="7.857142857142858">
+		<chiasm position="47">
+			<wA iA="117" iD="144">discard</wA>
+			<wB iB="128" iC="134">the</wB>
+			<extract>discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard</extract>
+			<context>reason we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily .</context>
+		</chiasm>
+		<chiasm position="48">
+			<wA iA="118" iD="145">thing</wA>
+			<wB iB="128" iC="134">the</wB>
+			<extract>things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things</extract>
+			<context>we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The</context>
+		</chiasm>
+	</tie>
+	<tie rank="36" score="7.631578947368421">
+		<chiasm position="49">
+			<wA iA="432" iD="457">black</wA>
+			<wB iB="441" iC="447">the</wB>
+			<extract>black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks</extract>
+			<context>to negotiate . | If black men have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks . | Never Let</context>
+		</chiasm>
+	</tie>
+	<tie rank="37" score="7.0">
+		<chiasm position="50">
+			<wA iA="318" iD="325">much</wA>
+			<wB iB="320" iC="323">know</wB>
+			<extract>much you know until they know how much</extract>
+			<context>do n't care about how much you know until they know how much you care | The</context>
+		</chiasm>
+		<chiasm position="51">
+			<wA iA="794" iD="821">I</wA>
+			<wB iB="808" iC="815">rich</wB>
+			<extract>I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I</extract>
+			<context>, it 's the parts I do understand.| Foreign aid is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not believe in</context>
+		</chiasm>
+		<chiasm position="52">
+			<wA iA="857" iD="865">bury</wA>
+			<wB iB="859" iC="864">father</wB>
+			<extract>bury their fathers , but in war fathers bury</extract>
+			<context>do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do</context>
+		</chiasm>
+		<chiasm position="53">
+			<wA iA="936" iD="945">end</wA>
+			<wB iB="938" iC="941">war</wB>
+			<extract>end to war , or war will put an end</extract>
+			<context>woman.| Mankind must put an end to war , or war will put an end to mankind.| Science without</context>
+		</chiasm>
+	</tie>
+	<tie rank="38" score="6.5">
+		<chiasm position="54">
+			<wA iA="182" iD="200">magic</wA>
+			<wB iB="184" iC="198">medicine</wB>
+			<extract>magic for medicine ; Now , when science is strong and religion weak , men mistake medicine for magic</extract>
+			<context>science weak , men mistook magic for medicine ; Now , when science is strong and religion weak , men mistake medicine for magic . http://examples.yourdictionary.com/chiasmus-examples.html The value</context>
+		</chiasm>
+	</tie>
+	<tie rank="39" score="6.111111111111111">
+		<chiasm position="55">
+			<wA iA="439" iD="454">eye</wA>
+			<wB iB="442" iC="448">white</wB>
+			<extract>eyes of the white men , of course the whites can have none in the eyes</extract>
+			<context>have no rights in the eyes of the white men , of course the whites can have none in the eyes of the blacks .</context>
+		</chiasm>
+	</tie>
+	<tie rank="40" score="6.0">
+		<chiasm position="56">
+			<wA iA="805" iD="816">people</wA>
+			<wB iB="808" iC="815">rich</wB>
+			<extract>people of a rich country and giving it to the rich people</extract>
+			<context>taking money from the poor people of a rich country and giving it to the rich people of a poor country.|</context>
+		</chiasm>
+		<chiasm position="57">
+			<wA iA="949" iD="955">without</wA>
+			<wB iB="950" iC="954">religion</wB>
+			<extract>without religion is lame . Religion without</extract>
+			<context>an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/</context>
+		</chiasm>
+		<chiasm position="58">
+			<wA iA="1009" iD="1017">rule</wA>
+			<wB iB="1010" iC="1016">industry</wB>
+			<extract>rules industry . In capitalist society , industry rules</extract>
+			<context>stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath</context>
+		</chiasm>
+		<chiasm position="59">
+			<wA iA="1127" iD="1134">man</wA>
+			<wB iB="1129" iC="1133">good</wB>
+			<extract>man is good to find。 A good man</extract>
+			<context>be first . A hard man is good to find。 A good man is hard to find</context>
+		</chiasm>
+	</tie>
+	<tie rank="41" score="5.0">
+		<chiasm position="60">
+			<wA iA="560" iD="564">for</wA>
+			<wB iB="561" iC="563">light</wB>
+			<extract>for light and light for</extract>
+			<context>evil , who put darkness for light and light for darkness , who put</context>
+		</chiasm>
+		<chiasm position="61">
+			<wA iA="570" iD="574">for</wA>
+			<wB iB="571" iC="573">sweet</wB>
+			<extract>for sweet and sweet for</extract>
+			<context>darkness , who put bitter for sweet and sweet for bitter ! | &quot;</context>
+		</chiasm>
+		<chiasm position="62">
+			<wA iA="1086" iD="1092">foul</wA>
+			<wB iB="1087" iC="1091">be</wB>
+			<extract>Foul is fair and fair is foul</extract>
+			<context>word to the action . Foul is fair and fair is foul . Let us never</context>
+		</chiasm>
+		<chiasm position="63">
+			<wA iA="1087" iD="1091">be</wA>
+			<wB iB="1088" iC="1090">fair</wB>
+			<extract>is fair and fair is</extract>
+			<context>to the action . Foul is fair and fair is foul . Let us</context>
+		</chiasm>
+	</tie>
+	<tie rank="42" score="4.0">
+		<chiasm position="64">
+			<wA iA="24" iD="34">day</wA>
+			<wB iB="25" iC="28">hate</wB>
+			<extract>day hate , and hate as if you would one day</extract>
+			<context>as if you would one day hate , and hate as if you would one day love.| Bad men live</context>
+		</chiasm>
+		<chiasm position="65">
+			<wA iA="259" iD="264">to</wA>
+			<wB iB="260" iC="263">live</wB>
+			<extract>to live , not live to</extract>
+			<context>. | One should eat to live , not live to eat . | The</context>
+		</chiasm>
+		<chiasm position="66">
+			<wA iA="606" iD="616">day</wA>
+			<wB iB="607" iC="610">hate</wB>
+			<extract>day hate , and hate as if you would one day</extract>
+			<context>as if you would one day hate , and hate as if you would one day love . &quot; |</context>
+		</chiasm>
+		<chiasm position="67">
+			<wA iA="660" iD="665">be</wA>
+			<wB iB="661" iC="664">sin</wB>
+			<extract>is sin and sometimes sin is</extract>
+			<context>to hate it.| Sometimes​ pleasure is sin and sometimes sin is pleasure.| I do n't</context>
+		</chiasm>
+		<chiasm position="68">
+			<wA iA="804" iD="819">poor</wA>
+			<wB iB="805" iC="816">people</wB>
+			<extract>poor people of a rich country and giving it to the rich people of a poor</extract>
+			<context>is taking money from the poor people of a rich country and giving it to the rich people of a poor country.| I do not</context>
+		</chiasm>
+		<chiasm position="69">
+			<wA iA="948" iD="956">science</wA>
+			<wB iB="949" iC="955">without</wB>
+			<extract>Science without religion is lame . Religion without science</extract>
+			<context>put an end to mankind.| Science without religion is lame . Religion without science is blind.| https://literaryterms.net/chiasmus/ Do</context>
+		</chiasm>
+		<chiasm position="70">
+			<wA iA="1008" iD="1018">commerce</wA>
+			<wB iB="1009" iC="1017">rule</wB>
+			<extract>commerce rules industry . In capitalist society , industry rules commerce</extract>
+			<context>pre-capitalist stages of society , commerce rules industry . In capitalist society , industry rules commerce . The Sabbath was</context>
+		</chiasm>
+		<chiasm position="71">
+			<wA iA="1024" iD="1029">for</wA>
+			<wB iB="1025" iC="1028">man</wB>
+			<extract>for man , not man for</extract>
+			<context>. The Sabbath was made for man , not man for the Sabbath . All</context>
+		</chiasm>
+		<chiasm position="72">
+			<wA iA="1126" iD="1136">hard</wA>
+			<wB iB="1127" iC="1134">man</wB>
+			<extract>hard man is good to find。 A good man is hard</extract>
+			<context>shall be first . A hard man is good to find。 A good man is hard to find .</context>
+		</chiasm>
+	</tie>
+	<tie rank="43" score="3.8571428571428577">
+		<chiasm position="73">
+			<wA iA="120" iD="147">readily</wA>
+			<wB iB="128" iC="134">the</wB>
+			<extract>readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily</extract>
+			<context>this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The instinct of</context>
+		</chiasm>
+	</tie>
+	<tie rank="44" score="3.0">
+		<chiasm position="74">
+			<wA iA="315" iD="327">care</wA>
+			<wB iB="318" iC="325">much</wB>
+			<extract>care about how much you know until they know how much you care</extract>
+			<context>. | They do n't care about how much you know until they know how much you care | The right to</context>
+		</chiasm>
+		<chiasm position="75">
+			<wA iA="473" iD="487">forget</wA>
+			<wB iB="476" iC="485">want</wB>
+			<extract>forget what you want to remember , and you remember what you want to forget</extract>
+			<context>Kiss Fool You | You forget what you want to remember , and you remember what you want to forget . | But many</context>
+		</chiasm>
+		<chiasm position="76">
+			<wA iA="559" iD="565">darkness</wA>
+			<wB iB="560" iC="564">for</wB>
+			<extract>darkness for light and light for darkness</extract>
+			<context>good evil , who put darkness for light and light for darkness , who put bitter</context>
+		</chiasm>
+		<chiasm position="77">
+			<wA iA="569" iD="575">bitter</wA>
+			<wB iB="570" iC="574">for</wB>
+			<extract>bitter for sweet and sweet for bitter</extract>
+			<context>for darkness , who put bitter for sweet and sweet for bitter ! | &quot; It</context>
+		</chiasm>
+	</tie>
+	<tie rank="45" score="2.25">
+		<chiasm position="78">
+			<wA iA="90" iD="103">love</wA>
+			<wB iB="95" iC="100">beautiful</wB>
+			<extract>love you because you ’re beautiful ? Or are you beautiful because I love</extract>
+			<context>his space . Do I love you because you ’re beautiful ? Or are you beautiful because I love you ? Some have</context>
+		</chiasm>
+	</tie>
+	<tie rank="46" score="2.0">
+		<chiasm position="79">
+			<wA iA="258" iD="265">eat</wA>
+			<wB iB="259" iC="264">to</wB>
+			<extract>eat to live , not live to eat</extract>
+			<context>things . | One should eat to live , not live to eat . | The instinct</context>
+		</chiasm>
+		<chiasm position="80">
+			<wA iA="356" iD="369">speech</wA>
+			<wB iB="359" iC="366">deliver</wB>
+			<extract>speeches a president delivers ; it ’s whether the president delivers on the speeches</extract>
+			<context>true test is not the speeches a president delivers ; it ’s whether the president delivers on the speeches . | People the</context>
+		</chiasm>
+		<chiasm position="81">
+			<wA iA="648" iD="655">to</wA>
+			<wB iB="649" iC="654">love</wB>
+			<extract>to love the world , and love to</extract>
+			<context>&quot; | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure</context>
+		</chiasm>
+		<chiasm position="82">
+			<wA iA="870" iD="878">n't</wA>
+			<wB iB="871" iC="877">have</wB>
+			<extract>n't have a trillion-dollar debt because we have n't</extract>
+			<context>bury their sons.| We do n't have a trillion-dollar debt because we have n't taxed enough ; we</context>
+		</chiasm>
+	</tie>
+	<tie rank="47" score="1.8571428571428577">
+		<chiasm position="83">
+			<wA iA="120" iD="147">readily</wA>
+			<wB iB="126" iC="139">much</wB>
+			<extract>readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily</extract>
+			<context>this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The instinct of</context>
+		</chiasm>
+	</tie>
+	<tie rank="48" score="1.5">
+		<chiasm position="84">
+			<wA iA="1054" iD="1070">tiger</wA>
+			<wB iB="1057" iC="1065">the</wB>
+			<extract>tiger out of the jungle , but you ca n’t take the jungle out of the tiger</extract>
+			<context>. You can take the tiger out of the jungle , but you ca n’t take the jungle out of the tiger . http://www.softschools.com/examples/grammar/chiasmus_examples/138/ Suit the</context>
+		</chiasm>
+	</tie>
+	<tie rank="49" score="0.6666666666666661">
+		<chiasm position="85">
+			<wA iA="852" iD="869">do</wA>
+			<wB iB="859" iC="864">father</wB>
+			<extract>do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do</extract>
+			<context>fall on us if we do nothing.| In peace sons bury their fathers , but in war fathers bury their sons.| We do n't have a trillion-dollar</context>
+		</chiasm>
+	</tie>
+	<tie rank="50" score="0.14285714285714235">
+		<chiasm position="86">
+			<wA iA="118" iD="145">thing</wA>
+			<wB iB="126" iC="139">much</wB>
+			<extract>things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things</extract>
+			<context>we in this country discard things so readily is because we have so much . The facts are exactly opposite – the reason we have so much is simply because we discard things so readily . The</context>
+		</chiasm>
+	</tie>
+	<tie rank="51" score="0.0">
+		<chiasm position="87">
+			<wA iA="356" iD="369">speech</wA>
+			<wB iB="358" iC="365">president</wB>
+			<extract>speeches a president delivers ; it ’s whether the president delivers on the speeches</extract>
+			<context>true test is not the speeches a president delivers ; it ’s whether the president delivers on the speeches . | People the</context>
+		</chiasm>
+		<chiasm position="88">
+			<wA iA="647" iD="656">hate</wA>
+			<wB iB="648" iC="655">to</wB>
+			<extract>Hate to love the world , and love to hate</extract>
+			<context>. &quot; | You may Hate to love the world , and love to hate it.| Sometimes​ pleasure is</context>
+		</chiasm>
+		<chiasm position="89">
+			<wA iA="901" iD="915">want</wA>
+			<wB iB="904" iC="911">government</wB>
+			<extract>want to check government spending and they want to spend government checks.| If you want</extract>
+			<context>and us is that we want to check government spending and they want to spend government checks.| If you want anything said , ask</context>
+		</chiasm>
+	</tie>
+</output>
