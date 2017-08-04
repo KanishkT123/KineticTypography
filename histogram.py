@@ -1,5 +1,3 @@
-#!/usr/bin/env python3 
-
 import os
 import cv2
 import numpy as np
@@ -8,12 +6,20 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
 
-# ******************************************************************************************************** #
-# *  The following code assumes that you are in the directory which contains the whole TextBoxes folder  * #
-# *  You should also run findBoxes.py on your images FIRST before running this code                      * #
-# ******************************************************************************************************** #
+
+# ********************************************************************************************************* #
+# *  The following code assumes that you are in the directory which contains the entire TextBoxes folder  * #
+# *  You should also run findBoxes.py on your images FIRST before running this code                       * #
+# ********************************************************************************************************* #
 
 
+
+
+
+
+# ------------------- #
+#  General Functions  #
+# ------------------- #
 
 """
     Goes through a specific directory and applies a function to every file in the directory
@@ -28,6 +34,7 @@ def loopDirectory(function):
             content.close()
 
 
+
 """
     Takes in information and a file path and writes and saves that information as a csv file
 """
@@ -38,6 +45,7 @@ def saveInfo(information, fileName, filePath):
     with open(savePath, "w", newline="") as file:
         writer = csv.writer(file)
         writer.writerows(information)
+
 
 
 
@@ -66,6 +74,7 @@ def getCoordinates():
     return fileList, picList
 
 
+
 """ 
     Gets the list of image paths
 
@@ -81,6 +90,17 @@ def getImages():
                 imgList.append(filePath)
     return imgList
 
+
+
+
+
+
+
+
+
+# --------------------- #
+#  Histogram Functions  #
+# --------------------- #
 
 
 """
@@ -126,6 +146,8 @@ def createMask(imagePath, xMin, yMin, xMax, yMax):
     return mask
 
 
+
+
 """
     Takes in the image path and the mask and then returns the histogram information and saves it as a csv
 """
@@ -138,6 +160,8 @@ def getHistogram(imagePath, mask):
 
     saveInfo(hist, "histogram.csv", "./TextBoxes/examples")
     return hist 
+
+
 
 
 
@@ -211,7 +235,7 @@ def splitHist(imagePath, xMin, yMin, xMax, yMax):
 
 
 """ 
-    Outputs a dictionary of histograms
+    Outputs a dictionary of histograms where the key is the image name and box number concatenated
 """
 def histDict():
     fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
@@ -316,6 +340,102 @@ def findCorrelations(imagePath, xMin, yMin, xMax, yMax):
 
     # print(info)
 
+
+""" 
+    Wrapper function: shows the masked histogram for every textbox for every image in the img directory
+"""
+def showHist():
+    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
+    imgList = getImages()
+
+    for i in range(len(picList)):
+        image = imgList[i] # gets path of image
+        image = cv2.imread(image)
+        coordList = picList[i] # the list of box coordinates for that image
+
+        for box in coordList:
+            box = box.split(",") # makes the string into a list
+            # print(type(int(box[1])))
+            xMin = int(box[1])
+            yMin = int(box[2])
+            xMax = int(box[3])
+            yMax = int(box[4])
+            # maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
+            topLeft = (xMin, yMin)
+            bottomRight = (xMax, yMax)
+            img = cv2.rectangle(image, topLeft, bottomRight, (0,0,255), 2)
+            cv2.imshow("image", img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+
+
+
+
+"""
+    Goes through all the images in the img directory then makes a histogram for each textbox in the image and adds it to a dictionary.
+    Returns a dictionary where the key is the image name and the textbox number and the value is the color histogram
+"""
+def getHistDict():
+    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
+    imgList = getImages()
+    histDict = {}
+
+
+    for i in range(len(picList)):
+        image = imgList[i] # gets path of image
+        coordList = picList[i] # the list of box coordinates for that image
+
+        for i in range(len(coordList)):
+            box = coordList[i]
+            box = box.split(",") # makes the string into a list
+            # print(type(int(box[1])))
+            xMin = int(box[1])
+            yMin = int(box[2])
+            xMax = int(box[3])
+            yMax = int(box[4])
+
+            mask = createMask(image, xMin, yMin, xMax, yMax)
+            hist = getHistogram(image, mask)
+
+            key = str(i)
+            histDict[image + key] = hist
+
+    return histDict
+
+
+
+
+"""
+    Takes in a dictionary of histograms and the key of the histogram to compare all others to, then uses correlation
+    to compare the histograms and returns the results sorted in reverse
+"""
+def compare(histDict, compareKey):
+    # histDict = wrapper2()
+    method = [("Correlation", cv2.HISTCMP_CORREL),
+	          ("Chi-Squared", cv2.HISTCMP_CHISQR),
+	          ("Intersection", cv2.HISTCMP_INTERSECT), 
+	          ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
+
+    results = {}
+    reverse = True
+    for (key, value) in list(histDict.items()):
+        d = cv2.compareHist(histDict[compareKey], value, method[0][1])
+        results[key] = d
+    
+    results = sorted([(v, k) for (k, v) in results.items()], reverse = reverse)
+
+    # saveInfo(results, "distances.csv", "./TextBoxes/examples")
+
+    return results
+
+
+
+
+
+# ------------------------------ #
+#  Color Segmentation Functions  #
+# ------------------------------ #
 
 
 
@@ -516,92 +636,12 @@ def allCoords(image):
 
 
 
-""" 
-    Wrapper function: shows the masked histogram for every textbox for every image in the img directory
-"""
-def showHist():
-    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
-    imgList = getImages()
-
-    for i in range(len(picList)):
-        image = imgList[i] # gets path of image
-        image = cv2.imread(image)
-        coordList = picList[i] # the list of box coordinates for that image
-
-        for box in coordList:
-            box = box.split(",") # makes the string into a list
-            # print(type(int(box[1])))
-            xMin = int(box[1])
-            yMin = int(box[2])
-            xMax = int(box[3])
-            yMax = int(box[4])
-            # maskedHist(image, xMin, yMin, xMax, yMax) # calls maskedHist on the image with all of the box coordinates
-            topLeft = (xMin, yMin)
-            bottomRight = (xMax, yMax)
-            img = cv2.rectangle(image, topLeft, bottomRight, (0,0,255), 2)
-            cv2.imshow("image", img)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
 
 
 
-"""
-    Goes through all the images in the img directory then makes a histogram for each textbox in the image and adds it to a dictionary.
-    Returns a dictionary where the key is the image name and the textbox number and the value is the color histogram
-"""
-def getHistDict():
-    fileList, picList = getCoordinates() # calls getCoordinates to get the box coordinates in a list (NOT ACTUALLY A PYTHON LIST)
-    imgList = getImages()
-    histDict = {}
-
-
-    for i in range(len(picList)):
-        image = imgList[i] # gets path of image
-        coordList = picList[i] # the list of box coordinates for that image
-
-        for i in range(len(coordList)):
-            box = coordList[i]
-            box = box.split(",") # makes the string into a list
-            # print(type(int(box[1])))
-            xMin = int(box[1])
-            yMin = int(box[2])
-            xMax = int(box[3])
-            yMax = int(box[4])
-
-            mask = createMask(image, xMin, yMin, xMax, yMax)
-            hist = getHistogram(image, mask)
-
-            key = str(i)
-            histDict[image + key] = hist
-
-    return histDict
-
-
-
-
-"""
-    Takes in a dictionary of histograms and the key of the histogram to compare all others to, then uses correlation
-    to compare the histograms and returns the results sorted in reverse
-"""
-def compare(histDict, compareKey):
-    # histDict = wrapper2()
-    method = [("Correlation", cv2.HISTCMP_CORREL),
-	          ("Chi-Squared", cv2.HISTCMP_CHISQR),
-	          ("Intersection", cv2.HISTCMP_INTERSECT), 
-	          ("Hellinger", cv2.HISTCMP_BHATTACHARYYA)]
-
-    results = {}
-    reverse = True
-    for (key, value) in list(histDict.items()):
-        d = cv2.compareHist(histDict[compareKey], value, method[0][1])
-        results[key] = d
-    
-    results = sorted([(v, k) for (k, v) in results.items()], reverse = reverse)
-
-    # saveInfo(results, "distances.csv", "./TextBoxes/examples")
-
-    return results
-
+# ------------------- #
+#  Cluster Functions  #
+# ------------------- #
 
 
 
@@ -651,29 +691,11 @@ def findLines(imagePath, xMin, yMin, xMax, yMax, numClusters):
     return kmeans.predict(pixArray)
 
 
+
+
 """
-    Does the same thing as findLines but using chunkyCoords instead of segmentedCoords
+    Does the same thing as findLines but using all coordinates
 """
-# def getPredictions(imagePath, xMin, yMin, xMax, yMax, numClusters):
-#     numVertSplits = 20
-
-#     coordListChunks = chunkyCoords(imagePath, xMin, yMin, xMax, yMax, numVertSplits) # get average colors for every segment
-
-#     xArray = np.array(coordListChunks) # make it into numpy array
-
-#     kmeans = KMeans(n_clusters = numClusters).fit(xArray)
-#     image = cv2.imread(imagePath)
-
-#     coordListAll = allCoords(image) # get color coordinates for all pixels
-#     pixArray = np.array(coordListAll) # make it into numpy array
-#     print(pixArray.shape)
-
-#     print(kmeans.cluster_centers_)
-#     # print(kmeans.labels_)
-#     # print(kmeans.inertia_)
-
-#     return kmeans.predict(pixArray)
-
 def getPredictions(imagePath, numClusters):
     image = cv2.imread(imagePath)
     coordList = allCoords(image)
@@ -687,10 +709,6 @@ def getPredictions(imagePath, numClusters):
     # print(kmeans.inertia_)
 
     return kmeans.labels_, kmeans.cluster_centers_
-
-
-
-
 
 
 
@@ -829,12 +847,12 @@ def findNumCluster(imagePath, numClusters):
     plt.plot(xList, minDistList)
     plt.show()
     
-        
+    
 
 
 
 """
-    Get bounding box
+    Get bounding boxes around each letter 
 """
 def getBounding(imagePath, numClusters):
     image = cv2.imread(imagePath)
@@ -856,8 +874,8 @@ def getBounding(imagePath, numClusters):
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     
 
-        # plt.imshow(mask, cmap = "gray") 
-        # plt.show()
+        plt.imshow(mask, cmap = "gray") 
+        plt.show()
 
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -884,32 +902,14 @@ def getBounding(imagePath, numClusters):
                 cv2.imshow("image", image)
                 cv2.waitKey(0)
                 cv2.destroyAllWindows()
-            
-        #    for i in len(rectList):
-        #        if i + 1 < len(rectList):
-        #            currentRect = rectList[i]
-        #            nextRect = rectList[i + 1]
 
-        #            currCoords = findCorners(currentRect)
-        #            nextCoords = findCorners(nextRect)
-
-        #            currCoords = np.array(currCoords)
-        #            nextCoords = np.array(nextCoords)
-
-        #            dst = distance.euclidean(currCoords[2], nextCoords[0])
-
-        #            currCoords.tolist()
-        #            nextCoords.tolist()
-
-        #            if dst <= 10:
-        #                newRect = []
-        #                newRect.append(currCoords[0]) # top left of current
-        #                newRect.append()
 
 
                    
 
-
+"""
+    Given a list of rectangle vertices, order them in a specific way
+"""
 def findCorners(vertices):
     sortedLeft = []
     orderedCoords = []
@@ -936,18 +936,6 @@ def findCorners(vertices):
     
     return orderedCoords # topLeft, bottomLeft, topRIght, bottomRight
                 
-    # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
-
-    #             cv2.imshow("image", image)
-    #             cv2.waitKey(0)
-    #             cv2.destroyAllWindows()
-
-   
-        # image = cv2.rectangle(image, (x,y), (x+w,y+h), (0,255,0), 2)
-
-        # cv2.imshow("image", image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
 
 
 if __name__=='__main__':
@@ -966,7 +954,7 @@ if __name__=='__main__':
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './TextBoxes/examples/img/poison.png'
+    imagePath = './TextBoxes/examples/img/1.jpg'
     image = cv2.imread(imagePath)
     height, width, channels = image.shape
 
@@ -978,8 +966,8 @@ if __name__=='__main__':
     # pixArray = getPredictions(imagePath, 4)
     # showHist()
 
-    # getBounding(imagePath, 2)
-    findNumCluster(imagePath, 10)
+    getBounding(imagePath, 4)
+    # findNumCluster(imagePath, 10)
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
     # yMin = 27
@@ -1034,3 +1022,6 @@ if __name__=='__main__':
     # plt.gca().invert_yaxis()
 
     # plt.show()
+
+    # labels, centers = getPredictions(imagePath, 4)
+    # print(centers)
