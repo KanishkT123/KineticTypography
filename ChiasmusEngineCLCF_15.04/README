@@ -1,0 +1,5 @@
+ChiasMain.py is the file that I changed so it will not generate the txt or xml file. Instead, it generates the output with the word that is forming 
+Chiasmus and the index of the words in the sentence. 
+
+If you look at the code inside the ChiasMain.py file, it will be clear that it is modified based on the original Main.py file from the 
+author of the Chiasmus paper (Marie Dubremetz). 
