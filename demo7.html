@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #container {
+            width: 700px;
+            height: 700px;
+            position: relative;
+            background-image: linear-gradient(to top, white, black);;
+        }
+
+        #animate {
+            font-family: Helvetica, sans-serif;
+            font-size: 100px;
+            position: absolute;
+            text-align: center;
+            left: 30px;
+            top: 290px;
+            color: white;
+            -webkit-animation:spin 5s ease-in 0s;
+    		-moz-animation:spin 5s ease-in 0s;
+    		animation:spin 5s ease-in 0s;
+		}
+		@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+		@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+		@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+        
+    </style>
+    
+    
+
+    <script>
+        /*function moveThis() {
+                var elem = document.getElementById("animate");
+                var pix = 0;
+                var id = setInterval(frame, 5);
+                function frame() {
+                    if (pix == 500) {
+                        clearInterval(id);
+                    }
+                    else {
+                        pix++;
+                        elem.style.transform = "rotate(70deg)";
+                    }
+                }
+                
+            }
+            window.onload = moveThis;
+            */
+        </script>
+
+        <div id = "container">
+            <div id = "animate">
+                <b>sleep is good</b>
+                </div>
+        </div>
+    </html>

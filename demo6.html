@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        #container {
+            width: 700px;
+            height: 700px;
+            position: relative;
+            background-image: linear-gradient(to top, red, black);;
+        }
+
+        #animate {
+            font-family: Helvetica, sans-serif;
+            font-size: 26px;
+            color: white;
+            position: absolute;
+            left: 50px;
+            top : 300px;
+        }
+    </style>
+
+    <script>
+        function moveThis() {
+                var elem = document.getElementById("animate");
+                var pix = 0;
+                var id = setInterval(frame, 10);
+                function frame() {
+                    if (pix == 100) {
+                        clearInterval(id);
+                    }
+                    else {
+                        pix++;
+                        elem.style.fontSize = pix + 'px';
+                    }
+                }
+                
+            }
+            window.onload = moveThis;
+        </script>
+
+        <div id = "container">
+            <div id = "animate">
+                <b>I HATE CSS!</b>
+                </div>
+        </div>
+    </html>

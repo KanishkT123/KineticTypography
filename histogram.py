@@ -850,6 +850,9 @@ def findNumCluster(imagePath, numClusters):
     
 
 
+########################
+# LETTER BOX DETECTION #
+########################
 
 """
     Get bounding boxes around each letter 
@@ -897,7 +900,7 @@ def getBounding(imagePath, numClusters):
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 rectList.append(rect)
-                image = cv2.drawContours(image, [box], -1, (0,255,0), 2)
+                image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
                 cv2.imshow("image", image)
                 cv2.waitKey(0)
@@ -954,7 +957,7 @@ if __name__=='__main__':
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './TextBoxes/examples/img/1.jpg'
+    imagePath = './TextBoxes/examples/img/movie1606.jpg'
     image = cv2.imread(imagePath)
     height, width, channels = image.shape
 
@@ -966,7 +969,7 @@ if __name__=='__main__':
     # pixArray = getPredictions(imagePath, 4)
     # showHist()
 
-    getBounding(imagePath, 4)
+    getBounding(imagePath, 2)
     # findNumCluster(imagePath, 10)
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
