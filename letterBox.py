@@ -12,7 +12,7 @@ from scipy.spatial import distance
 """
     Get bounding boxes around each letter 
 """
-def getBounding(imagePath, numClusters):
+def getBounding(imagePath, numClusters, resultName):
     image = cv2.imread(imagePath)
     height, width, channels = image.shape 
     labels, clusterCenters = getPredictions(imagePath, numClusters)
@@ -58,7 +58,7 @@ def getBounding(imagePath, numClusters):
                 image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
                 # cv2.imshow("image", image)
-                cv2.imwrite("result2.png", image) # Save image
+                cv2.imwrite(resultName, image) # Save image
                 # cv2.waitKey(0)
                 # cv2.destroyAllWindows()
 
@@ -145,15 +145,16 @@ def getColor(pixArray, imagePath, clusterNumber):
 if __name__=='__main__':
 
     # Error Handling for Command Line Arguments
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("Usage: cart.py [image filepath] [number of colors]")
         sys.exit("Please make sure to include the image filepath and number of colors as command-line arguments")
 
     # Save arguments as variables
     imagePath = sys.argv[1]
     colors = int(sys.argv[2])
+    resultName = sys.argv[3]
 
     # imagePath = './movie635.jpg'
     # colors = 3
 
-    getBounding(imagePath, colors)
+    getBounding(imagePath, colors, resultName)
