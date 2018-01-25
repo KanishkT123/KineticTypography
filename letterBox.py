@@ -3,7 +3,7 @@ import sys
 import cv2
 import numpy as np
 # import csv
-# from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
 
@@ -145,15 +145,15 @@ def getColor(pixArray, imagePath, clusterNumber):
 if __name__=='__main__':
 
     # Error Handling for Command Line Arguments
-    if len(sys.argv) != 3:
-        print("Usage: cart.py [image filepath] [number of colors]")
-        sys.exit("Please make sure to include the image filepath and number of colors as command-line arguments")
+    # if len(sys.argv) != 3:
+    #     print("Usage: cart.py [image filepath] [number of colors]")
+    #     sys.exit("Please make sure to include the image filepath and number of colors as command-line arguments")
 
     # Save arguments as variables
-    imagePath = sys.argv[1]
-    colors = sys.argv[2]
+    # imagePath = sys.argv[1]
+    # colors = sys.argv[2]
 
-    # imagePath = './movie635.jpg'
-    # colors = 3
+    imagePath = './movie635.jpg'
+    colors = 3
 
     getBounding(imagePath, colors)
