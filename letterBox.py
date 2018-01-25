@@ -146,15 +146,15 @@ if __name__=='__main__':
 
     # Error Handling for Command Line Arguments
     if len(sys.argv) != 4:
-        print("Usage: cart.py [image filepath] [number of colors]")
-        sys.exit("Please make sure to include the image filepath and number of colors as command-line arguments")
+        print("Usage: cart.py [image name] [number of colors] [result image name]")
+        sys.exit("Please make sure to include the image filepath, number of colors, and result image name as command-line arguments")
 
     # Save arguments as variables
-    imagePath = sys.argv[1]
+    imagePath = "./Images/" + sys.argv[1]
     colors = int(sys.argv[2])
-    resultName = sys.argv[3]
+    resultPath = "./Results/" + sys.argv[3]
 
     # imagePath = './movie635.jpg'
     # colors = 3
 
-    getBounding(imagePath, colors, resultName)
+    getBounding(imagePath, colors, resultPath)
