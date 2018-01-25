@@ -903,7 +903,7 @@ def getBounding(imagePath, numClusters):
                 image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
                 # cv2.imshow("image", image)
-                cv2.imwrite("result1.png")
+                cv2.imwrite("result1.png", image)
                 # cv2.waitKey(0)
                 # cv2.destroyAllWindows()
 
