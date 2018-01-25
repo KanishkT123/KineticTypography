@@ -902,9 +902,10 @@ def getBounding(imagePath, numClusters):
                 rectList.append(rect)
                 image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
-                cv2.imshow("image", image)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
+                # cv2.imshow("image", image)
+                cv2.imwrite("result1.png")
+                # cv2.waitKey(0)
+                # cv2.destroyAllWindows()
 
 
 
@@ -957,19 +958,19 @@ if __name__=='__main__':
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './TextBoxes/examples/img/movie1606.jpg'
-    image = cv2.imread(imagePath)
-    height, width, channels = image.shape
+    imagePath = './movie635.jpg'
+    # image = cv2.imread(imagePath)
+    # height, width, channels = image.shape
 
-    xMin = 0
-    yMin = 0
-    xMax = width
-    yMax = height
+    # xMin = 0
+    # yMin = 0
+    # xMax = width
+    # yMax = height
 
     # pixArray = getPredictions(imagePath, 4)
     # showHist()
 
-    getBounding(imagePath, 2)
+    getBounding(imagePath, 3)
     # findNumCluster(imagePath, 10)
 
     # xMin = 184  THESE ARE THE ACTUAL COORDINATES FOR THE YELLOW "I" IN COOL.PNG
