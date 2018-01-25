@@ -1,4 +1,5 @@
 import os
+import sys
 import cv2
 import numpy as np
 # import csv
@@ -154,5 +155,5 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
-    
+
     getBounding(imagePath, colors)
