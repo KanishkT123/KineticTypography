@@ -215,7 +215,7 @@ if __name__=='__main__':
     # imagePath = './movie635.jpg'
     # colors = 3
     img2 = "plainDream.png"
-    img1 = "wordsDream.png"
+    img1 = "diffCol.png"
     thresh = frameSubtract(img1, img2)
 
     getBounding(imagePath, colors, resultPath, thresh)
