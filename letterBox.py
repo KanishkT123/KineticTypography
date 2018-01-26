@@ -23,7 +23,7 @@ def getBounding(imagePath, numClusters, resultName):
     cv2.imwrite("maskedIm.png", image)
 
     height, width, channels = image.shape
-    labels, clusterCenters = getPredictions(imagePath, numClusters)
+    labels, clusterCenters = getPredictions(image, numClusters)
 
     for cluster in range(numClusters):
         mask = np.zeros(image.shape[:2], np.uint8)
@@ -61,8 +61,7 @@ def getBounding(imagePath, numClusters, resultName):
 """
     Does the same thing as findLines but using all coordinates
 """
-def getPredictions(imagePath, numClusters):
-    image = cv2.imread(imagePath)
+def getPredictions(image, numClusters):
     coordList = allCoords(image)
     
     xArray = np.array(coordList) # make it into numpy array
