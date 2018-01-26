@@ -178,6 +178,17 @@ def frameSubtract(imageName1, imageName2):
     # cv2.waitKey(0)
 
 
+    #Adaptive threshold: sometimes really good, sometimes terrible, honestly, it's a toss up.
+    th = cv2.adaptiveThreshold(image3, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
+    # cv2.imshow("Adapative threshold", th)
+    cv2.imwrite("Adaptive.tif", th)
+    # cv2.waitKey(0)
+
+    #Laplacian 3, edge detection on the adaptive threshold
+    laplacian3 = cv2.Laplacian(th,cv2.CV_64F)
+    # cv2.imshow("Laplacian3", laplacian3)
+    cv2.imwrite("Laplacian3.tif", laplacian3)
+
 ############
 """ MAIN """
 ############
