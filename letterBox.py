@@ -137,6 +137,23 @@ def getColor(pixArray, imagePath, clusterNumber):
     # print(locationList)
     return xList, yList
 
+"""
+    Subtracts image2 from image1 
+    If selecting frames individually, image2 is background
+"""
+def frameSubtract(imageName1, imageName2):
+    image1 = cv2.imread(imageName1)
+    image2 = cv2.imread(imageName2)
+    image1 = cv2.medianBlur(image1,5)
+    image2 = cv2.medianBlur(image2,5)
+
+    #Subtraction and display of subtracted image
+    #Better than im1-im2 as it prevents values from going below 0
+    image3 = cv2.subtract(image2, image1)
+
+    cv2.imwrite("framesub.png", image3)
+
+
 
 ############
 """ MAIN """
@@ -156,5 +173,8 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
+    img2 = "Screen Shot 2018-01-25 at 5.49.31 PM.png"
+    img1 = "Screen Shot 2018-01-25 at 5.49.47 PM.png"
+    frameSubtract(img1, img2)
 
-    getBounding(imagePath, colors, resultPath)
+    # getBounding(imagePath, colors, resultPath)
