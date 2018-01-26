@@ -17,6 +17,7 @@ def getBounding(imagePath, numClusters, resultName):
     image = cv2.imread(imagePath)
     thresh = cv2.imread("post-Threshold.tif", 0)
     image = cv2.bitwise_and(image, image, mask = thresh)
+    cv2.imwrite("maskedIm.png", image)
     height, width, channels = image.shape
     labels, clusterCenters = getPredictions(imagePath, numClusters)
 
