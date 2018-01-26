@@ -151,14 +151,14 @@ def frameSubtract(imageName1, imageName2):
     #Better than im1-im2 as it prevents values from going below 0
     image3 = cv2.subtract(image2, image1)
 
-    cv2.imwrite("framesub.png", image3)
+    # cv2.imwrite("framesub.png", image3)
 
 
     #Convert to gray and then displau
     image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite("pre-Threshold Gray", image3)
+    # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
-
+    cv2.imwrite("framesub.png", image3)
     #Do a laplacian transform for edge detection
     #displays and saves
     laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
