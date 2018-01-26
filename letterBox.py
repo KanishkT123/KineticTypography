@@ -14,6 +14,7 @@ from scipy.spatial import distance
     Get bounding boxes around each letter 
 """
 def getBounding(imagePath, numClusters, resultName):
+    ogImage = cv2.imread(imagePath)
     image = cv2.imread(imagePath)
     thresh = cv2.imread("post-Threshold.tif", 0)
     image = cv2.bitwise_and(image, image, mask = thresh)
@@ -59,10 +60,10 @@ def getBounding(imagePath, numClusters, resultName):
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 rectList.append(rect)
-                image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
+                ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
 
                 # cv2.imshow("image", image)
-                cv2.imwrite(resultName, image) # Save image
+                cv2.imwrite(resultName, ogImage) # Save image
                 # cv2.waitKey(0)
                 # cv2.destroyAllWindows()
 
