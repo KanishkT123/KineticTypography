@@ -173,8 +173,8 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
-    img2 = "Screen Shot 2018-01-25 at 5.49.31 PM.png"
-    img1 = "Screen Shot 2018-01-25 at 5.49.47 PM.png"
+    img2 = "plainDream.png"
+    img1 = "wordsDream.png"
     frameSubtract(img1, img2)
 
     # getBounding(imagePath, colors, resultPath)
