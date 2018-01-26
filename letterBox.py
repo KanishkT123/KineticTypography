@@ -220,6 +220,6 @@ if __name__=='__main__':
     
     image = cv2.imread(img1)
     image = cv2.bitwise_and(image, image, mask = thresh)
-    cv2.imwrite("sub.png", thresh)
+    cv2.imwrite("sub.tif", thresh)
     cv2.imwrite("masked.png", image)
     # getBounding(imagePath, colors, resultPath, thresh)
