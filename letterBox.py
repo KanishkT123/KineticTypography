@@ -15,8 +15,8 @@ from scipy.spatial import distance
 """
 def getBounding(imagePath, numClusters, resultName, threshIm):
     image = cv2.imread(imagePath)
-    height, width, channels = image.shape 
-    res = cv2.bitwise_and(image, image, mask = threshIm)
+    image = cv2.bitwise_and(image, image, mask = threshIm)
+    height, width, channels = image.shape
     labels, clusterCenters = getPredictions(imagePath, numClusters)
 
     for cluster in range(numClusters):
