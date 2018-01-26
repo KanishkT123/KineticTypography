@@ -9,12 +9,14 @@ from scipy.spatial import distance
 
 
 
+
 """
     Get bounding boxes around each letter 
 """
-def getBounding(imagePath, numClusters, resultName):
+def getBounding(imagePath, numClusters, resultName, threshIm):
     image = cv2.imread(imagePath)
     height, width, channels = image.shape 
+    res = cv2.bitwise_and(image, image, mask = threshIm)
     labels, clusterCenters = getPredictions(imagePath, numClusters)
 
     for cluster in range(numClusters):
@@ -155,39 +157,44 @@ def frameSubtract(imageName1, imageName2):
 
 
     #Convert to gray and then displau
-    image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
-    # cv2.imwrite("pre-Threshold Gray", image3)
+    # image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
+    # # cv2.imwrite("pre-Threshold Gray", image3)
+    # # cv2.waitKey(0)
+    # cv2.imwrite("framesub.png", image3)
+    # #Do a laplacian transform for edge detection
+    # #displays and saves
+    # laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
+    # # cv2.imshow("Laplacian1", laplacian1)
+    # cv2.imwrite("Laplacian1.tif", laplacian1)
     # cv2.waitKey(0)
-    cv2.imwrite("framesub.png", image3)
-    #Do a laplacian transform for edge detection
-    #displays and saves
-    laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
-    # cv2.imshow("Laplacian1", laplacian1)
-    cv2.imwrite("Laplacian1.tif", laplacian1)
-    # cv2.waitKey(0)
+
+    #############################
+    #############################
+    #### Mask
+    #############################
 
     #Binary threshold, laplace edge detection, display, save
     ret, thresh = cv2.threshold(image3, 10, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
-    cv2.imwrite("post-Threshold.tif", thresh)
+    # cv2.imwrite("post-Threshold.tif", thresh)
     # cv2.waitKey(0)
+    return thresh
+    # laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
+    # # cv2.imshow("Laplacian2", laplacian2)
+    # cv2.imwrite("Laplacian2.tif", laplacian2)
+    # # cv2.waitKey(0)
 
-    laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
-    # cv2.imshow("Laplacian2", laplacian2)
-    cv2.imwrite("Laplacian2.tif", laplacian2)
-    # cv2.waitKey(0)
 
+    # #Adaptive threshold: sometimes really good, sometimes terrible, honestly, it's a toss up.
+    # th = cv2.adaptiveThreshold(image3, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
+    # # cv2.imshow("Adapative threshold", th)
+    # cv2.imwrite("Adaptive.tif", th)
+    # # cv2.waitKey(0)
 
-    #Adaptive threshold: sometimes really good, sometimes terrible, honestly, it's a toss up.
-    th = cv2.adaptiveThreshold(image3, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
-    # cv2.imshow("Adapative threshold", th)
-    cv2.imwrite("Adaptive.tif", th)
-    # cv2.waitKey(0)
-
-    #Laplacian 3, edge detection on the adaptive threshold
-    laplacian3 = cv2.Laplacian(th,cv2.CV_64F)
-    # cv2.imshow("Laplacian3", laplacian3)
-    cv2.imwrite("Laplacian3.tif", laplacian3)
+    # #Laplacian 3, edge detection on the adaptive threshold
+    # laplacian3 = cv2.Laplacian(th,cv2.CV_64F)
+    # # cv2.imshow("Laplacian3", laplacian3)
+    # cv2.imwrite("Laplacian3.tif", laplacian3)
 
 ############
 """ MAIN """
@@ -209,6 +216,6 @@ if __name__=='__main__':
     # colors = 3
     img2 = "plainDream.png"
     img1 = "wordsDream.png"
-    frameSubtract(img1, img2)
+    thresh = frameSubtract(img1, img2)
 
-    # getBounding(imagePath, colors, resultPath)
+    getBounding(imagePath, colors, resultPath, thresh)
