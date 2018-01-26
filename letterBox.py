@@ -176,9 +176,11 @@ def frameSubtract(imageName1, imageName2):
     #Binary threshold, laplace edge detection, display, save
     ret, thresh = cv2.threshold(image3, 10, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
-    # cv2.imwrite("post-Threshold.tif", thresh)
+    cv2.imwrite("post-Threshold.tif", thresh)
     # cv2.waitKey(0)
-    return thresh
+    
+    # return thresh
+
     # laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
     # # cv2.imshow("Laplacian2", laplacian2)
     # cv2.imwrite("Laplacian2.tif", laplacian2)
@@ -216,10 +218,11 @@ if __name__=='__main__':
     # colors = 3
     img2 = "./Images/plainDream.png"
     img1 = "./Images/diffCol.png"
-    thresh = frameSubtract(img1, img2)
+    frameSubtract(img1, img2)
+    # thresh = frameSubtract(img1, img2)
     
-    image = cv2.imread(img1)
-    image = cv2.bitwise_and(image, image, mask = thresh)
-    cv2.imwrite("sub.tif", thresh)
-    cv2.imwrite("masked.png", image)
+    # image = cv2.imread(img1)
+    # image = cv2.bitwise_and(image, image, mask = thresh)
+    # cv2.imwrite("sub.tif", thresh)
+    # cv2.imwrite("masked.png", image)
     # getBounding(imagePath, colors, resultPath, thresh)
