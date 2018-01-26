@@ -217,7 +217,7 @@ if __name__=='__main__':
     # imagePath = './movie635.jpg'
     # colors = 3
     img2 = "./Images/plainDream.png"
-    img1 = "./Images/diffCol.png"
+    img1 = "./Images/redHills.png"
     frameSubtract(img1, img2)
     # thresh = frameSubtract(img1, img2)
     
