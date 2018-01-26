@@ -14,11 +14,14 @@ from scipy.spatial import distance
     Get bounding boxes around each letter 
 """
 def getBounding(imagePath, numClusters, resultName):
-    ogImage = cv2.imread(imagePath)
+    ogImage = cv2.imread(imagePath) # Save original image
     image = cv2.imread(imagePath)
-    thresh = cv2.imread("post-Threshold.tif", 0)
-    image = cv2.bitwise_and(image, image, mask = thresh)
+
+    thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
+
+    image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
     cv2.imwrite("maskedIm.png", image)
+
     height, width, channels = image.shape
     labels, clusterCenters = getPredictions(imagePath, numClusters)
 
@@ -35,37 +38,24 @@ def getBounding(imagePath, numClusters, resultName):
         # mask = cv2.dilate(mask, kernel, iterations = 2)
         # mask = cv2.erode(mask, kernel, iterations = 2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-    
-
-        # plt.imshow(mask, cmap = "gray") 
-        # plt.show()
 
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         for cnt in contours:
             rectList = []
 
-            # x,y,w,h = cv2.boundingRect(cnt)
-
             rect = cv2.minAreaRect(cnt)
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
             rect = box.tolist() # save vertices as a python list
-            
-            # im = cv2.drawContours(image,[box],-1,(0,0,255),2)
-            # cv2.imshow("image", im)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 rectList.append(rect)
                 ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
 
-                # cv2.imshow("image", image)
                 cv2.imwrite(resultName, ogImage) # Save image
-                # cv2.waitKey(0)
-                # cv2.destroyAllWindows()
+
 
 
 """
@@ -110,7 +100,7 @@ def allCoords(image):
 
 """
     Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
-    prediction was yellow, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
+    prediction was the specified color, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
 """
 def getColor(pixArray, imagePath, clusterNumber):
     image = cv2.imread(imagePath)
@@ -219,8 +209,8 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
-    img2 = "./Images/plainDream.png"
-    img1 = "./Images/redHills.png"
+    img2 = "./Images/son1.png"
+    img1 = "./Images/son2.png"
     frameSubtract(img1, img2)
     # thresh = frameSubtract(img1, img2)
     
