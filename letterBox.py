@@ -155,15 +155,15 @@ def frameSubtract(imageName1, imageName2):
 
     #Do a laplacian transform for edge detection
     #displays and saves
-    laplacian1 = cv2.Laplacian(img3,cv2.CV_64F)
+    laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
     # cv2.imshow("Laplacian1", laplacian1)
     cv2.imwrite("Laplacian1.tif", laplacian1)
     # cv2.waitKey(0)
 
     #Binary threshold, laplace edge detection, display, save
-    ret, thresh = cv2.threshold(img3, 10, 255, cv2.THRESH_BINARY)
+    ret, thresh = cv2.threshold(image3, 10, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
-    cv2.imshow("post-Threshold", thresh)
+    # cv2.imshow("post-Threshold", thresh)
     # cv2.waitKey(0)
 
     laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
