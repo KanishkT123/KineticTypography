@@ -214,8 +214,8 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
-    img2 = "plainDream.png"
-    img1 = "diffCol.png"
+    img2 = "./Images/plainDream.png"
+    img1 = "./Images/diffCol.png"
     thresh = frameSubtract(img1, img2)
     
     image = cv2.imread(img1)
