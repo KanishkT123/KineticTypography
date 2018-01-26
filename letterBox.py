@@ -169,7 +169,7 @@ def frameSubtract(imageName1, imageName2):
     #Binary threshold, laplace edge detection, display, save
     ret, thresh = cv2.threshold(image3, 10, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
-    # cv2.imshow("post-Threshold", thresh)
+    cv2.imwrite("post-Threshold.tif", thresh)
     # cv2.waitKey(0)
 
     laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
