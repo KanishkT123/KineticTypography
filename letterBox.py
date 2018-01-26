@@ -175,6 +175,6 @@ if __name__=='__main__':
     # colors = 3
     img2 = "plainDream.png"
     img1 = "wordsDream.png"
-    frameSubtract(img2, img1)
+    frameSubtract(img1, img2)
 
     # getBounding(imagePath, colors, resultPath)
