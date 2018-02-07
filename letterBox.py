@@ -6,6 +6,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
+import pytesseract
 
 
 
@@ -20,7 +21,8 @@ def getBounding(imagePath, numClusters, resultName):
     thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
 
     image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
-    cv2.imwrite("maskedIm.png", image)
+    # cv2.imwrite("maskedIm.png", image)
+    # cv2.imshow("maskedIm.png", image)
 
     height, width, channels = image.shape
     labels, clusterCenters = getPredictions(image, numClusters)
@@ -54,7 +56,8 @@ def getBounding(imagePath, numClusters, resultName):
                 rectList.append(rect)
                 ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
 
-                cv2.imwrite(resultName, ogImage) # Save image
+                # cv2.imwrite(resultName, ogImage) # Save image
+                # cv2.imshow(resultName, ogImage)
 
 
 
@@ -152,12 +155,17 @@ def frameSubtract(imageName1, imageName2):
     image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
-    cv2.imwrite("framesub.png", image3)
+    # cv2.imwrite("framesub.png", image3)
+    # cv2.imshow("framesub", image3)
+
     #Do a laplacian transform for edge detection
     #displays and saves
     laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
     # cv2.imshow("Laplacian1", laplacian1)
-    cv2.imwrite("Laplacian1.tif", laplacian1)
+
+    # cv2.imwrite("Laplacian1.tif", laplacian1)
+    # cv2.imshow("Laplacian1", laplacian1)
+
     cv2.waitKey(0)
 
     #############################
@@ -175,20 +183,23 @@ def frameSubtract(imageName1, imageName2):
 
     laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
     # cv2.imshow("Laplacian2", laplacian2)
-    cv2.imwrite("Laplacian2.tif", laplacian2)
+    # cv2.imwrite("Laplacian2.tif", laplacian2)
+    # cv2.imshow("Laplacian2", laplacian2)
+
     # # cv2.waitKey(0)
 
 
     #Adaptive threshold: sometimes really good, sometimes terrible, honestly, it's a toss up.
     th = cv2.adaptiveThreshold(image3, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
-    # cv2.imshow("Adapative threshold", th)
-    cv2.imwrite("Adaptive.tif", th)
+    # # cv2.imshow("Adapative threshold", th)
+    # cv2.imwrite("Adaptive.tif", th)
+
     # cv2.waitKey(0)
 
     #Laplacian 3, edge detection on the adaptive threshold
     laplacian3 = cv2.Laplacian(th,cv2.CV_64F)
     # cv2.imshow("Laplacian3", laplacian3)
-    cv2.imwrite("Laplacian3.tif", laplacian3)
+    # cv2.imwrite("Laplacian3.tif", laplacian3)
 
 ############
 """ MAIN """
