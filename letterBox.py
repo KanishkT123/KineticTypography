@@ -19,14 +19,22 @@ def getBounding(imagePath, numClusters, resultName):
     thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
 
     image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
+   
+    print("About to write maskedIm.png")
     cv2.imwrite("maskedIm.png", image)
 
     height, width, channels = image.shape
+
+    print("Calling getPredictions")
     labels, clusterCenters = getPredictions(image, numClusters)
 
+    print("Going into for loop for number of clusters")
     for cluster in range(numClusters):
         mask = np.zeros(image.shape[:2], np.uint8)
+
+        print("Calling getColor")
         xList, yList = getColor(labels, imagePath, cluster)
+        print("Finished getColor")
         for i in range(len(xList)):
             xVal = xList[i]
             yVal = yList[i]
@@ -38,6 +46,7 @@ def getBounding(imagePath, numClusters, resultName):
         # mask = cv2.erode(mask, kernel, iterations = 2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
+        print("Calling findContours")
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         for cnt in contours:
@@ -53,6 +62,7 @@ def getBounding(imagePath, numClusters, resultName):
                 rectList.append(rect)
                 ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
 
+                print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
 
 
@@ -151,13 +161,18 @@ def frameSubtract(imageName1, imageName2):
     image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
+    print("About to write framesub.png")
+
     cv2.imwrite("framesub.png", image3)
+
     #Do a laplacian transform for edge detection
     #displays and saves
     laplacian1 = cv2.Laplacian(image3,cv2.CV_64F)
     # cv2.imshow("Laplacian1", laplacian1)
+
+    print("About to write Laplacian1.tif")
     cv2.imwrite("Laplacian1.tif", laplacian1)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
 
     #############################
     #############################
@@ -167,6 +182,8 @@ def frameSubtract(imageName1, imageName2):
     #Binary threshold, laplace edge detection, display, save
     ret, thresh = cv2.threshold(image3, 10, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
+
+    print("About to write post-Threshold.tif")
     cv2.imwrite("post-Threshold.tif", thresh)
     # cv2.waitKey(0)
     
@@ -174,6 +191,8 @@ def frameSubtract(imageName1, imageName2):
 
     laplacian2 = cv2.Laplacian(thresh,cv2.CV_64F)
     # cv2.imshow("Laplacian2", laplacian2)
+
+    print("About to write Laplacian2.tif")
     cv2.imwrite("Laplacian2.tif", laplacian2)
     # # cv2.waitKey(0)
 
@@ -181,13 +200,40 @@ def frameSubtract(imageName1, imageName2):
     #Adaptive threshold: sometimes really good, sometimes terrible, honestly, it's a toss up.
     th = cv2.adaptiveThreshold(image3, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 115, 1)
     # cv2.imshow("Adapative threshold", th)
+
+    print("About to write Adaptive.tif")
     cv2.imwrite("Adaptive.tif", th)
     # cv2.waitKey(0)
 
     #Laplacian 3, edge detection on the adaptive threshold
     laplacian3 = cv2.Laplacian(th,cv2.CV_64F)
     # cv2.imshow("Laplacian3", laplacian3)
+
+    print("About to write Laplacian3.tif")
     cv2.imwrite("Laplacian3.tif", laplacian3)
+
+
+def crop(rect):
+    # rect is the RotatedRect (I got it from a contour...)
+    RotatedRect rect
+    # matrices we'll use
+    # Mat M, rotated, cropped
+    # get angle and size from the bounding box
+    angle = rect.angle
+    rect_size = rect.size
+    # thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
+    if (rect.angle < -45.):
+        angle += 90.0
+        swap(rect_size.width, rect_size.height)
+    # get the rotation matrix
+    M = getRotationMatrix2D(rect.center, angle, 1.0)
+    # perform the affine transformation
+    warpAffine(src, rotated, M, src.size(), INTER_CUBIC)
+    # crop the resulting image
+    getRectSubPix(rotated, rect_size, rect.center, cropped)
+
+
+
 
 ############
 """ MAIN """
@@ -209,6 +255,9 @@ if __name__=='__main__':
     # colors = 3
     img2 = "./Images/son1.png"
     img1 = "./Images/son2.png"
+
+    print("About to go into frameSubstract \n")
+
     frameSubtract(img1, img2)
     # thresh = frameSubtract(img1, img2)
     
@@ -216,4 +265,6 @@ if __name__=='__main__':
     # image = cv2.bitwise_and(image, image, mask = thresh)
     # cv2.imwrite("sub.tif", thresh)
     # cv2.imwrite("masked.png", image)
+
+    print("About to go into getBounding \n")
     getBounding(imagePath, colors, resultPath)
