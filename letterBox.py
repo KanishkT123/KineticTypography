@@ -53,6 +53,7 @@ def getBounding(imagePath, numClusters, resultName):
             rectList = []
 
             rect = cv2.minAreaRect(cnt)
+            crop(rect)
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
@@ -217,7 +218,7 @@ def frameSubtract(imageName1, imageName2):
 
 def crop(rect):
     # rect is the RotatedRect (I got it from a contour...)
-    rect = 0
+
     # matrices we'll use
     # Mat M, rotated, cropped
     # get angle and size from the bounding box
@@ -233,6 +234,8 @@ def crop(rect):
     warpAffine(src, rotated, M, src.size(), INTER_CUBIC)
     # crop the resulting image
     getRectSubPix(rotated, rect_size, rect.center, cropped)
+    
+    cv2.imwrite("cropped.tif", cropped)
 
 
 
