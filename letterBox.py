@@ -213,24 +213,24 @@ def frameSubtract(imageName1, imageName2):
     cv2.imwrite("Laplacian3.tif", laplacian3)
 
 
-def crop(rect):
-    # rect is the RotatedRect (I got it from a contour...)
-    RotatedRect rect
-    # matrices we'll use
-    # Mat M, rotated, cropped
-    # get angle and size from the bounding box
-    angle = rect.angle
-    rect_size = rect.size
-    # thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
-    if (rect.angle < -45.):
-        angle += 90.0
-        swap(rect_size.width, rect_size.height)
-    # get the rotation matrix
-    M = getRotationMatrix2D(rect.center, angle, 1.0)
-    # perform the affine transformation
-    warpAffine(src, rotated, M, src.size(), INTER_CUBIC)
-    # crop the resulting image
-    getRectSubPix(rotated, rect_size, rect.center, cropped)
+# def crop(rect):
+#     # rect is the RotatedRect (I got it from a contour...)
+#     rect = 0
+#     # matrices we'll use
+#     # Mat M, rotated, cropped
+#     # get angle and size from the bounding box
+#     angle = rect.angle
+#     rect_size = rect.size
+#     # thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
+#     if (rect.angle < -45.):
+#         angle += 90.0
+#         swap(rect_size.width, rect_size.height)
+#     # get the rotation matrix
+#     M = getRotationMatrix2D(rect.center, angle, 1.0)
+#     # perform the affine transformation
+#     warpAffine(src, rotated, M, src.size(), INTER_CUBIC)
+#     # crop the resulting image
+#     getRectSubPix(rotated, rect_size, rect.center, cropped)
 
 
 
