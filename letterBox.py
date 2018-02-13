@@ -15,6 +15,7 @@ from scipy.spatial import distance
 def getBounding(imagePath, numClusters, resultName):
     ogImage = cv2.imread(imagePath) # Save original image
     image = cv2.imread(imagePath)
+    img_copy = cv2.imread(imagePath)
 
     thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
 
@@ -53,13 +54,15 @@ def getBounding(imagePath, numClusters, resultName):
             rectList = []
 
             rect = cv2.minAreaRect(cnt)
-            print(rect)
-            print(rect[-1])
 
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
-            
+
+            print("about to call crop2")
+            crop2(rect, box, img_copy)
+            print("finished crop2")
+
             rect = box.tolist() # save vertices as a python list
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
@@ -225,12 +228,13 @@ def crop(rect):
     # matrices we'll use
     # Mat M, rotated, cropped
     # get angle and size from the bounding box
-    angle = rect.angle
-    rect_size = rect.size
+    angle = rect[-1]
+    # rect_size = rect.size
     # thanks to http://felix.abecassis.me/2011/10/opencv-rotation-deskewing/
     if (rect.angle < -45.):
         angle += 90.0
-        swap(rect_size.width, rect_size.height)
+        h, w = rect[1]
+        swap(w, h)
     # get the rotation matrix
     M = getRotationMatrix2D(rect.center, angle, 1.0)
     # perform the affine transformation
@@ -240,6 +244,38 @@ def crop(rect):
     
     cv2.imwrite("cropped.tif", cropped)
 
+
+def crop2(rect, box, img):
+    W = rect[1][0]
+    H = rect[1][1]
+
+    Xs = [i[0] for i in box]
+    Ys = [i[1] for i in box]
+    x1 = min(Xs)
+    x2 = max(Xs)
+    y1 = min(Ys)
+    y2 = max(Ys)
+
+    rotated = False
+    angle = rect[2]
+
+    if angle < -45:
+        angle+=90
+        rotated = True
+
+    center = (int((x1+x2)/2), int((y1+y2)/2))
+    size = (int(mult*(x2-x1)),int(mult*(y2-y1)))
+
+    M = cv2.getRotationMatrix2D((size[0]/2, size[1]/2), angle, 1.0)
+
+    cropped = cv2.getRectSubPix(img, size, center)    
+    cropped = cv2.warpAffine(cropped, M, size)
+
+    croppedW = W if not rotated else H 
+    croppedH = H if not rotated else W
+
+    croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
+    cv2.imwrite("cropped.png", croppedRotated)
 
 
 
