@@ -290,7 +290,7 @@ def crop2(rect, box, img, resultName):
     right = left
     
     value = [255, 255, 255]    
-    dst = cv.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+    dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
     resultName = "./Results/padded" + resultName
     resultName += ".png"
