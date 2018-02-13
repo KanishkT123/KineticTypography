@@ -281,8 +281,23 @@ def crop2(rect, box, img, resultName):
 
     croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
     
+    borderType = cv.BORDER_CONSTANT
+    perc = 0.2
+
+    top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
+    bottom = top
+    left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
+    right = left
+    
+    value = [255, 255, 255]    
+    dst = cv.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+
+    resultName = "./Results/padded" + resultName
+    resultName += ".png"
+    cv2.imwrite(resultName, dst)
+
     # img = cv2.imread("./Images/wordsDream.png")
-    img_n = Image.fromarray(croppedRotated)
+    img_n = Image.fromarray(dst)
     txt = pytesseract.image_to_string(img_n, lang="eng")
     print(txt)
 
