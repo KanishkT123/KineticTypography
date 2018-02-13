@@ -2,6 +2,8 @@ import os
 import sys
 import cv2
 import numpy as np
+import pytesseract
+from PIL import Image
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
@@ -278,7 +280,13 @@ def crop2(rect, box, img, resultName):
     croppedH = H if not rotated else W
 
     croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
-    resultName = "cropped" + resultName
+    
+    # img = cv2.imread("./Images/wordsDream.png")
+    img_n = Image.fromarray(croppedRotated)
+    txt = pytesseract.image_to_string(img_n, lang="eng")
+    print(txt)
+
+    resultName = "./Results/cropped" + resultName
     resultName += ".png"
     cv2.imwrite(resultName, croppedRotated)
 
