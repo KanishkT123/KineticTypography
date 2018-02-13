@@ -49,10 +49,12 @@ def getBounding(imagePath, numClusters, resultName):
 
         print("Calling findContours")
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
+        
+        cropName = 0
         for cnt in contours:
             rectList = []
 
+            cropName += 1
             rect = cv2.minAreaRect(cnt)
 
             h, w = rect[1] # get width and height of rectangle
@@ -60,7 +62,7 @@ def getBounding(imagePath, numClusters, resultName):
             box = np.int0(box) # round to nearest integer
 
             print("about to call crop2")
-            crop2(rect, box, img_copy)
+            crop2(rect, box, img_copy, cropName)
             print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -245,7 +247,7 @@ def crop(rect):
     cv2.imwrite("cropped.tif", cropped)
 
 
-def crop2(rect, box, img):
+def crop2(rect, box, img, resultName):
     W = rect[1][0]
     H = rect[1][1]
     mult = 1.0
@@ -276,7 +278,9 @@ def crop2(rect, box, img):
     croppedH = H if not rotated else W
 
     croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
-    cv2.imwrite("cropped.png", croppedRotated)
+    resultName = "cropped" + resultName
+    resultName += ".png"
+    cv2.imwrite(resultName, croppedRotated)
 
 
 
