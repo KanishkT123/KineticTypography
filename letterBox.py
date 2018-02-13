@@ -62,7 +62,7 @@ def getBounding(imagePath, numClusters, resultName):
             box = np.int0(box) # round to nearest integer
 
             print("about to call crop2")
-            crop2(rect, box, img_copy, cropName)
+            crop2(rect, box, img_copy, str(cropName))
             print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
