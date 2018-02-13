@@ -19,7 +19,7 @@ def getBounding(imagePath, numClusters, resultName):
 
     thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
 
-    image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
+    # image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
    
     print("About to write maskedIm.png")
     cv2.imwrite("maskedIm.png", image)
