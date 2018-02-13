@@ -53,10 +53,11 @@ def getBounding(imagePath, numClusters, resultName):
             rectList = []
 
             rect = cv2.minAreaRect(cnt)
-            crop(rect)
+            print(rect)
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
+            print(box)
             rect = box.tolist() # save vertices as a python list
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
