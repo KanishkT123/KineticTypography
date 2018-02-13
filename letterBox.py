@@ -248,6 +248,7 @@ def crop(rect):
 def crop2(rect, box, img):
     W = rect[1][0]
     H = rect[1][1]
+    mult = 1.0
 
     Xs = [i[0] for i in box]
     Ys = [i[1] for i in box]
