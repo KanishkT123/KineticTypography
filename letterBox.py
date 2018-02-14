@@ -249,7 +249,15 @@ def crop(rect):
     cv2.imwrite("cropped.tif", cropped)
 
 
+""" This is the one that works
+    It takes in a single rectangle rect, its coordinates box, the original image img
+    and resultName. It then does stuff and crops the rotated rectangle, adds a border
+    then calls tesseract on the padded image
+
+    ...only if pytesseract would actually work...
+"""
 def crop2(rect, box, img, resultName):
+    # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
     W = rect[1][0]
     H = rect[1][1]
     mult = 1.0
@@ -279,29 +287,37 @@ def crop2(rect, box, img, resultName):
     croppedW = W if not rotated else H 
     croppedH = H if not rotated else W
 
+    # THIS is the cropped and unskewed letter
     croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
     
+    # sets border type to constant
     borderType = cv2.BORDER_CONSTANT
     # borderType = cv2.BORDER_REPLICATE
-    perc = 13.0
+    #^ doesn't work
+
+    # Basically how big you want the border to be
+    perc = 10.0
 
     top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
     bottom = top
     left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
     right = left
     
+    # COLOR of border
     value = [255, 255, 255]    
     dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
     resultName = "./Results/padded" + resultName
     resultName += ".png"
+    # Writing padded image
     cv2.imwrite(resultName, dst)
 
-    # img = cv2.imread("./Images/wordsDream.png")
+    # Calling pytesseract on the image
     img_n = Image.fromarray(dst)
     txt = pytesseract.image_to_string(img_n, lang="eng")
     print(txt)
 
+    # Writing cropped image
     resultName = "./Results/cropped" + resultName
     resultName += ".png"
     cv2.imwrite(resultName, croppedRotated)
