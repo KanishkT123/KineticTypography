@@ -281,8 +281,8 @@ def crop2(rect, box, img, resultName):
 
     croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
     
-    # borderType = cv2.BORDER_CONSTANT
-    borderType = cv2.BORDER_REPLICATE
+    borderType = cv2.BORDER_CONSTANT
+    # borderType = cv2.BORDER_REPLICATE
     perc = 2.0
 
     top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
