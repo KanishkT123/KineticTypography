@@ -283,7 +283,7 @@ def crop2(rect, box, img, resultName):
     
     borderType = cv2.BORDER_CONSTANT
     # borderType = cv2.BORDER_REPLICATE
-    perc = 3.0
+    perc = 5.0
 
     top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
     bottom = top
