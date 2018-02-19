@@ -322,6 +322,36 @@ def crop2(rect, box, img, resultName):
     resultName += ".png"
     cv2.imwrite(resultName, croppedRotated)
 
+def pad(croppedRotated, resultName):
+    # sets border type to constant
+    borderType = cv2.BORDER_CONSTANT
+    # borderType = cv2.BORDER_REPLICATE
+    #^ doesn't work
+
+    # Basically how big you want the border to be
+    perc = 10.0
+
+    top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
+    bottom = top
+    left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
+    right = left
+    
+    # COLOR of border
+    value = [255, 255, 255]    
+    dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+
+    # Writing padded image
+    cv2.imwrite(resultName, dst)
+
+
+""" img is an opencv image
+"""
+def ocr(img):
+    # Calling pytesseract on the image
+    img_n = Image.fromarray(img)
+    txt = pytesseract.image_to_string(img_n, lang="eng")
+    print(txt)
+
 
 def boxAppend(imageFile1, imageFile2):
     img1 = cv2.imread(imageFile1, 0)
@@ -379,11 +409,20 @@ if __name__=='__main__':
     # cv2.imwrite("masked.png", image)
 
     print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
+    # getBounding(imagePath, colors, resultPath)
 
-    f1 = "./Results/cropped2.png"
-    f2 = "./Results/cropped3.png"
+    # f1 = "./Results/cropped2.png"
+    # f2 = "./Results/cropped3.png"
 
-    boxAppend(f1, f2)
+    # boxAppend(f1, f2)
+
+    img = cv2.imread("attached.png")
+    
+    pad(img, "attached_padded.png")
+
+    padded = cv2.imread("attached_padded.png")
+    ocr(padded)
+
+
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
