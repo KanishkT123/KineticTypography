@@ -329,7 +329,7 @@ def pad(croppedRotated, resultName):
     #^ doesn't work
 
     # Basically how big you want the border to be
-    perc = 5.0
+    perc = 2.0
 
     top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
     bottom = top
