@@ -324,18 +324,23 @@ def crop2(rect, box, img, resultName):
 
 
 def boxAppend(imageFile1, imageFile2):
-    img1 = cv2.imread(imageFile1)
-    img2 = cv2.imread(imageFile2)
+    img1 = cv2.imread(imageFile1, 0)
+    img2 = cv2.imread(imageFile2, 0)
 
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
 
-    #create empty matrix
-    vis = np.zeros((max(h1, h2), w1+w2,3), np.uint8)
+    vis = np.zeros((max(h1, h2), w1+w2), np.uint8)
+    vis[:h1, :w1] = img1
+    vis[:h2, w1:w1+w2] = img2
+    # vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
 
-    #combine 2 images
-    vis[:h1, :w1,:3] = img1
-    vis[:h2, w1:w1+w2,:3] = img2
+    # #create empty matrix
+    # vis = np.zeros((max(h1, h2), w1+w2,3), np.uint8)
+
+    # #combine 2 images
+    # vis[:h1, :w1,:3] = img1
+    # vis[:h2, w1:w1+w2,:3] = img2
 
     output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
     cv2.imwrite("attached.png", output)
@@ -380,3 +385,5 @@ if __name__=='__main__':
     f2 = "./Results/cropped3.png"
 
     boxAppend(f1, f2)
+
+    # python letterBox.py crooked.jpg 2 crookedRes.jpg
