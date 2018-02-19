@@ -323,6 +323,24 @@ def crop2(rect, box, img, resultName):
     cv2.imwrite(resultName, croppedRotated)
 
 
+def boxAppend(imageFile1, imageFile2):
+    img1 = cv2.imread(imageFile1)
+    img2 = cv2.imread(imageFile2)
+
+    h1, w1 = img1.shape[:2]
+    h2, w2 = img2.shape[:2]
+
+    #create empty matrix
+    vis = np.zeros((max(h1, h2), w1+w2,3), np.uint8)
+
+    #combine 2 images
+    vis[:h1, :w1,:3] = img1
+    vis[:h2, w1:w1+w2,:3] = img2
+
+    output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
+    cv2.imwrite("attached.png", output)
+
+
 
 ############
 """ MAIN """
@@ -357,3 +375,8 @@ if __name__=='__main__':
 
     print("About to go into getBounding \n")
     getBounding(imagePath, colors, resultPath)
+
+    f1 = "./Results/cropped2.png"
+    f2 = "./Results/cropped3.png"
+
+    boxAppend(f1, f2)
