@@ -48,7 +48,9 @@ def getBounding(imagePath, numClusters, resultName):
         # mask = cv2.dilate(mask, kernel, iterations = 2)
         # mask = cv2.erode(mask, kernel, iterations = 2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-
+        cv2.imwrite("mask.png", mask)
+        
+        masked = cv2.imread("mask.png")
         print("Calling findContours")
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
@@ -64,14 +66,15 @@ def getBounding(imagePath, numClusters, resultName):
             box = np.int0(box) # round to nearest integer
 
             print("about to call crop2")
-            crop2(rect, box, mask, str(cropName))
+            crop2(rect, box, masked, str(cropName))
             print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 rectList.append(rect)
-                ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
+                # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
+                ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
 
                 print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
@@ -304,7 +307,8 @@ def crop2(rect, box, img, resultName):
     right = left
     
     # COLOR of border
-    value = [255, 255, 255]    
+    # value = [255, 255, 255]    
+    value = [0, 0, 0]    
     dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
     resultName = "./Results/padded" + resultName
