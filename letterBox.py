@@ -365,9 +365,14 @@ def boxAppend(imageFile1, imageFile2):
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
 
-    vis = np.zeros((max(h1, h2), w1+w2), np.uint8)
+    # Spacing between letters?
+    h3 = h2
+    w3 = 3
+
+    vis = np.zeros((max(h1, h2), w1+w2+w3), np.uint8)
     vis[:h1, :w1] = img1
-    vis[:h2, w1:w1+w2] = img2
+    vis[:h3, w1:w1+w3]
+    vis[:h2, w1+w3:w1+w2+w3] = img2
     # vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
 
     # #create empty matrix
