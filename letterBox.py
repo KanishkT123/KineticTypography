@@ -487,9 +487,17 @@ if __name__=='__main__':
     temp = cv2.imread("./Results/cropped2.png")
     makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped15.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped16.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
 
     img = cv2.imread("attached.png")
