@@ -409,7 +409,7 @@ if __name__=='__main__':
     # cv2.imwrite("masked.png", image)
 
     print("About to go into getBounding \n")
-    # getBounding(imagePath, colors, resultPath)
+    getBounding(imagePath, colors, resultPath)
 
     # f1 = "./Results/cropped2.png"
     # f2 = "./Results/cropped3.png"
