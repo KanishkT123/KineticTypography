@@ -413,45 +413,45 @@ if __name__=='__main__':
     # cv2.imwrite("masked.png", image)
 
     print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
+    # getBounding(imagePath, colors, resultPath)
 
-    # f1 = "./Results/cropped2.png"
-    # f2 = "./Results/cropped3.png"
+    f1 = "./Results/cropped2.png"
+    f2 = "./Results/cropped3.png"
 
-    # boxAppend(f1, f2)
-    # f1 = "attached.png"
-    # f2 = "./Results/cropped4.png"
-    # boxAppend(f1,f2)
+    boxAppend(f1, f2)
+    f1 = "attached.png"
+    f2 = "./Results/cropped4.png"
+    boxAppend(f1,f2)
 
-    # f2 = "./Results/cropped5.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped6.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped7.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped8.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped9.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped10.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped11.png"
-    # boxAppend(f1,f2)    
-    # f2 = "./Results/cropped12.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped13.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped14.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped15.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped16.png"
-    # boxAppend(f1,f2)
+    f2 = "./Results/cropped5.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped6.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped7.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped8.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped9.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped10.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped11.png"
+    boxAppend(f1,f2)    
+    f2 = "./Results/cropped12.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped13.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped14.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped15.png"
+    boxAppend(f1,f2)
+    f2 = "./Results/cropped16.png"
+    boxAppend(f1,f2)
 
-    # img = cv2.imread("attached.png")
-    # pad(img, "attached_padded.png")
-    # padded = cv2.imread("attached_padded.png")
-    # ocr(padded)
+    img = cv2.imread("attached.png")
+    pad(img, "attached_padded.png")
+    padded = cv2.imread("attached_padded.png")
+    ocr(padded)
 
 
 
