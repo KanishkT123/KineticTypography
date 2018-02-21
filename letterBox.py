@@ -381,6 +381,13 @@ def boxAppend(imageFile1, imageFile2):
     cv2.imwrite("attached.png", output)
 
 
+def makeSameSize(template, img, resultName):
+    height, width = template.shape[:2]
+
+    cv2.resize(img, template, [height, width], 0, 0, cv2.INTER_LINEAR)
+    
+    cv2.imwrite(resultName, template)
+
 
 ############
 """ MAIN """
@@ -437,6 +444,12 @@ if __name__=='__main__':
     f2 = "./Results/cropped10.png"
     boxAppend(f1,f2)
     f2 = "./Results/cropped11.png"
+
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+
+    makeSameSize(temp, f2im, f2)
+
     boxAppend(f1,f2)    
     f2 = "./Results/cropped12.png"
     boxAppend(f1,f2)
