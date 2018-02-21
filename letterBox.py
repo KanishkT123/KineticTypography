@@ -311,15 +311,15 @@ def crop2(rect, box, img, resultName):
     value = [0, 0, 0]    
     dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
-    resultName = "./Results/padded" + resultName
-    resultName += ".png"
-    # Writing padded image
-    cv2.imwrite(resultName, dst)
+    # resultName = "./Results/padded" + resultName
+    # resultName += ".png"
+    # # Writing padded image
+    # cv2.imwrite(resultName, dst)
 
-    # Calling pytesseract on the image
-    img_n = Image.fromarray(dst)
-    txt = pytesseract.image_to_string(img_n, lang="eng")
-    print(txt)
+    # # Calling pytesseract on the image
+    # img_n = Image.fromarray(dst)
+    # txt = pytesseract.image_to_string(img_n, lang="eng")
+    # print(txt)
 
     # Writing cropped image
     resultName = "./Results/cropped" + resultName
