@@ -367,7 +367,7 @@ def boxAppend(imageFile1, imageFile2):
 
     # Spacing between letters?
     h3 = h2
-    w3 = 5
+    w3 = 10
     # space = np.zeros(h3,w3, np.uint8)
 
     vis = np.zeros((max(h1, h2), w1+w2+w3), np.uint8)
@@ -449,23 +449,43 @@ if __name__=='__main__':
     boxAppend(f1,f2)
     f2 = "./Results/cropped8.png"
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped9.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped10.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
+
     f2 = "./Results/cropped11.png"
 
     f2im = cv2.imread(f2)
     temp = cv2.imread("./Results/cropped2.png")
-
     makeSameSize(temp, f2im, f2)
-
     boxAppend(f1,f2)    
+
     f2 = "./Results/cropped12.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped13.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
+
     f2 = "./Results/cropped14.png"
+    f2im = cv2.imread(f2)
+    temp = cv2.imread("./Results/cropped2.png")
+    makeSameSize(temp, f2im, f2)
     boxAppend(f1,f2)
     f2 = "./Results/cropped15.png"
     boxAppend(f1,f2)
