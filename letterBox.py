@@ -385,7 +385,7 @@ def makeSameSize(template, img, resultName):
     size = template.shape[:2]
     template = np.zeros(size, np.uint8)
 
-    cv2.resize(img, template, size, 0, 0, cv2.INTER_LINEAR)
+    cv2.resize(img, template, tuple(size), 0, 0, cv2.INTER_LINEAR)
     
     cv2.imwrite(resultName, template)
 
