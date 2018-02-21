@@ -341,7 +341,8 @@ def pad(croppedRotated, resultName):
     right = left
     
     # COLOR of border
-    value = [255, 255, 255]    
+    # value = [255, 255, 255]    
+    value = [0, 0, 0]  
     dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
     # Writing padded image
