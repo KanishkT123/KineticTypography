@@ -382,12 +382,15 @@ def boxAppend(imageFile1, imageFile2):
 
 
 def makeSameSize(template, img, resultName):
-    size = template.shape[:2]
-    template = np.zeros(size, np.uint8)
+    # size = template.shape[:2]
+    template = np.zeros(template.shape[:2], np.uint8)
 
-    template = cv2.resize(img, template, tuple(size), 0, 0, cv2.INTER_LINEAR)
+    # template = cv2.resize(img, template, size, 0, 0, cv2.INTER_LINEAR)
+    height, width = template.shape[:2]
+
+    dst = cv2.resize(img, (width, height), interpolation = cv2.INTER_LINEAR)
     
-    cv2.imwrite(resultName, template)
+    cv2.imwrite(resultName, dst)
 
 
 ############
