@@ -110,11 +110,12 @@ def getBounding(imagePath, numClusters, resultName):
         box = np.int0(box) # round to nearest integer
 
         crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-        cropResized = makeSameSize(template, crop, resultName)
-        cv2.imwrite("cropResized.png", cropResized)
+        # cropResized = makeSameSize(template, crop, resultName)
+        cv2.imwrite("crop.png", crop)
 
         if i != 0 and i != 1:
-            out = boxAppend("out.png", "cropResized.png")
+            out = boxAppend("out.png", "crop.png")
+
     cv2.imwrite("stuff.png", out)
 
 
