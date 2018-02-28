@@ -87,6 +87,7 @@ def getBounding(imagePath, numClusters, resultName):
 
         sorted(actualRect, key=getKey)
         rect1 = actualRect[0]
+        print(actualRect)
         box1 = cv2.boxPoints(rect1)
         box1 = np.int0(box1)
         cropR1 = crop2(rect1, box1, masked, str(cropName))
