@@ -7,9 +7,13 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
+from operator import itemgetter
 
 
 
+def getKey(rect):
+    center = rect[0]
+    return center[0]
 
 """
     Get bounding boxes around each letter 
@@ -55,18 +59,20 @@ def getBounding(imagePath, numClusters, resultName):
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         cropName = 0
+        actualRect = []
         for cnt in contours:
             rectList = []
 
             cropName += 1
             rect = cv2.minAreaRect(cnt)
+            actualRect.append(rect)
 
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
 
             print("about to call crop2")
-            crop2(rect, box, masked, str(cropName))
+            # crop2(rect, box, masked, str(cropName))
             print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -79,6 +85,31 @@ def getBounding(imagePath, numClusters, resultName):
                 print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
 
+        sorted(actualRect, key=getKey)
+        rect1 = actualRect[0]
+        box1 = cv2.boxPoints(rect1)
+        box1 = np.int0(box1)
+        cropR1 = crop2(rect1, box1, masked, str(cropName))
+
+        rect2 = actualRect[1]
+        box2 = cv2.boxPoints(rect2)
+        box2 = np.int0(box2)
+        cropR2 = crop2(rect2, box2, masked, str(cropName))
+
+        out = boxAppend()
+        template = cropR1
+
+        for i in range(len(actualRect)):
+            rect = actualRect[i]
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
+
+            crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+            cropResized = makeSameSize(template, crop, resultName)
+
+            if i != 0 and i != 1:
+                out = boxAppend(out, cropResized)
+        cv2.imwrite("stuff.png", out)
 
 
 """
@@ -324,7 +355,8 @@ def crop2(rect, box, img, resultName):
     # Writing cropped image
     resultName = "./Results/cropped" + resultName
     resultName += ".png"
-    cv2.imwrite(resultName, croppedRotated)
+    # cv2.imwrite(resultName, croppedRotated)
+    return croppedRotated
 
 def pad(croppedRotated, resultName):
     # sets border type to constant
@@ -358,9 +390,9 @@ def ocr(img):
     print(txt)
 
 
-def boxAppend(imageFile1, imageFile2):
-    img1 = cv2.imread(imageFile1, 0)
-    img2 = cv2.imread(imageFile2, 0)
+def boxAppend(img1, img2):
+    # img1 = cv2.imread(imageFile1, 0)
+    # img2 = cv2.imread(imageFile2, 0)
 
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
@@ -384,7 +416,8 @@ def boxAppend(imageFile1, imageFile2):
     # vis[:h2, w1:w1+w2,:3] = img2
 
     output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
-    cv2.imwrite("attached.png", output)
+    # cv2.imwrite("attached.png", output)
+    return output
 
 
 def makeSameSize(template, img, resultName):
@@ -396,8 +429,17 @@ def makeSameSize(template, img, resultName):
 
     dst = cv2.resize(img, (width, height), interpolation = cv2.INTER_LINEAR)
     
-    cv2.imwrite(resultName, dst)
+    # cv2.imwrite(resultName, dst)
+    return dst
 
+
+
+"""
+    Takes in a list of bounding rectangle centers, (x,y) and sorts
+    from left to right
+"""
+def sortLetters(centerList):
+    data.sort(key=itemgetter(1))
 
 ############
 """ MAIN """
@@ -417,12 +459,12 @@ if __name__=='__main__':
 
     # imagePath = './movie635.jpg'
     # colors = 3
-    img2 = "./Images/son1.png"
-    img1 = "./Images/son2.png"
+    img2 = "./Images/son2.png"
+    img1 = "./Images/son3.png"
 
     print("About to go into frameSubstract \n")
 
-    # frameSubtract(img1, img2)
+    frameSubtract(img1, img2)
     # thresh = frameSubtract(img1, img2)
     
     # image = cv2.imread(img1)
@@ -431,79 +473,79 @@ if __name__=='__main__':
     # cv2.imwrite("masked.png", image)
 
     print("About to go into getBounding \n")
-    # getBounding(imagePath, colors, resultPath)
+    # # getBounding(imagePath, colors, resultPath)
 
-    f1 = "./Results/cropped2.png"
-    f2 = "./Results/cropped3.png"
+    # f1 = "./Results/cropped2.png"
+    # f2 = "./Results/cropped3.png"
 
-    boxAppend(f1, f2)
-    f1 = "attached.png"
-    f2 = "./Results/cropped4.png"
-    boxAppend(f1,f2)
+    # boxAppend(f1, f2)
+    # f1 = "attached.png"
+    # f2 = "./Results/cropped4.png"
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped5.png"
-    boxAppend(f1,f2)
-    f2 = "./Results/cropped6.png"
-    boxAppend(f1,f2)
-    f2 = "./Results/cropped7.png"
-    boxAppend(f1,f2)
-    f2 = "./Results/cropped8.png"
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped5.png"
+    # boxAppend(f1,f2)
+    # f2 = "./Results/cropped6.png"
+    # boxAppend(f1,f2)
+    # f2 = "./Results/cropped7.png"
+    # boxAppend(f1,f2)
+    # f2 = "./Results/cropped8.png"
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped9.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped9.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped10.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped10.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
 
-    f2 = "./Results/cropped11.png"
+    # f2 = "./Results/cropped11.png"
 
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)    
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)    
 
-    f2 = "./Results/cropped12.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped12.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped13.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped13.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped14.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped14.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped15.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped15.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    f2 = "./Results/cropped16.png"
-    f2im = cv2.imread(f2)
-    temp = cv2.imread("./Results/cropped2.png")
-    makeSameSize(temp, f2im, f2)
-    boxAppend(f1,f2)
+    # f2 = "./Results/cropped16.png"
+    # f2im = cv2.imread(f2)
+    # temp = cv2.imread("./Results/cropped2.png")
+    # makeSameSize(temp, f2im, f2)
+    # boxAppend(f1,f2)
 
-    img = cv2.imread("attached.png")
-    pad(img, "attached_padded.png")
-    padded = cv2.imread("attached_padded.png")
-    ocr(padded)
+    # img = cv2.imread("attached.png")
+    # pad(img, "attached_padded.png")
+    # padded = cv2.imread("attached_padded.png")
+    # ocr(padded)
 
 
 
