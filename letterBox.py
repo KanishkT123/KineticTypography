@@ -118,7 +118,7 @@ def getBounding(imagePath, numClusters, resultName):
             print("About to append")
             out = boxAppend("out.png", "crop.png")
             cv2.imwrite("out.png", out)
-
+    ocr(out)
     cv2.imwrite("stuff.png", out)
 
 
