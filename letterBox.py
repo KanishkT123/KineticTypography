@@ -85,32 +85,32 @@ def getBounding(imagePath, numClusters, resultName):
                 print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
 
-        actualRect = sorted(actualRect, key=getKey)
-        rect1 = actualRect[0]
-        # print(actualRect)
-        box1 = cv2.boxPoints(rect1)
-        box1 = np.int0(box1)
-        cropR1 = crop2(rect1, box1, masked, str(cropName))
+        # actualRect = sorted(actualRect, key=getKey)
+        # rect1 = actualRect[0]
+        # # print(actualRect)
+        # box1 = cv2.boxPoints(rect1)
+        # box1 = np.int0(box1)
+        # cropR1 = crop2(rect1, box1, masked, str(cropName))
 
-        rect2 = actualRect[1]
-        box2 = cv2.boxPoints(rect2)
-        box2 = np.int0(box2)
-        cropR2 = crop2(rect2, box2, masked, str(cropName))
+        # rect2 = actualRect[1]
+        # box2 = cv2.boxPoints(rect2)
+        # box2 = np.int0(box2)
+        # cropR2 = crop2(rect2, box2, masked, str(cropName))
 
-        out = boxAppend()
-        template = cropR1
+        # out = boxAppend()
+        # template = cropR1
 
-        for i in range(len(actualRect)):
-            rect = actualRect[i]
-            box = cv2.boxPoints(rect) # get vertices
-            box = np.int0(box) # round to nearest integer
+        # for i in range(len(actualRect)):
+        #     rect = actualRect[i]
+        #     box = cv2.boxPoints(rect) # get vertices
+        #     box = np.int0(box) # round to nearest integer
 
-            crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-            cropResized = makeSameSize(template, crop, resultName)
+        #     crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+        #     cropResized = makeSameSize(template, crop, resultName)
 
-            if i != 0 and i != 1:
-                out = boxAppend(out, cropResized)
-        cv2.imwrite("stuff.png", out)
+        #     if i != 0 and i != 1:
+        #         out = boxAppend(out, cropResized)
+        # cv2.imwrite("stuff.png", out)
 
 
 """
