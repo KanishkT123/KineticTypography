@@ -105,7 +105,8 @@ def getBounding(imagePath, numClusters, resultName):
     template = cropR1
 
     for i in range(len(actualRect)):
-        rect = actualRect[i]
+        print("i is equal to" + str(i))
+        rect = actualRect[i] 
         box = cv2.boxPoints(rect) # get vertices
         box = np.int0(box) # round to nearest integer
 
@@ -114,6 +115,7 @@ def getBounding(imagePath, numClusters, resultName):
         cv2.imwrite("crop.png", crop)
 
         if i != 0 and i != 1:
+            print("About to append")
             out = boxAppend("out.png", "crop.png")
 
     cv2.imwrite("stuff.png", out)
