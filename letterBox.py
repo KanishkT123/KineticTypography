@@ -92,13 +92,16 @@ def getBounding(imagePath, numClusters, resultName):
     box1 = cv2.boxPoints(rect1)
     box1 = np.int0(box1)
     cropR1 = crop2(rect1, box1, masked, str(cropName))
+    cv2.imwrite("cropR1.png", cropR1)
 
     rect2 = actualRect[1]
     box2 = cv2.boxPoints(rect2)
     box2 = np.int0(box2)
     cropR2 = crop2(rect2, box2, masked, str(cropName))
+    cv2.imwrite("cropR2.png", cropR2)
 
-    out = boxAppend(cropR1, cropR2)
+    out = boxAppend("cropR1.png", "cropR2.png")
+    cv2.imwrite("out.png", out)
     template = cropR1
 
     for i in range(len(actualRect)):
@@ -108,9 +111,10 @@ def getBounding(imagePath, numClusters, resultName):
 
         crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
         cropResized = makeSameSize(template, crop, resultName)
+        cv2.imwrite("cropResized.png", cropResized)
 
         if i != 0 and i != 1:
-            out = boxAppend(out, cropResized)
+            out = boxAppend("out.png", "cropResized.png")
     cv2.imwrite("stuff.png", out)
 
 
@@ -392,9 +396,9 @@ def ocr(img):
     print(txt)
 
 
-def boxAppend(img1, img2):
-    # img1 = cv2.imread(imageFile1, 0)
-    # img2 = cv2.imread(imageFile2, 0)
+def boxAppend(imageFile1, imageFile2):
+    img1 = cv2.imread(imageFile1, 0)
+    img2 = cv2.imread(imageFile2, 0)
 
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
