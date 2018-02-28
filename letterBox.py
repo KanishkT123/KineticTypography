@@ -98,7 +98,7 @@ def getBounding(imagePath, numClusters, resultName):
     box2 = np.int0(box2)
     cropR2 = crop2(rect2, box2, masked, str(cropName))
 
-    out = boxAppend()
+    out = boxAppend(cropR1, cropR2)
     template = cropR1
 
     for i in range(len(actualRect)):
