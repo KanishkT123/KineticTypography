@@ -453,7 +453,9 @@ if __name__=='__main__':
         sys.exit("Please make sure to include the image filepath, number of colors, and result image name as command-line arguments")
 
     # Save arguments as variables
-    imagePath = "./Images/" + sys.argv[1]
+    # imagePath = "./Images/" + sys.argv[1]
+
+    imagePath = sys.argv[1]
     colors = int(sys.argv[2])
     resultPath = "./Results/" + sys.argv[3]
 
