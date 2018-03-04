@@ -72,9 +72,9 @@ def getBounding(imagePath, numClusters, resultName):
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
 
-            print("about to call crop2")
-            # crop2(rect, box, masked, str(cropName))
-            print("finished crop2")
+            # print("about to call crop2")
+            # # crop2(rect, box, masked, str(cropName))
+            # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
 
@@ -94,34 +94,35 @@ def getBounding(imagePath, numClusters, resultName):
         cropR1 = crop2(rect1, box1, masked, str(cropName))
         cv2.imwrite("cropR1.png", cropR1)
 
-        rect2 = actualRect[1]
-        box2 = cv2.boxPoints(rect2)
-        box2 = np.int0(box2)
-        cropR2 = crop2(rect2, box2, masked, str(cropName))
-        cv2.imwrite("cropR2.png", cropR2)
+        if len(actualRect) > 1:
+            rect2 = actualRect[1]
+            box2 = cv2.boxPoints(rect2)
+            box2 = np.int0(box2)
+            cropR2 = crop2(rect2, box2, masked, str(cropName))
+            cv2.imwrite("cropR2.png", cropR2)
 
-        out = boxAppend("cropR1.png", "cropR2.png")
-        cv2.imwrite("out.png", out)
-        template = cropR1
+            out = boxAppend("cropR1.png", "cropR2.png")
+            cv2.imwrite("out.png", out)
+            template = cropR1
 
-        for i in range(len(actualRect)):
-            print("i is equal to" + str(i))
-            rect = actualRect[i] 
-            box = cv2.boxPoints(rect) # get vertices
-            box = np.int0(box) # round to nearest integer
+            for i in range(len(actualRect)):
+                print("i is equal to" + str(i))
+                rect = actualRect[i] 
+                box = cv2.boxPoints(rect) # get vertices
+                box = np.int0(box) # round to nearest integer
 
-            crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-            # cropResized = makeSameSize(template, crop, resultName)
-            cv2.imwrite("crop.png", crop)
+                crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+                # cropResized = makeSameSize(template, crop, resultName)
+                cv2.imwrite("crop.png", crop)
 
-            if i != 0 and i != 1:
-                print("About to append")
-                out = boxAppend("out.png", "crop.png")
-                cv2.imwrite("out.png", out)
-        pad(out, "padout.png")
-        outP = cv2.imread("padout.png")
-        ocr(outP)
-        cv2.imwrite("stuff.png", out)
+                if i != 0 and i != 1:
+                    print("About to append")
+                    out = boxAppend("out.png", "crop.png")
+                    cv2.imwrite("out.png", out)
+            pad(out, "padout.png")
+            outP = cv2.imread("padout.png")
+            ocr(outP)
+            cv2.imwrite("stuff.png", out)
 
 
 """
@@ -448,14 +449,14 @@ def makeSameSize(template, img, resultName):
 
 
 """
-    Takes in filenames for two frames, subtracts them and returns true
+    Returns true
     if there has been change between the two frames
 """
-def detectChange(frame1, frame2):
-    mask = frameSubtract(frame1, frame2)
+def detectChange(thresh):
+    # mask = frameSubtract(frame1, frame2)
     
     # Use numpy sum function to simply sum all values in the mask
-    energy = np.sum(mask)
+    energy = np.sum(thresh)
 
     # If at least 10 pixels are white
     if energy > 2550:
@@ -503,7 +504,8 @@ def processFrames(numFrames):
             firstFrame = rootDir + frameName + str1 + ext
             secondFrame = rootDir + frameName + str2 + ext
 
-            changed = detectChange(secondFrame, firstFrame)
+            thresh = frameSubtract(secondFrame, firstFrame)
+            changed = detectChange(thresh)
 
             if changed == True:
                 resultPath = "./Results/out" + str(i+1) + ".jpg"
