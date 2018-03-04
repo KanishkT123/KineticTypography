@@ -217,7 +217,7 @@ def frameSubtract(imageName1, imageName2):
 
 
     #Convert to gray and then displau
-    image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
+    # image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
     print("About to write framesub.png")
