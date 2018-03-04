@@ -401,6 +401,7 @@ def ocr(img):
     img_n = Image.fromarray(img)
     txt = pytesseract.image_to_string(img_n, lang="eng")
     print(txt)
+    return txt
 
 
 def boxAppend(imageFile1, imageFile2):
@@ -473,6 +474,34 @@ def detectChange(frame1, frame2):
 def sortLetters(centerList):
     data.sort(key=itemgetter(1))
 
+
+"""
+    Loops through all frames, subtracts it from the one right before it, and if
+    there is a change, it calls getBounding on the said frame, then adds all text to 
+    a string that gets printed.
+"""
+def processFrames(numFrames):
+    rootDir = "./Frames"
+    frameName = "/frame"
+    ext = ".jpg"
+
+    # Loop through each frame
+    for i in range(1, numFrames + 1):
+        # If not the last frame
+        if i != numFrames + 1:
+            firstFrame = rootDir + frameName + str(i) + ext
+            secondFrame = rootDir + frameName + str(i+1) + ext
+
+            changed = detectChange(secondFrame, firstFrame)
+
+            if changed == True:
+                resultPath = "./Results/out" + str(i+1) + ".jpg"
+
+                getBounding(secondFrame, 2, resultPath)
+
+
+
+
 ############
 """ MAIN """
 ############
@@ -496,92 +525,19 @@ if __name__=='__main__':
     img2 = "./Images/son2.png"
     img1 = "./Images/son3.png"
 
-    print("About to go into frameSubtract \n")
+    # print("About to go into frameSubtract \n")
 
     # frameSubtract(img1, img2)
 
     # thresh = frameSubtract(img1, img2)
+
+    # print("About to go into getBounding \n")
+    # getBounding(imagePath, colors, resultPath)
     
-    # image = cv2.imread(img1)
-    # image = cv2.bitwise_and(image, image, mask = thresh)
-    # cv2.imwrite("sub.tif", thresh)
-    # cv2.imwrite("masked.png", image)
-
-    print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
-
-    # f1 = "./Results/cropped2.png"
-    # f2 = "./Results/cropped3.png"
-
-    # boxAppend(f1, f2)
-    # f1 = "attached.png"
-    # f2 = "./Results/cropped4.png"
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped5.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped6.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped7.png"
-    # boxAppend(f1,f2)
-    # f2 = "./Results/cropped8.png"
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped9.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped10.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-
-    # f2 = "./Results/cropped11.png"
-
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)    
-
-    # f2 = "./Results/cropped12.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped13.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped14.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped15.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # f2 = "./Results/cropped16.png"
-    # f2im = cv2.imread(f2)
-    # temp = cv2.imread("./Results/cropped2.png")
-    # makeSameSize(temp, f2im, f2)
-    # boxAppend(f1,f2)
-
-    # img = cv2.imread("attached.png")
-    # pad(img, "attached_padded.png")
-    # padded = cv2.imread("attached_padded.png")
-    # ocr(padded)
-
-
+    numFrames = 2249
+    processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
+
+    # ffmpeg -i video.webm thumb%04d.jpg -hide_banner
+    # youtube-dl -o dreamSpeech.mp4 "url"
