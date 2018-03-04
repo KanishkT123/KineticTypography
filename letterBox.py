@@ -217,7 +217,7 @@ def frameSubtract(imageName1, imageName2):
 
 
     #Convert to gray and then displau
-    # image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
+    image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
     # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
     print("About to write framesub.png")
@@ -475,6 +475,13 @@ def sortLetters(centerList):
     data.sort(key=itemgetter(1))
 
 
+def makeFour(num):
+    string = str(num)
+    pad = 4 - len(string)
+    for i in range(pad):
+        string = "0" + string
+    return string
+
 """
     Loops through all frames, subtracts it from the one right before it, and if
     there is a change, it calls getBounding on the said frame, then adds all text to 
@@ -489,8 +496,11 @@ def processFrames(numFrames):
     for i in range(1, numFrames + 1):
         # If not the last frame
         if i != numFrames + 1:
-            firstFrame = rootDir + frameName + str(i) + ext
-            secondFrame = rootDir + frameName + str(i+1) + ext
+            str1 = makeFour(i)
+            str2 = makeFour(i+1)
+            
+            firstFrame = rootDir + frameName + str1 + ext
+            secondFrame = rootDir + frameName + str2 + ext
 
             changed = detectChange(secondFrame, firstFrame)
 
