@@ -271,6 +271,7 @@ def frameSubtract(imageName1, imageName2):
     print("About to write Laplacian3.tif")
     cv2.imwrite("Laplacian3.tif", laplacian3)
 
+    return thresh
 
 def crop(rect):
     # rect is the RotatedRect (I got it from a contour...)
@@ -445,6 +446,25 @@ def makeSameSize(template, img, resultName):
     return dst
 
 
+"""
+    Takes in filenames for two frames, subtracts them and returns true
+    if there has been change between the two frames
+"""
+def detectChange(frame1, frame2):
+    mask = frameSubtract(frame1, frame2)
+    
+    # Use numpy sum function to simply sum all values in the mask
+    energy = np.sum(mask)
+
+    # If at least 10 pixels are white
+    if energy > 2550:
+        return True
+
+    # If almost everything is black, nothing changed between frames
+    else:
+        return False
+
+
 
 """
     Takes in a list of bounding rectangle centers, (x,y) and sorts
@@ -476,7 +496,7 @@ if __name__=='__main__':
     img2 = "./Images/son2.png"
     img1 = "./Images/son3.png"
 
-    print("About to go into frameSubstract \n")
+    print("About to go into frameSubtract \n")
 
     # frameSubtract(img1, img2)
 
