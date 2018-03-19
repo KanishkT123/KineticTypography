@@ -625,4 +625,5 @@ if __name__=='__main__':
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
 
     # ffmpeg -i video.webm thumb%04d.jpg -hide_banner
+    # ffmpeg -i video.webm -vf fps=1/5 thumb%04d.jpg -hide_banner
     # youtube-dl -o dreamSpeech.mp4 "url"
