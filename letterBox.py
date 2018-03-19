@@ -10,7 +10,9 @@ from scipy.spatial import distance
 from operator import itemgetter
 
 
-
+"""
+    Helper function for sorting rectangles
+"""
 def getKey(rect):
     center = rect[0]
     return center[0]
@@ -85,10 +87,76 @@ def getBounding(imagePath, numClusters, resultName):
                 cv2.imwrite(resultName, ogImage) # Save image
 
 
+
+
+"""
+    Takes in the frame subtracted image, then gets bounding boxes around each letter 
+"""
+def getBoundingBinary(thresh, resultName):
+    # Only 2 colors -- black and white
+    numClusters = 2
+
+    height, width, channels = thresh.shape
+
+    print("Calling getPredictions")
+    labels, clusterCenters = getPredictions(thresh, numClusters)
+
+    print("Going into for loop for number of clusters")
+    for cluster in range(numClusters):
+        mask = np.zeros(thresh.shape[:2], np.uint8)
+
+        print("Calling getColor")
+        # TODO: getColor needs to be modified such that it takes in an opencv image rather than a filepath
+        xList, yList = getColor(labels, thresh, cluster)
+        print("Finished getColor")
+        for i in range(len(xList)):
+            xVal = xList[i]
+            yVal = yList[i]
+
+            mask[yVal, xVal] = 255
+    
+        kernel = np.ones((5,5),np.uint8)
+        # mask = cv2.dilate(mask, kernel, iterations = 2)
+        # mask = cv2.erode(mask, kernel, iterations = 2)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+        cv2.imwrite("mask.png", mask)
+        
+        masked = cv2.imread("mask.png")
+        print("Calling findContours")
+        _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        cropName = 0
+        for cnt in contours:
+            rectList = []
+
+            cropName += 1
+            rect = cv2.minAreaRect(cnt)
+            print("Adding to actualRect")
+
+            h, w = rect[1] # get width and height of rectangle
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
+
+            # print("about to call crop2")
+            # # crop2(rect, box, masked, str(cropName))
+            # print("finished crop2")
+
+            rect = box.tolist() # save vertices as a python list
+
+            if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
+                rectList.append(rect)
+                # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
+                ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
+
+                print("Writing image with box drawn")
+                cv2.imwrite(resultName, ogImage) # Save image
+
+
+
 """
     Get bounding boxes around each letter 
 """
-def getBoundingwithFramSub(imagePath, numClusters, resultName):
+def getBoundingwithFrameSub(imagePath, numClusters, resultName):
     ogImage = cv2.imread(imagePath) # Save original image
     image = cv2.imread(imagePath)
     # img_copy = cv2.imread(imagePath)
@@ -477,6 +545,11 @@ def ocr(img):
     return txt
 
 
+"""
+    Takes in two file names, gets the images from those file names
+    then "appends" them, basically adding the second image right 
+    next to the first imagae and outputs an opencv image
+"""
 def boxAppend(imageFile1, imageFile2):
     img1 = cv2.imread(imageFile1, 0)
     img2 = cv2.imread(imageFile2, 0)
@@ -507,6 +580,12 @@ def boxAppend(imageFile1, imageFile2):
     return output
 
 
+"""
+    Given a template (image size you want to copy), an img, which is an opencv
+    image, and a result name, it resizes the image to the same height and width
+    as the template, then returns the resized image as an opencv image (could be
+    rewritten to write out an image as well)
+"""
 def makeSameSize(template, img, resultName):
     # size = template.shape[:2]
     template = np.zeros(template.shape[:2], np.uint8)
@@ -530,8 +609,9 @@ def detectChange(thresh):
     # Use numpy sum function to simply sum all values in the mask
     energy = np.sum(thresh)
 
-    # If at least 10 pixels are white
-    if energy > 2550:
+    # Through trial, we have concluded that more than 10 pixels must be white
+    # so maybe try like 25
+    if energy > 6375:
         return True
 
     # If almost everything is black, nothing changed between frames
@@ -548,6 +628,10 @@ def sortLetters(centerList):
     data.sort(key=itemgetter(1))
 
 
+"""
+    Makes an integer less than 4 digits into a 4-digit string by padding front
+    with zeros
+"""
 def makeFour(num):
     string = str(num)
     pad = 4 - len(string)
@@ -570,13 +654,18 @@ def processFrames(numFrames):
     for i in range(1, numFrames + 1):
         # If not the last frame
         if i != numFrames + 1:
+            # Get four-digit versions by calling helper function
             str1 = makeFour(i)
             str2 = makeFour(i+1)
             
+            # Create the filenames for both frames
             firstFrame = rootDir + frameName + str1 + ext
             secondFrame = rootDir + frameName + str2 + ext
 
+            # Get the frame subtracted image
             thresh = frameSubtract(secondFrame, firstFrame)
+
+            # Check if there has been change between frames
             changed = detectChange(thresh)
 
             if changed == True:
