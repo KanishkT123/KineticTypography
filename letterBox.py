@@ -105,7 +105,6 @@ def getBoundingBinary(thresh, resultName):
     cv2.imwrite("mask.png", mask)
     
     masked = cv2.imread("mask.png")
-    print("Calling findContours")
     _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     cropName = 0
@@ -115,7 +114,6 @@ def getBoundingBinary(thresh, resultName):
 
         cropName += 1
         rect = cv2.minAreaRect(cnt)
-        print("Adding to actualRect")
         actualRect.append(rect)
 
         h, w = rect[1] # get width and height of rectangle
@@ -133,12 +131,10 @@ def getBoundingBinary(thresh, resultName):
             # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
             ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
 
-            print("Writing image with box drawn")
             cv2.imwrite(resultName, ogImage) # Save image
 
     actualRect = sorted(actualRect, key=getKey)
     rect1 = actualRect[0]
-    print(actualRect)
     box1 = cv2.boxPoints(rect1)
     box1 = np.int0(box1)
     cropR1 = crop2(rect1, box1, masked, str(cropName))
@@ -166,13 +162,14 @@ def getBoundingBinary(thresh, resultName):
             cv2.imwrite("crop.png", crop)
 
             if i != 0 and i != 1:
-                print("About to append")
                 out = boxAppend("out.png", "crop.png")
                 cv2.imwrite("out.png", out)
         pad(out, "padout.png")
         outP = cv2.imread("padout.png")
         txt = ocr(outP)
-        with open("OCR_output.txt", "w") as text_file:
+        print("About to add ocr output")
+        
+        with open("OCR_output.txt", "a") as text_file:
             text = txt + "\n"
             text_file.write(text)
         outName = "appended_" + resultName
