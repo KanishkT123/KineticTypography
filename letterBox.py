@@ -168,7 +168,7 @@ def getBoundingBinary(thresh, resultName):
         outP = cv2.imread("padout.png")
         txt = ocr(outP)
         print("About to add ocr output")
-        
+
         with open("OCR_output.txt", "a") as text_file:
             text = txt + "\n"
             text_file.write(text)
@@ -409,8 +409,8 @@ def getColorThresh(thresh):
 def frameSubtract(imageName1, imageName2):
     image1 = cv2.imread(imageName1)
     image2 = cv2.imread(imageName2)
-    image1 = cv2.medianBlur(image1,5)
-    image2 = cv2.medianBlur(image2,5)
+    # image1 = cv2.medianBlur(image1,5)
+    # image2 = cv2.medianBlur(image2,5)
 
     #Subtraction and display of subtracted image
     #Better than im1-im2 as it prevents values from going below 0
