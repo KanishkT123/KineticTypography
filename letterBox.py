@@ -739,7 +739,7 @@ def processFrames(numFrames):
             changed = detectChange(thresh)
 
             if changed == True:
-                resultPath = "./Results/out" + str(i+1) + ".jpg"
+                resultPath = "./Results/out" + str(i+1) + ".png"
 
                 getBoundingBinary(thresh, resultPath)
 
