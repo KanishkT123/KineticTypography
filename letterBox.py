@@ -171,7 +171,9 @@ def getBoundingBinary(thresh, resultName):
                 cv2.imwrite("out.png", out)
         pad(out, "padout.png")
         outP = cv2.imread("padout.png")
-        ocr(outP)
+        txt = ocr(outP)
+        with open("OCR_output.txt", "w") as text_file:
+            text_file.write(txt)
         outName = "appended_" + resultName
         cv2.imwrite(outName, out)
 
@@ -732,7 +734,7 @@ def processFrames(numFrames):
             changed = detectChange(thresh)
 
             if changed == True:
-                resultPath = "./Results/out" + str(i+1) + ".png"
+                resultPath = "./Results_2/out" + str(i+1) + ".png"
 
                 getBoundingBinary(thresh, resultPath)
 
