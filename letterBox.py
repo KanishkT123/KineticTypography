@@ -426,8 +426,9 @@ def frameSubtract(imageName1, imageName2):
     # cv2.imwrite("framesub.png", image3)
 
 
-    #Convert to gray and then displau
+    #Convert to gray and then display
     image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
+
     # cv2.imwrite("pre-Threshold Gray", image3)
     # cv2.waitKey(0)
     print("About to write framesub.png")
@@ -717,7 +718,7 @@ def processFrames(numFrames):
     out = ""
     rootDir = "./Frames"
     frameName = "/frame"
-    ext = ".jpg"
+    ext = ".png"
 
     # Loop through each frame
     for i in range(1, numFrames + 1):
