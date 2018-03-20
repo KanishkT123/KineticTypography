@@ -106,16 +106,16 @@ def getBoundingBinary(thresh, resultName):
         mask = np.zeros(thresh.shape[:2], np.uint8)
 
         print("Calling getColor")
-        # TODO: getColor needs to be modified such that it takes in an opencv image rather than a filepath
-        xList, yList = getColor(labels, thresh, cluster)
+        xList, yList = getColorThresh(labels, thresh, cluster)
         print("Finished getColor")
+
         for i in range(len(xList)):
             xVal = xList[i]
             yVal = yList[i]
 
             mask[yVal, xVal] = 255
     
-        kernel = np.ones((5,5),np.uint8)
+        kernel = np.ones((5,5), np.uint8)
         # mask = cv2.dilate(mask, kernel, iterations = 2)
         # mask = cv2.erode(mask, kernel, iterations = 2)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
@@ -150,6 +150,45 @@ def getBoundingBinary(thresh, resultName):
 
                 print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
+
+        actualRect = sorted(actualRect, key=getKey)
+        rect1 = actualRect[0]
+        print(actualRect)
+        box1 = cv2.boxPoints(rect1)
+        box1 = np.int0(box1)
+        cropR1 = crop2(rect1, box1, masked, str(cropName))
+        cv2.imwrite("cropR1.png", cropR1)
+
+        if len(actualRect) > 1:
+            rect2 = actualRect[1]
+            box2 = cv2.boxPoints(rect2)
+            box2 = np.int0(box2)
+            cropR2 = crop2(rect2, box2, masked, str(cropName))
+            cv2.imwrite("cropR2.png", cropR2)
+
+            out = boxAppend("cropR1.png", "cropR2.png")
+            cv2.imwrite("out.png", out)
+            template = cropR1
+
+            for i in range(len(actualRect)):
+                print("i is equal to" + str(i))
+                rect = actualRect[i] 
+                box = cv2.boxPoints(rect) # get vertices
+                box = np.int0(box) # round to nearest integer
+
+                crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+                # cropResized = makeSameSize(template, crop, resultName)
+                cv2.imwrite("crop.png", crop)
+
+                if i != 0 and i != 1:
+                    print("About to append")
+                    out = boxAppend("out.png", "crop.png")
+                    cv2.imwrite("out.png", out)
+            pad(out, "padout.png")
+            outP = cv2.imread("padout.png")
+            ocr(outP)
+            outName = "appended_" + resultName
+            cv2.imwrite(outName, out)
 
 
 
@@ -339,6 +378,36 @@ def getColor(pixArray, imagePath, clusterNumber):
 
     # print(locationList)
     return xList, yList
+
+
+"""
+    Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
+    prediction was the specified color, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
+"""
+def getColorThresh(pixArray, thresh, clusterNumber):
+    height, width, channels = thresh.shape 
+
+    xList = []
+    yList = []
+
+    for row in range(height):
+        for col in range(width): 
+            idx = row * width + col
+            if pixArray[idx] == clusterNumber: 
+                xList.append(col)
+                yList.append(row)
+
+    for i in range(len(pixArray)):
+        if pixArray[i] == clusterNumber:
+            row = i // width 
+            col = i % width
+
+            xList.append(col)
+            yList.append(row)
+
+    # print(locationList)
+    return xList, yList
+
 
 """
     Subtracts image2 from image1 
@@ -671,7 +740,7 @@ def processFrames(numFrames):
             if changed == True:
                 resultPath = "./Results/out" + str(i+1) + ".jpg"
 
-                getBounding(secondFrame, 2, resultPath)
+                getBoundingBinary(thresh, resultPath)
 
 
 
@@ -705,11 +774,11 @@ if __name__=='__main__':
 
     # thresh = frameSubtract(img1, img2)
 
-    print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
+    # print("About to go into getBounding \n")
+    # getBounding(imagePath, colors, resultPath)
     
-    # numFrames = 2249
-    # processFrames(numFrames)
+    numFrames = 450
+    processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
 
