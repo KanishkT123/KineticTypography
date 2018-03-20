@@ -98,97 +98,80 @@ def getBoundingBinary(thresh, resultName):
 
     height, width = thresh.shape
 
-    print("Calling getPredictions")
-    labels, clusterCenters = getPredictions(thresh, numClusters)
-
-    print("Going into for loop for number of clusters")
-    for cluster in range(numClusters):
-        mask = np.zeros(thresh.shape[:2], np.uint8)
-
-        print("Calling getColor")
-        xList, yList = getColorThresh(labels, thresh, cluster)
-        print("Finished getColor")
-
-        for i in range(len(xList)):
-            xVal = xList[i]
-            yVal = yList[i]
-
-            mask[yVal, xVal] = 255
+    kernel = np.ones((5,5), np.uint8)
+    # mask = cv2.dilate(mask, kernel, iterations = 2)
+    # mask = cv2.erode(mask, kernel, iterations = 2)
+    mask = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+    cv2.imwrite("mask.png", mask)
     
-        kernel = np.ones((5,5), np.uint8)
-        # mask = cv2.dilate(mask, kernel, iterations = 2)
-        # mask = cv2.erode(mask, kernel, iterations = 2)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-        cv2.imwrite("mask.png", mask)
-        
-        masked = cv2.imread("mask.png")
-        print("Calling findContours")
-        _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        
-        cropName = 0
-        for cnt in contours:
-            rectList = []
+    masked = cv2.imread("mask.png")
+    print("Calling findContours")
+    _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    cropName = 0
+    for cnt in contours:
+        rectList = []
 
-            cropName += 1
-            rect = cv2.minAreaRect(cnt)
-            print("Adding to actualRect")
+        cropName += 1
+        rect = cv2.minAreaRect(cnt)
+        print("Adding to actualRect")
 
-            h, w = rect[1] # get width and height of rectangle
+        h, w = rect[1] # get width and height of rectangle
+        box = cv2.boxPoints(rect) # get vertices
+        box = np.int0(box) # round to nearest integer
+
+        # print("about to call crop2")
+        # # crop2(rect, box, masked, str(cropName))
+        # print("finished crop2")
+
+        rect = box.tolist() # save vertices as a python list
+
+        if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
+            rectList.append(rect)
+            # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
+            ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
+
+            print("Writing image with box drawn")
+            cv2.imwrite(resultName, ogImage) # Save image
+
+    actualRect = sorted(actualRect, key=getKey)
+    rect1 = actualRect[0]
+    print(actualRect)
+    box1 = cv2.boxPoints(rect1)
+    box1 = np.int0(box1)
+    cropR1 = crop2(rect1, box1, masked, str(cropName))
+    cv2.imwrite("cropR1.png", cropR1)
+
+    if len(actualRect) > 1:
+        rect2 = actualRect[1]
+        box2 = cv2.boxPoints(rect2)
+        box2 = np.int0(box2)
+        cropR2 = crop2(rect2, box2, masked, str(cropName))
+        cv2.imwrite("cropR2.png", cropR2)
+
+        out = boxAppend("cropR1.png", "cropR2.png")
+        cv2.imwrite("out.png", out)
+        template = cropR1
+
+        for i in range(len(actualRect)):
+            print("i is equal to" + str(i))
+            rect = actualRect[i] 
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
 
-            # print("about to call crop2")
-            # # crop2(rect, box, masked, str(cropName))
-            # print("finished crop2")
+            crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+            # cropResized = makeSameSize(template, crop, resultName)
+            cv2.imwrite("crop.png", crop)
 
-            rect = box.tolist() # save vertices as a python list
-
-            if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
-                rectList.append(rect)
-                # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
-                ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
-
-                print("Writing image with box drawn")
-                cv2.imwrite(resultName, ogImage) # Save image
-
-        actualRect = sorted(actualRect, key=getKey)
-        rect1 = actualRect[0]
-        print(actualRect)
-        box1 = cv2.boxPoints(rect1)
-        box1 = np.int0(box1)
-        cropR1 = crop2(rect1, box1, masked, str(cropName))
-        cv2.imwrite("cropR1.png", cropR1)
-
-        if len(actualRect) > 1:
-            rect2 = actualRect[1]
-            box2 = cv2.boxPoints(rect2)
-            box2 = np.int0(box2)
-            cropR2 = crop2(rect2, box2, masked, str(cropName))
-            cv2.imwrite("cropR2.png", cropR2)
-
-            out = boxAppend("cropR1.png", "cropR2.png")
-            cv2.imwrite("out.png", out)
-            template = cropR1
-
-            for i in range(len(actualRect)):
-                print("i is equal to" + str(i))
-                rect = actualRect[i] 
-                box = cv2.boxPoints(rect) # get vertices
-                box = np.int0(box) # round to nearest integer
-
-                crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-                # cropResized = makeSameSize(template, crop, resultName)
-                cv2.imwrite("crop.png", crop)
-
-                if i != 0 and i != 1:
-                    print("About to append")
-                    out = boxAppend("out.png", "crop.png")
-                    cv2.imwrite("out.png", out)
-            pad(out, "padout.png")
-            outP = cv2.imread("padout.png")
-            ocr(outP)
-            outName = "appended_" + resultName
-            cv2.imwrite(outName, out)
+            if i != 0 and i != 1:
+                print("About to append")
+                out = boxAppend("out.png", "crop.png")
+                cv2.imwrite("out.png", out)
+        pad(out, "padout.png")
+        outP = cv2.imread("padout.png")
+        ocr(outP)
+        outName = "appended_" + resultName
+        cv2.imwrite(outName, out)
 
 
 
@@ -389,10 +372,9 @@ def getColor(pixArray, imagePath, clusterNumber):
 
 
 """
-    Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
-    prediction was the specified color, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
+    Takes in a binary mask, returns the x and y coordinates of the white pixels in the image
 """
-def getColorThresh(pixArray, thresh, clusterNumber):
+def getColorThresh(thresh):
     height, width = thresh.shape 
 
     xList = []
@@ -401,19 +383,20 @@ def getColorThresh(pixArray, thresh, clusterNumber):
     for row in range(height):
         for col in range(width): 
             idx = row * width + col
-            if pixArray[idx] == clusterNumber: 
+            if thresh[idx] == 255: 
                 xList.append(col)
                 yList.append(row)
 
-    for i in range(len(pixArray)):
-        if pixArray[i] == clusterNumber:
-            row = i // width 
-            col = i % width
+    # for i in range(len(pixArray)):
+    #     if pixArray[i] == clusterNumber:
+    #         row = i // width 
+    #         col = i % width
 
-            xList.append(col)
-            yList.append(row)
+    #         xList.append(col)
+    #         yList.append(row)
 
     # print(locationList)
+
     return xList, yList
 
 
