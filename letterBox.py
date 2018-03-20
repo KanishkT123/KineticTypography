@@ -96,7 +96,7 @@ def getBoundingBinary(thresh, resultName):
     # Only 2 colors -- black and white
     numClusters = 2
 
-    height, width, channels = thresh.shape
+    height, width = thresh.shape
 
     print("Calling getPredictions")
     labels, clusterCenters = getPredictions(thresh, numClusters)
@@ -327,20 +327,28 @@ def getPredictions(image, numClusters):
     Takes in an image and returns all color coordinates for each pixel in the image as a list
 """
 def allCoords(image):
-    height, width, channels = image.shape 
+    # height, width, channels = image.shape 
+    height, width = image.shape 
 
     coordList = []
+
+    # for row in range(height):
+    #     for col in range(width):
+    #         pixel = image[row][col]
+
+    #         blueVal = pixel[0]
+    #         greenVal = pixel[1]
+    #         redVal = pixel[2]
+            
+    #         coords = [redVal, greenVal, blueVal]
+    #         coordList.append(coords)
 
     for row in range(height):
         for col in range(width):
             pixel = image[row][col]
 
-            blueVal = pixel[0]
-            greenVal = pixel[1]
-            redVal = pixel[2]
-            
-            coords = [redVal, greenVal, blueVal]
-            coordList.append(coords)
+            # coords = [redVal, greenVal, blueVal]
+            coordList.append(pixel)
 
     return coordList
 
@@ -385,7 +393,7 @@ def getColor(pixArray, imagePath, clusterNumber):
     prediction was the specified color, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
 """
 def getColorThresh(pixArray, thresh, clusterNumber):
-    height, width, channels = thresh.shape 
+    height, width = thresh.shape 
 
     xList = []
     yList = []
