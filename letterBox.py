@@ -109,12 +109,14 @@ def getBoundingBinary(thresh, resultName):
     _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     cropName = 0
+    actualRect = []
     for cnt in contours:
         rectList = []
 
         cropName += 1
         rect = cv2.minAreaRect(cnt)
         print("Adding to actualRect")
+        actualRect.append(rect)
 
         h, w = rect[1] # get width and height of rectangle
         box = cv2.boxPoints(rect) # get vertices
