@@ -134,6 +134,9 @@ def getBoundingBinary(thresh, resultName):
             cv2.imwrite(resultName, ogImage) # Save image
 
     actualRect = sorted(actualRect, key=getKey)
+    if len(actualRect) == 0:
+        print("uhh no... " + resultName)
+        break
     rect1 = actualRect[0]
     box1 = cv2.boxPoints(rect1)
     box1 = np.int0(box1)
