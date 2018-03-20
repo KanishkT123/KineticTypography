@@ -173,7 +173,8 @@ def getBoundingBinary(thresh, resultName):
         outP = cv2.imread("padout.png")
         txt = ocr(outP)
         with open("OCR_output.txt", "w") as text_file:
-            text_file.write(txt)
+            text = txt + "\n"
+            text_file.write(text)
         outName = "appended_" + resultName
         cv2.imwrite(outName, out)
 
