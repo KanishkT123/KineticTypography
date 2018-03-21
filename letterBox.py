@@ -412,8 +412,8 @@ def getColorThresh(thresh):
 def frameSubtract(imageName1, imageName2):
     image1 = cv2.imread(imageName1)
     image2 = cv2.imread(imageName2)
-    # image1 = cv2.medianBlur(image1,5)
-    # image2 = cv2.medianBlur(image2,5)
+    image1 = cv2.medianBlur(image1,5)
+    image2 = cv2.medianBlur(image2,5)
 
     #Subtraction and display of subtracted image
     #Better than im1-im2 as it prevents values from going below 0
@@ -480,6 +480,37 @@ def frameSubtract(imageName1, imageName2):
 
     return thresh
 
+
+"""
+    Subtracts image2 from image1 
+    If selecting frames individually, image2 is background
+"""
+def frameSubtractBin(imageName1, imageName2):
+    image1 = cv2.imread(imageName1)
+    image2 = cv2.imread(imageName2)
+
+    #Subtraction and display of subtracted image
+    #Better than im1-im2 as it prevents values from going below 0
+    image3 = cv2.subtract(image2, image1)
+
+    #Convert to gray and then display
+    image3 = cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY)
+
+    #############################
+    #############################
+    #### Mask
+    #############################
+
+    # Basic threshold
+    ret, thresh = cv2.threshold(image3, 0, 255, cv2.THRESH_BINARY)
+
+    print("About to write post-Threshold.tif")
+    cv2.imwrite("post-Threshold.tif", thresh)
+
+    return thresh
+
+
+
 def crop(rect):
     # rect is the RotatedRect (I got it from a contour...)
 
@@ -501,6 +532,7 @@ def crop(rect):
     getRectSubPix(rotated, rect_size, rect.center, cropped)
     
     cv2.imwrite("cropped.tif", cropped)
+
 
 
 """ This is the one that works
@@ -729,7 +761,7 @@ def processFrames(numFrames):
             secondFrame = rootDir + frameName + str2 + ext
 
             # Get the frame subtracted image
-            thresh = frameSubtract(secondFrame, firstFrame)
+            thresh = frameSubtractBin(secondFrame, firstFrame)
 
             # Check if there has been change between frames
             changed = detectChange(thresh)
