@@ -137,46 +137,47 @@ def getBoundingBinary(thresh, resultName):
     if len(actualRect) == 0:
         print("uhh no... " + resultName)
         break
-    rect1 = actualRect[0]
-    box1 = cv2.boxPoints(rect1)
-    box1 = np.int0(box1)
-    cropR1 = crop2(rect1, box1, masked, str(cropName))
-    cv2.imwrite("cropR1.png", cropR1)
+    else:
+        rect1 = actualRect[0]
+        box1 = cv2.boxPoints(rect1)
+        box1 = np.int0(box1)
+        cropR1 = crop2(rect1, box1, masked, str(cropName))
+        cv2.imwrite("cropR1.png", cropR1)
 
-    if len(actualRect) > 1:
-        rect2 = actualRect[1]
-        box2 = cv2.boxPoints(rect2)
-        box2 = np.int0(box2)
-        cropR2 = crop2(rect2, box2, masked, str(cropName))
-        cv2.imwrite("cropR2.png", cropR2)
+        if len(actualRect) > 1:
+            rect2 = actualRect[1]
+            box2 = cv2.boxPoints(rect2)
+            box2 = np.int0(box2)
+            cropR2 = crop2(rect2, box2, masked, str(cropName))
+            cv2.imwrite("cropR2.png", cropR2)
 
-        out = boxAppend("cropR1.png", "cropR2.png")
-        cv2.imwrite("out.png", out)
-        template = cropR1
+            out = boxAppend("cropR1.png", "cropR2.png")
+            cv2.imwrite("out.png", out)
+            template = cropR1
 
-        for i in range(len(actualRect)):
-            print("i is equal to" + str(i))
-            rect = actualRect[i] 
-            box = cv2.boxPoints(rect) # get vertices
-            box = np.int0(box) # round to nearest integer
+            for i in range(len(actualRect)):
+                print("i is equal to" + str(i))
+                rect = actualRect[i] 
+                box = cv2.boxPoints(rect) # get vertices
+                box = np.int0(box) # round to nearest integer
 
-            crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-            # cropResized = makeSameSize(template, crop, resultName)
-            cv2.imwrite("crop.png", crop)
+                crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
+                # cropResized = makeSameSize(template, crop, resultName)
+                cv2.imwrite("crop.png", crop)
 
-            if i != 0 and i != 1:
-                out = boxAppend("out.png", "crop.png")
-                cv2.imwrite("out.png", out)
-        pad(out, "padout.png")
-        outP = cv2.imread("padout.png")
-        txt = ocr(outP)
-        print("About to add ocr output")
+                if i != 0 and i != 1:
+                    out = boxAppend("out.png", "crop.png")
+                    cv2.imwrite("out.png", out)
+            pad(out, "padout.png")
+            outP = cv2.imread("padout.png")
+            txt = ocr(outP)
+            print("About to add ocr output")
 
-        with open("OCR_output.txt", "a") as text_file:
-            text = txt + "\n"
-            text_file.write(text)
-        outName = "appended_" + resultName
-        cv2.imwrite(outName, out)
+            with open("OCR_output.txt", "a") as text_file:
+                text = txt + "\n"
+                text_file.write(text)
+            outName = "appended_" + resultName
+            cv2.imwrite(outName, out)
 
 
 
