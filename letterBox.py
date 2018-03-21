@@ -136,7 +136,7 @@ def getBoundingBinary(thresh, resultName):
     actualRect = sorted(actualRect, key=getKey)
     if len(actualRect) == 0:
         print("uhh no... " + resultName)
-        break
+        return
     else:
         rect1 = actualRect[0]
         box1 = cv2.boxPoints(rect1)
