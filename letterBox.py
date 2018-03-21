@@ -757,27 +757,27 @@ def processFrames(numFrames):
     ext = ".png"
 
     # Loop through each frame
-    for i in range(1, numFrames + 1):
-        # If not the last frame
-        if i != numFrames + 1:
-            # Get four-digit versions by calling helper function
-            str1 = makeFour(i)
-            str2 = makeFour(i+1)
-            
-            # Create the filenames for both frames
-            firstFrame = rootDir + frameName + str1 + ext
-            secondFrame = rootDir + frameName + str2 + ext
+    for i in range(1, numFrames):
+        # # If not the last frame
+        # if i != numFrames + 1:
+        # Get four-digit versions by calling helper function
+        str1 = makeFour(i)
+        str2 = makeFour(i+1)
+        
+        # Create the filenames for both frames
+        firstFrame = rootDir + frameName + str1 + ext
+        secondFrame = rootDir + frameName + str2 + ext
 
-            # Get the frame subtracted image
-            thresh = frameSubtractBin(secondFrame, firstFrame)
+        # Get the frame subtracted image
+        thresh = frameSubtractBin(secondFrame, firstFrame)
 
-            # Check if there has been change between frames
-            changed = detectChange(thresh)
+        # Check if there has been change between frames
+        changed = detectChange(thresh)
 
-            if changed == True:
-                resultPath = "./Results_2/out" + str(i+1) + ".png"
+        if changed == True:
+            resultPath = "./Results_2/out" + str(i+1) + ".png"
 
-                getBoundingBinary(thresh, resultPath)
+            getBoundingBinary(thresh, resultPath)
 
 
 
