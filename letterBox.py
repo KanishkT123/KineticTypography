@@ -504,7 +504,7 @@ def frameSubtractBin(imageName1, imageName2):
 
 
     #Binary threshold, laplace edge detection, display, save
-    ret, thresh = cv2.threshold(image3, 5, 255, cv2.THRESH_BINARY)
+    ret, thresh = cv2.threshold(image3, 2, 255, cv2.THRESH_BINARY)
     ret, thresh = cv2.threshold(thresh, 1, 255, cv2.THRESH_BINARY)
 
 
@@ -716,8 +716,8 @@ def detectChange(thresh):
     energy = np.sum(thresh)
 
     # Through trial, we have concluded that more than 10 pixels must be white
-    # so maybe try like 25
-    if energy > 6375:
+    # so maybe try like 30
+    if energy > 7650:
         return True
 
     # If almost everything is black, nothing changed between frames
