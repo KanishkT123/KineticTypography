@@ -173,7 +173,7 @@ def getBoundingBinary(thresh, resultName):
             txt = ocr(outP)
             print("About to add ocr output")
 
-            with open("OCR_output.txt", "a") as text_file:
+            with open("OCR_output_all.txt", "a") as text_file:
                 text = txt + "\n"
                 text_file.write(text)
             outName = "appended_" + resultName
@@ -752,7 +752,7 @@ def makeFour(num):
 """
 def processFrames(numFrames):
     out = ""
-    rootDir = "./Frames"
+    rootDir = "./Frames_2"
     frameName = "/frame"
     ext = ".png"
 
