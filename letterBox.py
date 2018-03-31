@@ -873,7 +873,8 @@ if __name__=='__main__':
 
     tr = sys.argv[1]
     oc = sys.argv[3]
-    compareText(tr, oc)
+    num = compareText(tr, oc)
+    print(num)
 
     # imagePath = './movie635.jpg'
     # colors = 3
