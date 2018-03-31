@@ -786,15 +786,72 @@ def processFrames(numFrames):
 """
 def compareText(transcriptName, ocr):
     # Split transcript text file by character
-    transcript = open(“test.txt”, “r”) 
+    transcript = open(transcriptName, "r") 
+    ocrText = open(ocr, "r")
     letterL = []
-    for line in file: 
+    for line in transcript: 
         for word in line:
-            letterL.extend([ch.lower() for ch in word])
+            letterL.extend([ch.lower() for ch in word if ch.isalpha()])
     print(letterL)
 
+    compareL = []
+    for line in ocrText: 
+        for word in line:
+            compareL.extend([ch.lower() for ch in word if ch.isalpha()])
+    print(compareL)
+    # example of letterL = ['t', 'h', 'a', 't', 't', 'h', 'i', 's', 'w']
 
+    """
+    Calculation of WER with Levenshtein distance.
 
+    Works only for iterables up to 254 elements (uint8).
+    O(nm) time ans space complexity.
+
+    Parameters
+    ----------
+    r : list
+    h : list
+
+    Returns
+    -------
+    int
+
+    Examples
+    --------
+    >>> wer("who is there".split(), "is there".split())
+    1
+    >>> wer("who is there".split(), "".split())
+    3
+    >>> wer("".split(), "who is there".split())
+    3
+    """
+    # initialisation
+    import numpy
+
+    r = letterL
+    h = compareL
+
+    d = numpy.zeros((len(r)+1)*(len(h)+1), dtype=numpy.uint8)
+    d = d.reshape((len(r)+1, len(h)+1))
+    for i in range(len(r)+1):
+        for j in range(len(h)+1):
+            if i == 0:
+                d[0][j] = j
+            elif j == 0:
+                d[i][0] = i
+
+    # computation
+    for i in range(1, len(r)+1):
+        for j in range(1, len(h)+1):
+            if r[i-1] == h[j-1]:
+                d[i][j] = d[i-1][j-1]
+            else:
+                substitution = d[i-1][j-1] + 1
+                insertion    = d[i][j-1] + 1
+                deletion     = d[i-1][j] + 1
+                d[i][j] = min(substitution, insertion, deletion)
+
+    return d[len(r)][len(h)]
 
 ############
 """ MAIN """
@@ -814,6 +871,10 @@ if __name__=='__main__':
     colors = int(sys.argv[2])
     resultPath = "./Results/" + sys.argv[3]
 
+    tr = sys.argv[1]
+    oc = sys.argv[3]
+    compareText(tr, oc)
+
     # imagePath = './movie635.jpg'
     # colors = 3
     img2 = "./Images/son2.png"
@@ -829,10 +890,12 @@ if __name__=='__main__':
     # getBounding(imagePath, colors, resultPath)
     
     numFrames = 2249
-    processFrames(numFrames)
+    # processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
 
     # ffmpeg -i video.webm thumb%04d.jpg -hide_banner
     # ffmpeg -i video.webm -vf fps=1/5 thumb%04d.jpg -hide_banner
     # youtube-dl -o dreamSpeech.mp4 "url"
+
+    # https://www.youtube.com/watch?v=yjENu24QBgs
