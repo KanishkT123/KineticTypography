@@ -814,7 +814,7 @@ if __name__=='__main__':
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
     
-    numFrames = 450
+    numFrames = 2249
     processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
