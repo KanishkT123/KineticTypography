@@ -792,13 +792,15 @@ def compareText(transcriptName, ocr):
     for line in transcript: 
         for word in line:
             letterL.extend([ch.lower() for ch in word if ch.isalpha()])
-    print(letterL)
+    print("The length of transcript is")
+    print(len(letterL))
 
     compareL = []
     for line in ocrText: 
         for word in line:
             compareL.extend([ch.lower() for ch in word if ch.isalpha()])
-    print(compareL)
+    print("The length of ocr is")
+    print(len(compareL))
     # example of letterL = ['t', 'h', 'a', 't', 't', 'h', 'i', 's', 'w']
 
     """
@@ -825,13 +827,11 @@ def compareText(transcriptName, ocr):
     >>> wer("".split(), "who is there".split())
     3
     """
-    # initialisation
-    import numpy
 
     r = letterL
     h = compareL
 
-    d = numpy.zeros((len(r)+1)*(len(h)+1), dtype=numpy.uint8)
+    d = np.zeros((len(r)+1)*(len(h)+1), dtype=np.uint8)
     d = d.reshape((len(r)+1, len(h)+1))
     for i in range(len(r)+1):
         for j in range(len(h)+1):
