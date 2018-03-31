@@ -780,6 +780,20 @@ def processFrames(numFrames):
             getBoundingBinary(thresh, resultPath)
 
 
+"""
+    Uses NLTK in order to output a character error rate between the actual
+    video transcript and the OCR version.
+"""
+def compareText(transcriptName, ocr):
+    # Split transcript text file by character
+    transcript = open(“test.txt”, “r”) 
+    letterL = []
+    for line in file: 
+        for word in line:
+            letterL.extend([ch.lower() for ch in word])
+    print(letterL)
+
+
 
 
 ############
