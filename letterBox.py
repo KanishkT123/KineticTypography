@@ -752,8 +752,8 @@ def makeFour(num):
 """
 def processFrames(numFrames):
     out = ""
-    rootDir = "./Frames_2"
-    frameName = "/frame"
+    rootDir = "./Frames_3"
+    frameName = "/thumb"
     ext = ".png"
 
     # Loop through each frame
@@ -871,10 +871,10 @@ if __name__=='__main__':
     colors = int(sys.argv[2])
     resultPath = "./Results/" + sys.argv[3]
 
-    tr = sys.argv[1]
-    oc = sys.argv[3]
-    num = compareText(tr, oc)
-    print(num)
+    # tr = sys.argv[1]
+    # oc = sys.argv[3]
+    # num = compareText(tr, oc)
+    # print(num)
 
     # imagePath = './movie635.jpg'
     # colors = 3
@@ -890,8 +890,8 @@ if __name__=='__main__':
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
     
-    numFrames = 2249
-    # processFrames(numFrames)
+    numFrames = 1843
+    processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
 
@@ -900,3 +900,4 @@ if __name__=='__main__':
     # youtube-dl -o dreamSpeech.mp4 "url"
 
     # https://www.youtube.com/watch?v=yjENu24QBgs
+    # https://www.youtube.com/watch?v=QG4smsvZuiE 
