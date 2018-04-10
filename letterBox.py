@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
 from operator import itemgetter
+from nltk.metrics import *
 
 
 """
@@ -788,70 +789,29 @@ def compareText(transcriptName, ocr):
     # Split transcript text file by character
     transcript = open(transcriptName, "r") 
     ocrText = open(ocr, "r")
-    letterL = []
+    letterS = ""
     for line in transcript: 
         for word in line:
-            letterL.extend([ch.lower() for ch in word if ch.isalpha()])
+            for ch in word:
+                if ch.isalpha():
+                    letterS += ch.lower()
     print("The length of transcript is")
-    print(len(letterL))
+    print(len(letterS))
 
-    compareL = []
+    compareS = ""
     for line in ocrText: 
         for word in line:
-            compareL.extend([ch.lower() for ch in word if ch.isalpha()])
+            for ch in word:
+                if ch.isalpha():
+                    compareS += ch.lower()
     print("The length of ocr is")
-    print(len(compareL))
+    print(len(compareS))
     # example of letterL = ['t', 'h', 'a', 't', 't', 'h', 'i', 's', 'w']
 
-    """
-    Calculation of WER with Levenshtein distance.
+    dist = nltk.metrics.distance.edit_distance(letterS, compareS, False)
+    print(dist)
+    return dist
 
-    Works only for iterables up to 254 elements (uint8).
-    O(nm) time ans space complexity.
-
-    Parameters
-    ----------
-    r : list
-    h : list
-
-    Returns
-    -------
-    int
-
-    Examples
-    --------
-    >>> wer("who is there".split(), "is there".split())
-    1
-    >>> wer("who is there".split(), "".split())
-    3
-    >>> wer("".split(), "who is there".split())
-    3
-    """
-
-    r = letterL
-    h = compareL
-
-    d = np.zeros((len(r)+1)*(len(h)+1), dtype=np.uint8)
-    d = d.reshape((len(r)+1, len(h)+1))
-    for i in range(len(r)+1):
-        for j in range(len(h)+1):
-            if i == 0:
-                d[0][j] = j
-            elif j == 0:
-                d[i][0] = i
-
-    # computation
-    for i in range(1, len(r)+1):
-        for j in range(1, len(h)+1):
-            if r[i-1] == h[j-1]:
-                d[i][j] = d[i-1][j-1]
-            else:
-                substitution = d[i-1][j-1] + 1
-                insertion    = d[i][j-1] + 1
-                deletion     = d[i-1][j] + 1
-                d[i][j] = min(substitution, insertion, deletion)
-
-    return d[len(r)][len(h)]
 
 ############
 """ MAIN """
