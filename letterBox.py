@@ -317,8 +317,8 @@ def getPredictions(image, numClusters):
     Takes in an image and returns all color coordinates for each pixel in the image as a list
 """
 def allCoords(image):
-    # height, width, channels = image.shape 
-    height, width = image.shape 
+    height, width, channels = image.shape 
+    # height, width = image.shape 
 
     coordList = []
 
