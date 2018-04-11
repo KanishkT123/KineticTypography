@@ -903,7 +903,7 @@ def getBounding(imagePath, numClusters):
                 image = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
                 # cv2.imshow("image", image)
-                cv2.imwrite("result1.png", image)
+                cv2.imwrite("result_starbs.png", image)
                 # cv2.waitKey(0)
                 # cv2.destroyAllWindows()
 
@@ -958,7 +958,7 @@ if __name__=='__main__':
     # xMax = 1265
     # yMax = 420
 
-    imagePath = './movie635.jpg'
+    imagePath = './Images/starbs.png'
     # image = cv2.imread(imagePath)
     # height, width, channels = image.shape
 
