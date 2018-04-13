@@ -642,7 +642,7 @@ def findColor(croppedRotated):
             redVal = pixel[2]
             
             coords = (redVal, greenVal, blueVal)
-            if (coords in D):
+            if (coords in colorD):
                 colorD[coords] += 1
             else:
                 colorD[coords] = 1
