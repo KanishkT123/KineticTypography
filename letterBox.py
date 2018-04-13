@@ -824,16 +824,16 @@ if __name__=='__main__':
         print("Usage: cart.py [image name] [number of colors] [result image name]")
         sys.exit("Please make sure to include the image filepath, number of colors, and result image name as command-line arguments")
 
-    # Save arguments as variables
-    imagePath = "./Images/" + sys.argv[1]
+    # # Save arguments as variables
+    # imagePath = "./Images/" + sys.argv[1]
 
-    # imagePath = sys.argv[1]
-    colors = int(sys.argv[2])
-    resultPath = "./Results/" + sys.argv[3]
+    # # imagePath = sys.argv[1]
+    # colors = int(sys.argv[2])
+    # resultPath = "./Results/" + sys.argv[3]
 
-    # tr = sys.argv[1]
-    # oc = sys.argv[3]
-    # num = compareText(tr, oc)
+    tr = sys.argv[1]
+    oc = sys.argv[3]
+    num = compareText(tr, oc)
     # print(num)
 
     # imagePath = './movie635.jpg'
@@ -848,7 +848,7 @@ if __name__=='__main__':
     # thresh = frameSubtract(img1, img2)
 
     # print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
+    # getBounding(imagePath, colors, resultPath)
     
     # numFrames = 1843
     # processFrames(numFrames)
