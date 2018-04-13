@@ -83,8 +83,8 @@ def getBounding(imagePath, numClusters, resultName):
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 rectList.append(rect)
-                # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
-                ogImage = cv2.drawContours(image, [box], -1, (255,0,0), 2)
+                ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
+                # ogImage = cv2.drawContours(image, [box], -1, (255,0,0), 2)
 
                 print("Writing image with box drawn")
                 cv2.imwrite(resultName, ogImage) # Save image
