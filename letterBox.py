@@ -808,9 +808,9 @@ def compareText(transcriptName, ocr):
     print(len(compareS))
     # example of letterL = ['t', 'h', 'a', 't', 't', 'h', 'i', 's', 'w']
 
-    # dist = nltk.metrics.distance.edit_distance(letterS, compareS, False)
-    # print(dist)
-    # return dist
+    dist = nltk_metrics_distance.edit_distance(letterS, compareS, False)
+    print(dist)
+    return dist
 
 
 ############
