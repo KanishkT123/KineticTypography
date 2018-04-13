@@ -641,7 +641,7 @@ def findColor(croppedRotated):
             greenVal = pixel[1]
             redVal = pixel[2]
             
-            coords = [redVal, greenVal, blueVal]
+            coords = (redVal, greenVal, blueVal)
             colorD[coords] += 1
     print("This is the color of this rectangle: ")
     print(max(colorD.items(), key=operator.itemgetter(1))[0])
