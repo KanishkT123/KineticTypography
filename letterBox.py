@@ -76,6 +76,7 @@ def getBounding(imagePath, numClusters, resultName):
 
             # print("about to call crop2")
             croppedRotated = crop2(rect, box, image, str(cropName))
+            cv2.imwrite("MODE_crop.png", croppedRotated)
             findColor(croppedRotated)
             # print("finished crop2")
 
@@ -334,6 +335,7 @@ def allCoords(image):
             
             coords = [redVal, greenVal, blueVal]
             coordList.append(coords)
+    
 
     # for row in range(height):
     #     for col in range(width):
@@ -626,13 +628,31 @@ def crop2(rect, box, img, resultName):
     cropped rectangle
 """
 def findColor(croppedRotated):
+    height, width, channels = croppedRotated.shape 
+    # height, width = image.shape 
+
+    colorD = {}
+
+    for row in range(height):
+        for col in range(width):
+            pixel = croppedRotated[row][col]
+
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
+            
+            coords = [redVal, greenVal, blueVal]
+            colorD[coords] += 1
     print("This is the color of this rectangle: ")
-    # Since opencv images are technically numpy arrays, use scipy to determine mode
-    mode, count = stats.mode(croppedRotated, axis=None)
-    print(mode)
-    print("\n This is the count of pixels with this color: ")
-    print(count)
-    print("\n")
+    print(max(colorD.items(), key=operator.itemgetter(1))[0])
+
+    # print("This is the color of this rectangle: ")
+    # # Since opencv images are technically numpy arrays, use scipy to determine mode
+    # mode, count = stats.mode(croppedRotated, axis=None)
+    # print(mode)
+    # print("\n This is the count of pixels with this color: ")
+    # print(count)
+    # print("\n")
     
 
 def pad(croppedRotated, resultName):
