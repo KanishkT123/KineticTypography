@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
 from operator import itemgetter
-# from nltk.metrics import *
+import nltk_metrics_distance
 
 
 """
