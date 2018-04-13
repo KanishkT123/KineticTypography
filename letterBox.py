@@ -7,6 +7,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
+from scipy import stats
 from operator import itemgetter
 import nltk_metrics_distance
 
@@ -26,12 +27,12 @@ def getBounding(imagePath, numClusters, resultName):
     image = cv2.imread(imagePath)
     # img_copy = cv2.imread(imagePath)
 
-    thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
+    # thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
 
     # image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
    
-    print("About to write maskedIm.png")
-    cv2.imwrite("maskedIm.png", image)
+    # print("About to write maskedIm.png")
+    # cv2.imwrite("maskedIm.png", image)
 
     height, width, channels = image.shape
 
@@ -74,7 +75,8 @@ def getBounding(imagePath, numClusters, resultName):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            # # crop2(rect, box, masked, str(cropName))
+            croppedRotated = crop2(rect, box, masked, str(cropName))
+            findColor(croppedRotated)
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -322,23 +324,23 @@ def allCoords(image):
 
     coordList = []
 
-    # for row in range(height):
-    #     for col in range(width):
-    #         pixel = image[row][col]
-
-    #         blueVal = pixel[0]
-    #         greenVal = pixel[1]
-    #         redVal = pixel[2]
-            
-    #         coords = [redVal, greenVal, blueVal]
-    #         coordList.append(coords)
-
     for row in range(height):
         for col in range(width):
             pixel = image[row][col]
 
-            # coords = [redVal, greenVal, blueVal]
-            coordList.append(pixel)
+            blueVal = pixel[0]
+            greenVal = pixel[1]
+            redVal = pixel[2]
+            
+            coords = [redVal, greenVal, blueVal]
+            coordList.append(coords)
+
+    # for row in range(height):
+    #     for col in range(width):
+    #         pixel = image[row][col]
+
+    #         # coords = [redVal, greenVal, blueVal]
+    #         coordList.append(pixel)
 
     return coordList
 
@@ -619,6 +621,20 @@ def crop2(rect, box, img, resultName):
     # cv2.imwrite(resultName, croppedRotated)
     return croppedRotated
 
+"""
+    Uses scipy mode function to return the most common color in one 
+    cropped rectangle
+"""
+def findColor(croppedRotated):
+    print("This is the color of this rectangle: ")
+    # Since opencv images are technically numpy arrays, use scipy to determine mode
+    mode, count = stats.mode(croppedRotated, axis=None)
+    print(mode)
+    print("\n This is the count of pixels with this color: ")
+    print(count)
+    print("\n")
+    
+
 def pad(croppedRotated, resultName):
     # sets border type to constant
     borderType = cv2.BORDER_CONSTANT
@@ -825,15 +841,15 @@ if __name__=='__main__':
         sys.exit("Please make sure to include the image filepath, number of colors, and result image name as command-line arguments")
 
     # # Save arguments as variables
-    # imagePath = "./Images/" + sys.argv[1]
+    imagePath = "./Images/" + sys.argv[1]
 
     # # imagePath = sys.argv[1]
-    # colors = int(sys.argv[2])
-    # resultPath = "./Results/" + sys.argv[3]
+    colors = int(sys.argv[2])
+    resultPath = "./Results/" + sys.argv[3]
 
-    tr = sys.argv[1]
-    oc = sys.argv[3]
-    num = compareText(tr, oc)
+    # tr = sys.argv[1]
+    # oc = sys.argv[3]
+    # num = compareText(tr, oc)
     # print(num)
 
     # imagePath = './movie635.jpg'
@@ -848,7 +864,7 @@ if __name__=='__main__':
     # thresh = frameSubtract(img1, img2)
 
     # print("About to go into getBounding \n")
-    # getBounding(imagePath, colors, resultPath)
+    getBounding(imagePath, colors, resultPath)
     
     # numFrames = 1843
     # processFrames(numFrames)

@@ -939,7 +939,8 @@ def findCorners(vertices):
         orderedCoords[3] = sortedLeft[2]
     
     return orderedCoords # topLeft, bottomLeft, topRIght, bottomRight
-                
+
+   
 
 
 if __name__=='__main__':
