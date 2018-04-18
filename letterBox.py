@@ -186,118 +186,6 @@ def getBoundingBinary(thresh, resultName):
 
 
 """
-    Get bounding boxes around each letter 
-"""
-def getBoundingwithFrameSub(imagePath, numClusters, resultName):
-    ogImage = cv2.imread(imagePath) # Save original image
-    image = cv2.imread(imagePath)
-    # img_copy = cv2.imread(imagePath)
-
-    thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
-
-    # image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
-   
-    print("About to write maskedIm.png")
-    cv2.imwrite("maskedIm.png", image)
-
-    height, width, channels = image.shape
-
-    print("Calling getPredictions")
-    labels, clusterCenters = getPredictions(image, numClusters)
-
-    print("Going into for loop for number of clusters")
-    for cluster in range(numClusters):
-        mask = np.zeros(image.shape[:2], np.uint8)
-
-        print("Calling getColor")
-        xList, yList = getColor(labels, imagePath, cluster)
-        print("Finished getColor")
-        for i in range(len(xList)):
-            xVal = xList[i]
-            yVal = yList[i]
-
-            mask[yVal, xVal] = 255
-    
-        kernel = np.ones((5,5),np.uint8)
-        # mask = cv2.dilate(mask, kernel, iterations = 2)
-        # mask = cv2.erode(mask, kernel, iterations = 2)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-        cv2.imwrite("mask.png", mask)
-        
-        masked = cv2.imread("mask.png")
-        print("Calling findContours")
-        _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        
-        cropName = 0
-        actualRect = []
-        for cnt in contours:
-            rectList = []
-
-            cropName += 1
-            rect = cv2.minAreaRect(cnt)
-            print("Adding to actualRect")
-            actualRect.append(rect)
-
-            h, w = rect[1] # get width and height of rectangle
-            box = cv2.boxPoints(rect) # get vertices
-            box = np.int0(box) # round to nearest integer
-
-            # print("about to call crop2")
-            # # crop2(rect, box, masked, str(cropName))
-            # print("finished crop2")
-
-            rect = box.tolist() # save vertices as a python list
-
-            if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
-                rectList.append(rect)
-                # ogImage = cv2.drawContours(ogImage, [box], -1, (255,0,0), 2)
-                ogImage = cv2.drawContours(masked, [box], -1, (255,0,0), 2)
-
-                print("Writing image with box drawn")
-                cv2.imwrite(resultName, ogImage) # Save image
-
-        actualRect = sorted(actualRect, key=getKey)
-        rect1 = actualRect[0]
-        print(actualRect)
-        box1 = cv2.boxPoints(rect1)
-        box1 = np.int0(box1)
-        cropR1 = crop2(rect1, box1, masked, str(cropName))
-        cv2.imwrite("cropR1.png", cropR1)
-
-        if len(actualRect) > 1:
-            rect2 = actualRect[1]
-            box2 = cv2.boxPoints(rect2)
-            box2 = np.int0(box2)
-            cropR2 = crop2(rect2, box2, masked, str(cropName))
-            cv2.imwrite("cropR2.png", cropR2)
-
-            out = boxAppend("cropR1.png", "cropR2.png")
-            cv2.imwrite("out.png", out)
-            template = cropR1
-
-            for i in range(len(actualRect)):
-                print("i is equal to" + str(i))
-                rect = actualRect[i] 
-                box = cv2.boxPoints(rect) # get vertices
-                box = np.int0(box) # round to nearest integer
-
-                crop = crop2(rect, box, masked, str(cropName)) # create cropped letter image
-                # cropResized = makeSameSize(template, crop, resultName)
-                cv2.imwrite("crop.png", crop)
-
-                if i != 0 and i != 1:
-                    print("About to append")
-                    out = boxAppend("out.png", "crop.png")
-                    cv2.imwrite("out.png", out)
-            pad(out, "padout.png")
-            outP = cv2.imread("padout.png")
-            ocr(outP)
-            outName = "appended_" + resultName
-            cv2.imwrite(outName, out)
-
-
-
-"""
     Does the same thing as findLines but using all coordinates
 """
 def getPredictions(image, numClusters):
@@ -523,7 +411,9 @@ def frameSubtractBin(imageName1, imageName2):
     return thresh
 
 
-
+"""
+Does not work correctly, use crop2
+"""
 def crop(rect):
     # rect is the RotatedRect (I got it from a contour...)
 
@@ -658,6 +548,9 @@ def findColor(croppedRotated):
     # print("\n")
     
 
+"""
+    Takes in the cropped, rotated letter then pads it with black, and writes it out
+"""
 def pad(croppedRotated, resultName):
     # sets border type to constant
     borderType = cv2.BORDER_CONSTANT
@@ -681,7 +574,7 @@ def pad(croppedRotated, resultName):
     cv2.imwrite(resultName, dst)
 
 
-""" img is an opencv image
+""" img is an opencv image, calls tesseract and return the ocr text output 
 """
 def ocr(img):
     # Calling pytesseract on the image
