@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB1ECDBA20EBE70800649CAB /* NewBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1ECDB920EBE70800649CAB /* NewBookViewController.swift */; };
 		EB1ECDBC20EC1EA000649CAB /* NewBookDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1ECDBB20EC1EA000649CAB /* NewBookDetailsViewController.swift */; };
+		EB1ECDC220EC2DC500649CAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB1ECDC020EC2DC500649CAB /* Main.storyboard */; };
 		EB44D17820D19188007A5D77 /* TeacherBooksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB44D17720D19188007A5D77 /* TeacherBooksTableViewController.swift */; };
 		EB44D17F20D1BB59007A5D77 /* SavedVideosTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB44D17E20D1BB59007A5D77 /* SavedVideosTableViewController.swift */; };
 		EB55EA1E20DD97FE00F28E69 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */; };
@@ -30,7 +31,6 @@
 		EB921F9C20CF267000CD6FE3 /* LiteraryDevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB921F9B20CF267000CD6FE3 /* LiteraryDevicesTableViewController.swift */; };
 		EB921F9E20CF35E500CD6FE3 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB921F9D20CF35E500CD6FE3 /* ModelController.swift */; };
 		EBA2004320E3F6E900E301A8 /* TableSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA2004220E3F6E900E301A8 /* TableSegue.swift */; };
-		EBA2004520E3F8DC00E301A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBA2004420E3F8DC00E301A8 /* Main.storyboard */; };
 		EBAA0EB720D3143700552B40 /* SecurityQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAA0EB620D3143700552B40 /* SecurityQuestionViewController.swift */; };
 		EBCF2DCF20C59E7300862F7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF2DCE20C59E7300862F7F /* AppDelegate.swift */; };
 		EBCF2DD120C59E7300862F7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF2DD020C59E7300862F7F /* ViewController.swift */; };
@@ -48,6 +48,7 @@
 /* Begin PBXFileReference section */
 		EB1ECDB920EBE70800649CAB /* NewBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBookViewController.swift; sourceTree = "<group>"; };
 		EB1ECDBB20EC1EA000649CAB /* NewBookDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBookDetailsViewController.swift; sourceTree = "<group>"; };
+		EB1ECDC120EC2DC500649CAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EB44D17720D19188007A5D77 /* TeacherBooksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherBooksTableViewController.swift; sourceTree = "<group>"; };
 		EB44D17E20D1BB59007A5D77 /* SavedVideosTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedVideosTableViewController.swift; sourceTree = "<group>"; };
 		EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
@@ -69,7 +70,6 @@
 		EB921F9B20CF267000CD6FE3 /* LiteraryDevicesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteraryDevicesTableViewController.swift; sourceTree = "<group>"; };
 		EB921F9D20CF35E500CD6FE3 /* ModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		EBA2004220E3F6E900E301A8 /* TableSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSegue.swift; sourceTree = "<group>"; };
-		EBA2004420E3F8DC00E301A8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../../../.Trash/Main.storyboard; sourceTree = "<group>"; };
 		EBAA0EB620D3143700552B40 /* SecurityQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityQuestionViewController.swift; sourceTree = "<group>"; };
 		EBCF2DCB20C59E7200862F7F /* Reading Kitty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Kitty.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBCF2DCE20C59E7300862F7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				EBCF2DCE20C59E7300862F7F /* AppDelegate.swift */,
-				EBA2004420E3F8DC00E301A8 /* Main.storyboard */,
+				EB1ECDC020EC2DC500649CAB /* Main.storyboard */,
 				EBCF2DD520C59E7500862F7F /* Assets.xcassets */,
 				EBCF2DD720C59E7500862F7F /* LaunchScreen.storyboard */,
 				EBCF2DDA20C59E7500862F7F /* Info.plist */,
@@ -279,10 +279,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB1ECDC220EC2DC500649CAB /* Main.storyboard in Resources */,
 				EBCF2DD920C59E7500862F7F /* LaunchScreen.storyboard in Resources */,
 				EBCF2DD620C59E7500862F7F /* Assets.xcassets in Resources */,
 				EB6FA60220D467C000EF0E5A /* LA Devotee.mp4 in Resources */,
-				EBA2004520E3F8DC00E301A8 /* Main.storyboard in Resources */,
 				EB6FA5FC20D4355F00EF0E5A /* Emperor's New Clothes.mp4 in Resources */,
 				EBF44F7620D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml in Resources */,
 			);
@@ -331,6 +331,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		EB1ECDC020EC2DC500649CAB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EB1ECDC120EC2DC500649CAB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		EBCF2DD720C59E7500862F7F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
