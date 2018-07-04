@@ -14,32 +14,28 @@ class TeacherWelcomeViewController: UIViewController {
     var modelController = ModelController()
     
     
-    /********** VIEW FUNCTIONS **********/
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
     /********** SEGUE FUNCTIONS **********/
-    // When user clicks the back button, it send them to the Welcome scene
+    // When user clicks the back button, it send them to the Welcome scene.
     @IBAction func backButton(_ sender: Any) {
         // Go to Welcome
         self.performSegue(withIdentifier: "Welcome", sender: self)
     }
     
-    // When user clicks on the levels button, it sends them to the TeacherLevels scene
+    // When user clicks on the levels button, it sends them to the TeacherLevels scene.
     @IBAction func levelsButton(_ sender: Any) {
-        // Go to TeacherLevels
+        // Go to the TeacherLevels scene.
         self.performSegue(withIdentifier: "TeacherLevels", sender: self)
     }
     
-    // When user clicks on the saved videos button, it sends them to the SavedVideos scene
+    // When user clicks on the new book button, it sends them to the NewBook scene.
+    @IBAction func newBookButton(_ sender: Any) {
+        // Go to the NewBook scene.
+        self.performSegue(withIdentifier: "NewBook", sender: self)
+    }
+    
+    // When user clicks on the saved videos button, it sends them to the SavedVideos scene.
     @IBAction func savedVideosButton(_ sender: Any) {
-        // Go to SavedVideos
+        // Go to the SavedVideos scene.
         self.performSegue(withIdentifier: "SavedVideos", sender: self)
     }
     
@@ -54,6 +50,12 @@ class TeacherWelcomeViewController: UIViewController {
         // Update the modelControlelr in TeacherLevels
         if segue.destination is TeacherLevelsViewController {
             let Destination = segue.destination as? TeacherLevelsViewController
+            Destination?.modelController = modelController
+        }
+        
+        // Update the modelControlelr in NewBook
+        if segue.destination is NewBookViewController {
+            let Destination = segue.destination as? NewBookViewController
             Destination?.modelController = modelController
         }
         

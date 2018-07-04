@@ -48,27 +48,33 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
 
     
     /********** SEGUE FUNCTIONS **********/
-    // When the user clicks the back button, it sends them to the ... scene.
+    // When the user clicks the back button, it sends them to the TeacherWelcome scene.
     @IBAction func backButton(_ sender: Any) {
-        // Go to the ... scene.
-        //self.performSegue(withIdentifier: "", sender: self)
+        // Go to the TeacherWelcome scene.
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
     }
     
-    // When the user clicks the next button, it sends them to the ... scene if a title has been entered. Otherwise, an error message is shown.
+    // When the user clicks the next button, it sends them to the NewBookDetails scene if a title has been entered. Otherwise, an error message is shown.
     @IBAction func nextButton(_ sender: Any) {
         if bookTitle == "" {
             error.textColor = UIColor.red
         } else {
-            // Go to the ... scene.
-            //self.performSegue(withIdentifier: "", sender: self)
+            // Go to the NewBookDetails scene.
+            self.performSegue(withIdentifier: "NewBookDetails", sender: self)
         }
     }
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in ...
-        if segue.destination is ViewController {
-            let Destination = segue.destination as? ViewController
+        // Update the modelController in the TeacherWelcome scene.
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.modelController = modelController
+        }
+        
+        // Update the modelController in the NewBookDetails scene.
+        if segue.destination is NewBookDetailsViewController {
+            let Destination = segue.destination as? NewBookDetailsViewController
             Destination?.modelController = modelController
             // pass bookTitle
         }
