@@ -41,10 +41,6 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
         modelController.name = ""
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     // Update the color scheme based on what color the user chose at the login
     func updateColors() {
         background.backgroundColor = modelController.getColorBackground(color: modelController.myColor, opacity: 1.0)
