@@ -17,10 +17,10 @@ class QuestionsTableViewCell: UITableViewCell {
     weak var delegate: QuestionsTableViewCellDelegate?
     
     @IBAction func deleteTapped(_ sender: UIButton) {
-        delegate?.questionsTableViewCellDidTapDelete(self)
+        delegate?.deleteButtonTapped(self)
     }
 }
 
 protocol QuestionsTableViewCellDelegate : class {
-    func questionsTableViewCellDidTapDelete(_ sender: QuestionsTableViewCell)
+    func deleteButtonTapped(_ sender: QuestionsTableViewCell)
 }

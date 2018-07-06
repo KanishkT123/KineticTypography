@@ -76,7 +76,7 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
         if segue.destination is NewBookDetailsViewController {
             let Destination = segue.destination as? NewBookDetailsViewController
             Destination?.modelController = modelController
-            // pass bookTitle
+            Destination?.bookTitle = bookTitle
         }
     }
 }
