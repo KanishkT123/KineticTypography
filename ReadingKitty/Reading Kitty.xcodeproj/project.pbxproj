@@ -37,6 +37,7 @@
 		EBCF2DD120C59E7300862F7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF2DD020C59E7300862F7F /* ViewController.swift */; };
 		EBCF2DD620C59E7500862F7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBCF2DD520C59E7500862F7F /* Assets.xcassets */; };
 		EBCF2DD920C59E7500862F7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBCF2DD720C59E7500862F7F /* LaunchScreen.storyboard */; };
+		EBD3643420F54B3A001E1B32 /* NewBookLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD3643320F54B3A001E1B32 /* NewBookLevelViewController.swift */; };
 		EBE769CD20CB282A00A365C3 /* TeacherLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769CC20CB282A00A365C3 /* TeacherLoginViewController.swift */; };
 		EBE769CF20CB2BE500A365C3 /* SavedVideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769CE20CB2BE500A365C3 /* SavedVideosViewController.swift */; };
 		EBE769D120CB2C5700A365C3 /* StudentLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769D020CB2C5700A365C3 /* StudentLoginViewController.swift */; };
@@ -79,6 +80,7 @@
 		EBCF2DD520C59E7500862F7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EBCF2DD820C59E7500862F7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EBCF2DDA20C59E7500862F7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBD3643320F54B3A001E1B32 /* NewBookLevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBookLevelViewController.swift; sourceTree = "<group>"; };
 		EBE769CC20CB282A00A365C3 /* TeacherLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLoginViewController.swift; sourceTree = "<group>"; };
 		EBE769CE20CB2BE500A365C3 /* SavedVideosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedVideosViewController.swift; sourceTree = "<group>"; };
 		EBE769D020CB2C5700A365C3 /* StudentLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLoginViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				EB1ECDB920EBE70800649CAB /* NewBookViewController.swift */,
 				EB1ECDBB20EC1EA000649CAB /* NewBookDetailsViewController.swift */,
 				EB33125820EEE08400A73031 /* QuestionsTableViewCell.swift */,
+				EBD3643320F54B3A001E1B32 /* NewBookLevelViewController.swift */,
 			);
 			path = "New Book";
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				EB921F9E20CF35E500CD6FE3 /* ModelController.swift in Sources */,
 				EBF44F7220D817DA00BD7440 /* StudentBooksViewController.swift in Sources */,
 				EBE769CD20CB282A00A365C3 /* TeacherLoginViewController.swift in Sources */,
+				EBD3643420F54B3A001E1B32 /* NewBookLevelViewController.swift in Sources */,
 				EB65C3F620D31F2A00DCC64F /* NewPasswordViewController.swift in Sources */,
 				EB1ECDBA20EBE70800649CAB /* NewBookViewController.swift in Sources */,
 				EBE769D320CB325000A365C3 /* TeacherLevelsViewController.swift in Sources */,

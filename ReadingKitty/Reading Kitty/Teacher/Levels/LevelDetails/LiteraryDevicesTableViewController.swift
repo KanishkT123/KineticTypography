@@ -36,8 +36,8 @@ class LiteraryDevicesTableViewController: UITableViewController {
         let Cell:UITableViewCell = devicesTable.dequeueReusableCell(withIdentifier: "Device")!
         
         // Gets devices title
-        let device:Device = modelController.getDevices()[indexPath.row]
-        let title = device.name
+        let device:String = modelController.getDevices()[indexPath.row]
+        let title = device
         
         // Inputs and centers (supposedly) the title
         Cell.textLabel?.text = title

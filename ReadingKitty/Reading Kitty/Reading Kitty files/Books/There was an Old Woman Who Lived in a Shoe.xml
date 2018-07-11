@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
 <article>
-    <instructions>
-        Every section must have one text and one separator
-        text: only add new lines or spaces if you want them to appear in the app. Add space before new line.
-        answer: Separate words that are answers by a comma and a space.
-        separator: how you want this section and the next to be separated. Options: new line, space, none. The last section should have none
-    </instructions>
     <section>
         <text>There was an old woman
 Who lived in a shoe,
 She had so many children,
 And loved them all, too.</text>
+        <separator>new line</separator>
         <question>Tap the words that rhyme with "boo".</question>
+        <device>device 1</device>
         <answer>Who, shoe, too</answer>
         <question>Tap the words that have two syllables.</question>
+        <device>device 2</device>
         <answer>woman, children</answer>
-        <separator>new line</separator>
     </section>
     <section>
         <text>She said, "Thank you Lord Jesus,
 For sending them bread."
 Then kissed them all gladly 
 And sent them to bed.</text>
-        <question>Tap the words that rhyme with "head".</question>
-        <answer>said, bread, bed</answer>
         <separator>none</separator>
+        <question>Tap the words that rhyme with "head".</question>
+        <device>device 3</device>
+        <answer>said, bread, bed</answer>
     </section>
 </article>

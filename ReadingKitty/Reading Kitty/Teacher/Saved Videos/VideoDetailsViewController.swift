@@ -70,7 +70,7 @@ class VideoDetailsViewController: UIViewController {
         // Download video
         if let path = Bundle.main.path(forResource: currentVideo.file, ofType: "mp4") {
             // Do some stuff
-            print("exporting doesn't work right now")
+            print("exporting doesn't work right now. the path is \(path)")
             
         }
     }

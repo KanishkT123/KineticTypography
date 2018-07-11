@@ -32,13 +32,6 @@ struct BookSection {
 }
 
 /* Contains the following:
- name: The name of the literary device
-*/
-struct Device {
-    var name: String
-}
-
-/* Contains the following:
  name: The name of the student that created the video
  book: The book that the student read
  feedback: The name of the xml file that contains feedback on how the student did
@@ -73,7 +66,7 @@ class ModelController {
     
     // A list of lists. The books for each level are in the sub-lists.
     let allBooks = [// Level 1 books start
-                    [Book(file: "London Bridge is Falling Down", sections: [])],
+                    [],
                     // Level 2 books start
                     [Book(file: "There was an Old Woman Who Lived in a Shoe", sections: [])],
                     // Level 3 books start
@@ -91,29 +84,34 @@ class ModelController {
     
     // A list of lists. The literary devices for each level are in the sub-lists.
     let allDevices = [// Level 1 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 1",
+                       "Device 2"],
                       // Level 2 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 2",
+                       "Device 3",
+                       "Device 4"],
                       // Level 3 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 4",
+                       "Device 5",
+                       "Device 6"],
                       // Level 4 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 5",
+                       "Device 6",
+                       "Device 7"],
                       // Level 5 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 6",
+                       "Device 7"],
                       // Level 6 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 6",
+                       "Device 7",
+                       "Device 8",
+                       "Device 9"],
                       // Level 7 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")],
+                      ["Device 9",
+                       "Device 10"],
                       // Level 8 devices start
-                      [Device(name: "Device 1"),
-                       Device(name: "Device 2")]]
+                      ["Device 10",
+                       "Device 11"]]
     
     // Color schemes
     let colors:[Color] = [Color(light: 0xFDDFDF, background: 0xFF7272, regular: 0xFF2300, dark: 0xCA0000), // red
@@ -203,7 +201,7 @@ class ModelController {
     }
     
     // Returns array of current literary devices
-    func getDevices() -> [Device] {
+    func getDevices() -> [String] {
         return allDevices[myLevel]
     }
     

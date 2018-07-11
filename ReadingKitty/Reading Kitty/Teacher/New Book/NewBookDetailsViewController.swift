@@ -140,6 +140,13 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         case device2 = "Device 2"
         case device3 = "Device 3"
         case device4 = "Device 4"
+        case device5 = "Device 5"
+        case device6 = "Device 6"
+        case device7 = "Device 7"
+        case device8 = "Device 8"
+        case device9 = "Device 9"
+        case device10 = "Device 10"
+        case device11 = "Device 11"
     }
     
     @IBAction func deviceTapped(_ sender: UIButton) {
@@ -152,8 +159,22 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             deviceDrop.setTitle("Device 2", for: .normal)
         case .device3:
             deviceDrop.setTitle("Device 3", for: .normal)
-        default:
+        case .device4:
             deviceDrop.setTitle("Device 4", for: .normal)
+        case .device5:
+            deviceDrop.setTitle("Device 5", for: .normal)
+        case .device6:
+            deviceDrop.setTitle("Device 6", for: .normal)
+        case .device7:
+            deviceDrop.setTitle("Device 7", for: .normal)
+        case .device8:
+            deviceDrop.setTitle("Device 8", for: .normal)
+        case .device9:
+            deviceDrop.setTitle("Device 9", for: .normal)
+        case .device10:
+            deviceDrop.setTitle("Device 10", for: .normal)
+        default:
+            deviceDrop.setTitle("Device 11", for: .normal)
         }
         
         // Hide buttons
@@ -356,23 +377,17 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             oopsErrors.isHidden = false
             if currentSection[0][0] == "" {
                 sectionTextError.isHidden = false
-            } else {
-                sectionTextError.isHidden = true
             }
             if currentSection[1][0] == "Select a Separator" {
                 sectionSeparatorError.isHidden = false
-            } else {
-                sectionSeparatorError.isHidden = true
             }
             if currentSection[2].count == 0 {
                 sectionQuestionError.isHidden = false
-            } else {
-                sectionQuestionError.isHidden = true
             }
         }
     }
     
-    // When the done button is tapped, the section is saved and the app segues to the ... scene.
+    // When the done button is tapped, the section is saved and the app segues to the NewBookLevel scene.
     @IBAction func doneButton(_ sender: Any) {
         // Update newSection.
         currentSection = []
@@ -392,7 +407,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionQuestionError.isHidden = true
         
         // Check if new section has all pieces
-        if currentSection[0][0] != "" && currentSection[1][0] != "Select a Separator" && currentSection[2].count == 0 {
+        if currentSection[0][0] != "" && currentSection[1][0] != "Select a Separator" && currentSection[2].count != 0 {
             // Save newSection to newBook.
             currentBook.append(currentSection)
             
@@ -408,32 +423,25 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             newAnswers.text = ""
             questionsTable.reloadData()
             
-            // Go to the ... scene.
+            // Update bookDetails.
+            bookDetails.text = "Section 1"
             
+            // Go to the NewBookLevel scene.
+            self.performSegue(withIdentifier: "NewBookLevel", sender: self)
         } else {
             oopsErrors.isHidden = false
             if currentSection[0][0] == "" {
                 sectionTextError.isHidden = false
-            } else {
-                sectionTextError.isHidden = true
             }
             if currentSection[1][0] == "Select a Separator" {
                 sectionSeparatorError.isHidden = false
-            } else {
-                sectionSeparatorError.isHidden = true
             }
             if currentSection[2].count == 0 {
                 sectionQuestionError.isHidden = false
-            } else {
-                sectionQuestionError.isHidden = true
             }
         }
     }
     
-    
-    
-
-
 
     /********** SEGUE FUNCTIONS **********/
     // Passing data
@@ -442,6 +450,14 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         if segue.destination is NewBookViewController {
             let Destination = segue.destination as? NewBookViewController
             Destination?.modelController = modelController
+        }
+        
+        // Update the modelController in NewBookLevel
+        if segue.destination is NewBookLevelViewController {
+            let Destination = segue.destination as? NewBookLevelViewController
+            Destination?.modelController = modelController
+            Destination?.bookTitle = bookTitle
+            Destination?.currentBook = currentBook
         }
     }
 }
