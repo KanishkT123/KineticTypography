@@ -302,9 +302,25 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         //bookTitle
         //currentBook
         //levelSelected
-        //let root = XMLElement(name: "root")
-        //let temp = XMLDocument(rootElement: root)
         
+        // Create string that will make up the xml file
+        
+        
+        // Create xml file from string
+        let file = "\(bookTitle).xml"
+        let xmlText = "book text"
+        
+        if let dir:NSString = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true).first! as NSString {
+            let path = dir.appendingPathComponent(file)
+            
+            do {
+                try xmlText.write(toFile: path, atomically: false, encoding: String.Encoding.utf8)
+            } catch {
+                // error
+            }
+        }
+        
+        // Save book in modelController
         
     }
     

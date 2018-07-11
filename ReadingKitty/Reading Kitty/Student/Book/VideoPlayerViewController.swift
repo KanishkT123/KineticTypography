@@ -35,17 +35,13 @@ class VideoPlayerViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print("in the player")
-        
         if makeNewVideo {
-            print("make new")
             // Show loading icon, and hide play and done buttons
             loadingIcon.isHidden = false
             loadingIcon.hidesWhenStopped = true
             buttons.isHidden = true
         } else {
             // Show play and done buttons, and hide loading icon
-            print("hmm")
             loadingIcon.isHidden = true
             loadingIcon.hidesWhenStopped = true
             buttons.isHidden = false
@@ -57,7 +53,6 @@ class VideoPlayerViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if makeNewVideo {
-            print("Start loading")
             // Start loading icon
             loadingIcon.startAnimating()
             
@@ -75,7 +70,6 @@ class VideoPlayerViewController: UIViewController {
     }
     
     @objc func timerOff() {
-        print("should invalidate")
         timer.invalidate()
         timer = nil
         invalidated = true
@@ -83,11 +77,9 @@ class VideoPlayerViewController: UIViewController {
         // Stop loading icon
         loadingIcon.stopAnimating()
         
-        print("make video")
         // Make video
         makeVideo()
         
-        print("show buttons")
         // Show play and done buttons
         buttons.isHidden = false
     }
@@ -105,7 +97,6 @@ class VideoPlayerViewController: UIViewController {
         videoFileName = "Emperor's New Clothes"
         feedback = "Good job."
         
-        print("video made")
         makeNewVideo = false
     }
     
