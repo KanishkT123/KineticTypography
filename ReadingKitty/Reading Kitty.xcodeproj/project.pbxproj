@@ -21,6 +21,7 @@
 		EB6FA60620D47DB200EF0E5A /* StudentLevelsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FA60520D47DB200EF0E5A /* StudentLevelsTableViewController.swift */; };
 		EB73DD5120D1D0FA000C46C3 /* VideoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB73DD5020D1D0FA000C46C3 /* VideoDetailsViewController.swift */; };
 		EB73DD5320D1DA0A000C46C3 /* TeacherWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB73DD5220D1DA0A000C46C3 /* TeacherWelcomeViewController.swift */; };
+		EB74D42F20F6B65A00BB80BB /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB74D42E20F6B65A00BB80BB /* Package.swift */; };
 		EB86C33B20D9809300AE752B /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86C33A20D9809300AE752B /* QuestionViewController.swift */; };
 		EB86FDAD20E2A810001ECF41 /* ReadingInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86FDAC20E2A810001ECF41 /* ReadingInstructionsViewController.swift */; };
 		EB86FDAF20E2B5FB001ECF41 /* ReadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB86FDAE20E2B5FB001ECF41 /* ReadingViewController.swift */; };
@@ -62,6 +63,7 @@
 		EB6FA60520D47DB200EF0E5A /* StudentLevelsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLevelsTableViewController.swift; sourceTree = "<group>"; };
 		EB73DD5020D1D0FA000C46C3 /* VideoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailsViewController.swift; sourceTree = "<group>"; };
 		EB73DD5220D1DA0A000C46C3 /* TeacherWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherWelcomeViewController.swift; sourceTree = "<group>"; };
+		EB74D42E20F6B65A00BB80BB /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EB86C33A20D9809300AE752B /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		EB86FDAC20E2A810001ECF41 /* ReadingInstructionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingInstructionsViewController.swift; sourceTree = "<group>"; };
 		EB86FDAE20E2B5FB001ECF41 /* ReadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				EB86FDB420E2F78B001ECF41 /* ForwardSegue.swift */,
 				EB86FDB620E2F8A5001ECF41 /* BackwardSegue.swift */,
 				EBA2004220E3F6E900E301A8 /* TableSegue.swift */,
+				EB74D42E20F6B65A00BB80BB /* Package.swift */,
 			);
 			path = "Reading Kitty";
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				EB73DD5320D1DA0A000C46C3 /* TeacherWelcomeViewController.swift in Sources */,
 				EB73DD5120D1D0FA000C46C3 /* VideoDetailsViewController.swift in Sources */,
 				EBCF2DD120C59E7300862F7F /* ViewController.swift in Sources */,
+				EB74D42F20F6B65A00BB80BB /* Package.swift in Sources */,
 				EB44D17820D19188007A5D77 /* TeacherBooksTableViewController.swift in Sources */,
 				EB86FDB520E2F78B001ECF41 /* ForwardSegue.swift in Sources */,
 				EB921F9E20CF35E500CD6FE3 /* ModelController.swift in Sources */,

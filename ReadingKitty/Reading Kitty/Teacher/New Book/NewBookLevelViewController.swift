@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Foundation
 
-class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     /********** LOCAL VARIABLES **********/
     // Header
     @IBOutlet weak var bookTitleLabel: UILabel!
@@ -24,6 +25,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     // Level devices
     var bookDevicesPerLevel: [[String]] = []
     var levelRankings: [Int] = []
+    var levelSelected: Int = 0
     
     // Rank 1
     @IBOutlet weak var rank1Level: UILabel!
@@ -211,4 +213,108 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         return Cell
     }
 
+    
+    /********** SEGUE FUNCTIONS **********/
+    // When the user clicks on the "select level" button, it saves the level selected, saves the book as an xml file, and segues to the TeacherWelcome scene
+    @IBAction func rank1Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[0]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank2Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[1]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank3Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[2]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank4Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[3]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank5Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[4]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank6Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[5]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank7Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[6]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    @IBAction func rank8Button(_ sender: Any) {
+        // Save the level selected
+        levelSelected = levelRankings[7]
+        
+        // Save the book as an xml file
+        saveToXML()
+        
+        // Segue to the TeacherWelcome scene
+        self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
+    }
+    
+    // Saves book as an xml file
+    func saveToXML() {
+        //bookTitle
+        //currentBook
+        //levelSelected
+        //let root = XMLElement(name: "root")
+        //let temp = XMLDocument(rootElement: root)
+        
+        
+    }
+    
+
+//
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        // Update the modelController in Welcome
+//        if segue.destination is ViewController {
+//            let Destination = segue.destination as? ViewController
+//            Destination?.modelController = modelController
+//        }
 }
