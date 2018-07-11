@@ -160,7 +160,9 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == rank1Table {
-            return bookDevicesPerLevel[levelRankings[0]].count
+            let numRows = bookDevicesPerLevel[levelRankings[0]].count
+            
+            return numRows
         } else if tableView == rank2Table {
             return bookDevicesPerLevel[levelRankings[1]].count
         } else if tableView == rank3Table {
@@ -203,6 +205,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         let Cell = tableView.dequeueReusableCell(withIdentifier: "Device", for: indexPath)
         
         // Set title
+        print(bookDevicesPerLevel[level][indexPath.row])
         Cell.textLabel?.text = bookDevicesPerLevel[level][indexPath.row]
         
         return Cell
