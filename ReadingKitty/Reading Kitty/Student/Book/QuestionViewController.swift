@@ -84,6 +84,8 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     */
     func updateQuestion() {
         // Access the correct text, question, and answers.
+        print(modelController.myBook.sections.count)
+        print(modelController.mySection)
         let mySection:BookSection = modelController.myBook.sections[modelController.mySection]
         myText = mySection.text
         myQuestion = mySection.questions[modelController.myQuestion]

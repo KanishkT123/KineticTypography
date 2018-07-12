@@ -299,38 +299,78 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     
     // Saves book as an xml file
     func saveToXML() {
-        //bookTitle
-        //currentBook
-        //levelSelected
-        
         // Create string that will make up the xml file
+        var xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+        xmlText.append("<article>")
         
+        // Add each section to xmlText
+        for section:[[String]] in currentBook {
+            // Start the section
+            xmlText.append("<section>")
+            
+            // Add the text
+            xmlText.append("<text>")
+            xmlText.append(section[0][0])
+            xmlText.append("</text>")
+            
+            // Add the separator
+            xmlText.append("<separator>")
+            xmlText.append(section[1][0])
+            xmlText.append("</separator>")
+            
+            // Add each question, device, and answers
+            for question in 0..<section[2].count {
+                // Add the question
+                xmlText.append("<question>")
+                xmlText.append(section[2][question])
+                xmlText.append("</question>")
+                
+                // Add the device
+                xmlText.append("<device>")
+                xmlText.append(section[3][question])
+                xmlText.append("</device>")
+                
+                // Add the answers
+                xmlText.append("<answer>")
+                xmlText.append(section[4][question])
+                xmlText.append("</answer>")
+            }
+            
+            // Close the section
+            xmlText.append("</section>")
+        }
+        
+        // End xmlText
+        xmlText.append("</article>")
         
         // Create xml file from string
-        let file = "\(bookTitle).xml"
-        let xmlText = "book text"
-        
-        if let dir:NSString = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true).first! as NSString {
-            let path = dir.appendingPathComponent(file)
-            
-            do {
-                try xmlText.write(toFile: path, atomically: false, encoding: String.Encoding.utf8)
-            } catch {
-                // error
-            }
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        let filename = path?.appendingPathComponent(bookTitle + ".xml")
+        do {
+            try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+            print("error in making xml file")
         }
         
         // Save book in modelController
-        
+        let newBook:Book = Book(file: bookTitle, sections: [])
+        modelController.allBooks[levelSelected].append(newBook)
     }
     
-
-//
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        // Update the modelController in Welcome
-//        if segue.destination is ViewController {
-//            let Destination = segue.destination as? ViewController
-//            Destination?.modelController = modelController
-//        }
+    func write(text: String, to fileNamed: String, folder: String = "SavedFiles") {
+        guard let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return }
+        guard let writePath = NSURL(fileURLWithPath: path).appendingPathComponent(folder) else { return }
+        try? FileManager.default.createDirectory(atPath: writePath.path, withIntermediateDirectories: true)
+        let file = writePath.appendingPathComponent(fileNamed + ".xml")
+        try? text.write(to: file, atomically: false, encoding: String.Encoding.utf8)
+    }
+    
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the modelController in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.modelController = modelController
+        }
+    }
 }

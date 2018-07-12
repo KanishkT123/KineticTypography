@@ -65,7 +65,7 @@ class ModelController {
     let gradeLevels = ["Kindergarten", "Kindergarten", "1st Grade", "1st Grade", "2nd Grade", "2nd Grade", "3rd Grade", "3rd Grade"]
     
     // A list of lists. The books for each level are in the sub-lists.
-    let allBooks = [// Level 1 books start
+    var allBooks = [// Level 1 books start
                     [],
                     // Level 2 books start
                     [Book(file: "There was an Old Woman Who Lived in a Shoe", sections: [])],

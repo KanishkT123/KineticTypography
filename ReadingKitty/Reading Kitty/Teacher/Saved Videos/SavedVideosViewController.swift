@@ -8,27 +8,40 @@
 
 import UIKit
 
-class SavedVideosViewController: UIViewController {
+class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     /********** LOCAL VARIABLES **********/
-    // Table details
-    var tableSelected:Bool = false
+    // Table
+    @IBOutlet weak var videosTable: UITableView!
     
     // Reference to levels, books, and devices
     var modelController:ModelController = ModelController()
     
     /********** VIEW FUNCTIONS **********/
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if tableSelected {
-            goToVideoDetails()
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        videosTable.delegate = self
+        videosTable.dataSource = self
     }
     
-    func goToVideoDetails() {
-        tableSelected = false
-        print("Going to video details")
-        self.performSegue(withIdentifier: "VideoDetails", sender: self)
+    // Sets the number of rows to the number of saved videos.
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return modelController.savedVideos.count
+    }
+    
+    // Configures each cell by row.
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Accesses the current row
+        let Cell:UITableViewCell = videosTable.dequeueReusableCell(withIdentifier: "Video")!
+        
+        // Gets saved video title
+        let videoTitle = modelController.getVideoTitles()[indexPath.row]
+        let title = videoTitle
+        
+        // Inputs and centers (supposedly) the title and subtitle
+        Cell.textLabel?.text = title
+        Cell.textLabel?.textAlignment = .center
+        
+        return Cell
     }
     
     
@@ -39,6 +52,15 @@ class SavedVideosViewController: UIViewController {
         self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
     }
     
+    // If a cell is selected, go to the VideoDetails scene.
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Update the selected cell row to myVideo.
+        modelController.updateVideo(newVideo: indexPath.row)
+        
+        // Go to the VideoDetails scene.
+        self.performSegue(withIdentifier: "VideoDetails", sender: self)
+    }
+
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Update the modelController in TeacherWelcome
@@ -50,12 +72,6 @@ class SavedVideosViewController: UIViewController {
         // Update the modelController in VideoDetails
         if segue.destination is VideoDetailsViewController {
             let Destination = segue.destination as? VideoDetailsViewController
-            Destination?.modelController = modelController
-        }
-        
-        // Always update SavedVideosTable
-        if segue.destination is SavedVideosTableViewController {
-            let Destination = segue.destination as? SavedVideosTableViewController
             Destination?.modelController = modelController
         }
     }
