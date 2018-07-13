@@ -27,6 +27,7 @@ struct Book {
 struct BookSection {
     var text: NSMutableAttributedString
     var questions: [String]
+    var devices: [String]
     var answers: [[String]]
     var separator: String
 }
@@ -311,8 +312,8 @@ class ModelController {
     }
     
     // Adds a new BookSection to myBook.sections
-    func newBookSection(text:NSMutableAttributedString, questions:[String], answers:[[String]], separator:String) {
-        myBook.sections.append(BookSection(text: text, questions: questions, answers: answers, separator: separator))
+    func newBookSection(text:NSMutableAttributedString, questions:[String], devices:[String], answers:[[String]], separator:String) {
+        myBook.sections.append(BookSection(text: text, questions: questions, devices: devices, answers: answers, separator: separator))
     }
     
     // Saves the video

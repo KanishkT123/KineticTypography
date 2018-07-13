@@ -21,6 +21,7 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     var tempCharacters: String = ""
     var tempText: String = ""
     var tempQuestions: [String] = []
+    var tempDevices: [String] = []
     var tempAnswers: [[String]] = []
     var tempSeparator:String = ""
     
@@ -123,6 +124,12 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
             tempQuestions.append(tempCharacters)
         }
         
+        if elementName == "device" {
+            // tempCharacters doesn't need to be modified because each string in tempDevices represents an entire device.
+            // Add tempCharacters to tempDevices.
+            tempDevices.append(tempCharacters)
+        }
+        
         if elementName == "answer" {
             // Modify tempCharacters from String to [String], where each string in the array is an answer.
             var charsCopy:String = tempCharacters
@@ -168,7 +175,7 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
             attributedText.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedText.length))
             
             // Make a new BookSection with the collected information.
-            modelController.newBookSection(text: attributedText, questions: tempQuestions, answers: tempAnswers, separator: tempSeparator)
+            modelController.newBookSection(text: attributedText, questions: tempQuestions, devices: tempDevices, answers: tempAnswers, separator: tempSeparator)
             // Reset all temporary variables. tempCharacters doesn't need to be reset because it is reset at every start tag.
             tempText = ""
             tempQuestions = []

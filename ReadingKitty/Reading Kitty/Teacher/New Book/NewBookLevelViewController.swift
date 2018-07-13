@@ -13,11 +13,9 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     /********** LOCAL VARIABLES **********/
     // Header
     @IBOutlet weak var bookTitleLabel: UILabel!
-    var bookTitle: String = ""
     
     // Book info
-    var currentBook: [[[String]]] = []
-    var bookDevices: [String] = []
+    var bookDevices:[String] = []
     
     // Error message
     @IBOutlet weak var error: UILabel!
@@ -84,7 +82,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         rank8Table.dataSource = self
         
         // Set the header.
-        bookTitleLabel.text = bookTitle
+        bookTitleLabel.text = modelController.myBook.file
         
         // Hide the error.
         error.isHidden = true
@@ -100,8 +98,8 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     */
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
-        for section:[[String]] in currentBook {
-            let sectionDevices:[String] = section[3]
+        for section:BookSection in modelController.myBook.sections {
+            let sectionDevices:[String] = section.devices
             for device:String in sectionDevices {
                 // The following if statement checks for repetition before added the device to bookDevices.
                 if !bookDevices.contains(device) {
@@ -304,35 +302,35 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         xmlText.append("<article>")
         
         // Add each section to xmlText
-        for section:[[String]] in currentBook {
+        for section:BookSection in modelController.myBook.sections {
             // Start the section
             xmlText.append("<section>")
             
             // Add the text
             xmlText.append("<text>")
-            xmlText.append(section[0][0])
+            xmlText.append(section.text.string)
             xmlText.append("</text>")
             
             // Add the separator
             xmlText.append("<separator>")
-            xmlText.append(section[1][0])
+            xmlText.append(section.separator)
             xmlText.append("</separator>")
             
             // Add each question, device, and answers
-            for question in 0..<section[2].count {
+            for question in 0..<section.questions.count {
                 // Add the question
                 xmlText.append("<question>")
-                xmlText.append(section[2][question])
+                xmlText.append(section.questions[question])
                 xmlText.append("</question>")
                 
                 // Add the device
                 xmlText.append("<device>")
-                xmlText.append(section[3][question])
+                xmlText.append(section.devices[question])
                 xmlText.append("</device>")
                 
                 // Add the answers
                 xmlText.append("<answer>")
-                xmlText.append(section[4][question])
+                xmlText.append(section.answers[question][0])
                 xmlText.append("</answer>")
             }
             
@@ -345,16 +343,15 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         
         // Create xml file from string
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filename = path?.appendingPathComponent(bookTitle + ".xml")
+        let filename = path?.appendingPathComponent(modelController.myBook.file + ".xml")
         do {
             try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             print("error in making xml file")
         }
         
-        // Save book in modelController
-        let newBook:Book = Book(file: bookTitle, sections: [])
-        modelController.allBooks[levelSelected].append(newBook)
+        // Save book in the level data in the modelController.
+        modelController.allBooks[levelSelected].append(modelController.myBook)
     }
     
     func write(text: String, to fileNamed: String, folder: String = "SavedFiles") {

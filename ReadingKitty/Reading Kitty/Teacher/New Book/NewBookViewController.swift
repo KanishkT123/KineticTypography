@@ -13,9 +13,6 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     // The text field that the user inputs the book title.
     @IBOutlet weak var titleBox: UITextField!
     
-    // Saved book title
-    var bookTitle: String = ""
-    
     // Error message
     @IBOutlet weak var error: UITextField!
     
@@ -40,9 +37,9 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     
     // When text field is going inactive (through tabbing or returning), it saves the title.
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        // Save title.
-        bookTitle = textField.text!
-        
+        // Save title to myBook.
+        modelController.myBook = Book(file: textField.text!, sections: [])
+
         return true
     }
 
@@ -56,7 +53,7 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     
     // When the user clicks the next button, it sends them to the NewBookDetails scene if a title has been entered. Otherwise, an error message is shown.
     @IBAction func nextButton(_ sender: Any) {
-        if bookTitle == "" {
+        if modelController.myBook.file == "" {
             error.textColor = UIColor.red
         } else {
             // Go to the NewBookDetails scene.
@@ -76,7 +73,6 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
         if segue.destination is NewBookDetailsViewController {
             let Destination = segue.destination as? NewBookDetailsViewController
             Destination?.modelController = modelController
-            Destination?.bookTitle = bookTitle
         }
     }
 }
