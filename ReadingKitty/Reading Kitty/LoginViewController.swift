@@ -55,9 +55,19 @@ class LoginViewController: UIViewController, XMLParserDelegate {
     
     
     /********** PARSING FUNCTIONS **********/
-    // Every time the parser reads a character, save the character to xmlText.
+    // Every time the parser reads a start tag, save start tag to parsedText.
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        parsedText += "<\(elementName)>"
+    }
+    
+    // Every time the parser reads a character, save the character to parsedText.
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         parsedText += string
+    }
+    
+    // Every time the parser reads an end tag, save the end tag to parsedText.
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        parsedText += "</\(elementName)>"
     }
     
     
