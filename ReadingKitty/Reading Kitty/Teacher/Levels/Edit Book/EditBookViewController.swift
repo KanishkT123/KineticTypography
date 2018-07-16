@@ -29,6 +29,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     // When the view controller appears, ...
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set delegates.
         devicesTable.delegate = self
@@ -103,22 +104,30 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the StudentLogin scene
     @IBAction func backButton(_ sender: Any) {
-        // Go to StudentLogin
+        // Go to the StudentLogin scene.
         self.performSegue(withIdentifier: "LevelDetails", sender: self)
+    }
+    
+    // When user clicks the edit header button, it sends them to the EditHeader scene.
+    @IBAction func editHeader(_ sender: Any) {
+        // Go to the EditHeader scene.
+        self.performSegue(withIdentifier: "EditHeader", sender: self)
     }
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in LevelDetails
-        if segue.destination is LevelDetailsViewController {
-            let Destination = segue.destination as? LevelDetailsViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in ...
-        if segue.destination is ViewController {
-            let Destination = segue.destination as? ViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the LevelDetails scene.
+//        if segue.destination is LevelDetailsViewController {
+//            let Destination = segue.destination as? LevelDetailsViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the EditHeader scene.
+//        if segue.destination is EditHeaderViewController {
+//            let Destination = segue.destination as? EditHeaderViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

@@ -23,6 +23,7 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set delegates.
         levelsTable.delegate = self
@@ -88,16 +89,18 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
 
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in StudentLogin
-        if segue.destination is StudentLoginViewController {
-            let Destination = segue.destination as? StudentLoginViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in StudentBooks
-        if segue.destination is StudentBooksViewController {
-            let Destination = segue.destination as? StudentBooksViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in StudentLogin
+//        if segue.destination is StudentLoginViewController {
+//            let Destination = segue.destination as? StudentLoginViewController
+//            Destination?.modelController = modelController
+//        }
+//        
+//        // Update the modelController in StudentBooks
+//        if segue.destination is StudentBooksViewController {
+//            let Destination = segue.destination as? StudentBooksViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

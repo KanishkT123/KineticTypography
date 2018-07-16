@@ -55,6 +55,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set the color scheme (including myColor)
         updateColors()
@@ -494,16 +495,18 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Pass shared data.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in the Question scene.
-        if segue.destination is QuestionViewController {
-            let Destination = segue.destination as? QuestionViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in the ReadingInstructions scene.
-        if segue.destination is ReadingInstructionsViewController {
-            let Destination = segue.destination as? ReadingInstructionsViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the Question scene.
+//        if segue.destination is QuestionViewController {
+//            let Destination = segue.destination as? QuestionViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the ReadingInstructions scene.
+//        if segue.destination is ReadingInstructionsViewController {
+//            let Destination = segue.destination as? ReadingInstructionsViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

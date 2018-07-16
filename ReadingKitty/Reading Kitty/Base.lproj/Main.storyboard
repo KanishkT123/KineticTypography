@@ -4466,12 +4466,15 @@
                                     <constraint firstItem="e4g-mU-A1J" firstAttribute="centerX" secondItem="HRO-5A-AwI" secondAttribute="centerX" id="u0l-Gv-2kE"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9uV-Dh-cHZ" userLabel="Edit Title">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9uV-Dh-cHZ" userLabel="Edit Header">
                                 <rect key="frame" x="850.5" y="31.5" width="153.5" height="92"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Edit">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="editHeader:" destination="4bU-TF-mGK" eventType="touchUpInside" id="3I6-eQ-eDu"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RmK-1N-iv3">
                                 <rect key="frame" x="40" y="175" width="944" height="553"/>
@@ -4628,6 +4631,7 @@
                         <outlet property="devicesTable" destination="fE6-X7-i4Q" id="NTO-S6-6ra"/>
                         <outlet property="sectionsTable" destination="B46-cp-v6e" id="tVu-vH-18U"/>
                         <segue destination="14W-Go-uY1" kind="custom" identifier="LevelDetails" customClass="BackwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="5vd-ZD-GHF"/>
+                        <segue destination="YR7-Bu-r9h" kind="custom" identifier="EditHeader" customClass="ForwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="KRb-4b-iuq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y4O-kZ-Fe9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4791,6 +4795,9 @@
                                                                 <state key="normal">
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="rank1Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="dkh-Ng-aeY"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4873,6 +4880,9 @@
                                                                     <constraint firstAttribute="width" constant="75" id="j49-ud-ekk"/>
                                                                     <constraint firstAttribute="height" secondItem="b1h-Zk-dsM" secondAttribute="width" multiplier="1:1" id="wcr-cq-P7m"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank2Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="B5I-zU-fIG"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4956,6 +4966,9 @@
                                                                     <constraint firstAttribute="width" constant="75" id="4dz-0H-OdZ"/>
                                                                     <constraint firstAttribute="height" secondItem="s6Y-NL-gd7" secondAttribute="width" multiplier="1:1" id="eQI-5V-WOa"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank3Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="RKF-jm-Bh5"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5039,6 +5052,9 @@
                                                                     <constraint firstAttribute="height" secondItem="ZMU-XL-mBy" secondAttribute="width" multiplier="1:1" id="6zc-3s-eMc"/>
                                                                     <constraint firstAttribute="width" constant="75" id="dfE-dW-vzL"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank4Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="eHH-nI-Cmi"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5122,6 +5138,9 @@
                                                                     <constraint firstAttribute="width" constant="75" id="awV-rz-X7b"/>
                                                                     <constraint firstAttribute="height" secondItem="Jis-vm-sYR" secondAttribute="width" multiplier="1:1" id="srq-9f-3ob"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank5Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="shy-mp-nxl"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5205,6 +5224,9 @@
                                                                     <constraint firstAttribute="width" constant="75" id="clZ-Si-lnZ"/>
                                                                     <constraint firstAttribute="height" secondItem="Ycw-wo-ds1" secondAttribute="width" multiplier="1:1" id="r3x-xu-794"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank6Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="bJr-AY-1Lg"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5288,6 +5310,9 @@
                                                                     <constraint firstAttribute="height" secondItem="txM-3V-0ac" secondAttribute="width" multiplier="1:1" id="7Tq-Sw-Lu1"/>
                                                                     <constraint firstAttribute="width" constant="75" id="NGA-xe-bTa"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank7Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="fp8-vv-PON"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5371,6 +5396,9 @@
                                                                     <constraint firstAttribute="height" secondItem="WIu-H1-D9s" secondAttribute="width" multiplier="1:1" id="FSm-kt-NrR"/>
                                                                     <constraint firstAttribute="width" constant="75" id="evz-AD-zxy"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="rank8Button:" destination="YR7-Bu-r9h" eventType="touchUpInside" id="cws-UE-Tbd"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5498,6 +5526,7 @@
                         <outlet property="rank8Level" destination="w6J-aG-G2g" id="DMH-BH-csl"/>
                         <outlet property="rank8Table" destination="lkY-dm-vvE" id="GLn-TM-dke"/>
                         <outlet property="titleBox" destination="v6V-m3-H0K" id="w6g-G1-jrD"/>
+                        <segue destination="4bU-TF-mGK" kind="custom" identifier="EditBook" customClass="BackwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="DHr-S2-wU6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="95P-vj-a0W" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5529,6 +5558,7 @@
         <image name="Yellow Button" width="78" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="DHr-S2-wU6"/>
         <segue reference="KEz-bv-DJR"/>
         <segue reference="Nci-7N-Ts5"/>
         <segue reference="qsP-7Z-bZX"/>

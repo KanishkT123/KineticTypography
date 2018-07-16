@@ -33,6 +33,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     // When view controller appears, set the correct level as the header
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set delegates.
         devicesTable.delegate = self
@@ -203,16 +204,18 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in the TeacherLevels scene.
-        if segue.destination is TeacherLevelsViewController {
-            let Destination = segue.destination as? TeacherLevelsViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in the EditBook scene
-        if segue.destination is EditBookViewController {
-            let Destination = segue.destination as? EditBookViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the TeacherLevels scene.
+//        if segue.destination is TeacherLevelsViewController {
+//            let Destination = segue.destination as? TeacherLevelsViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the EditBook scene
+//        if segue.destination is EditBookViewController {
+//            let Destination = segue.destination as? EditBookViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

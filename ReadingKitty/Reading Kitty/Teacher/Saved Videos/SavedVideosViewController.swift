@@ -19,6 +19,7 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         videosTable.delegate = self
         videosTable.dataSource = self
     }
@@ -63,16 +64,18 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
 
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in TeacherWelcome
-        if segue.destination is TeacherWelcomeViewController {
-            let Destination = segue.destination as? TeacherWelcomeViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in VideoDetails
-        if segue.destination is VideoDetailsViewController {
-            let Destination = segue.destination as? VideoDetailsViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in TeacherWelcome
+//        if segue.destination is TeacherWelcomeViewController {
+//            let Destination = segue.destination as? TeacherWelcomeViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in VideoDetails
+//        if segue.destination is VideoDetailsViewController {
+//            let Destination = segue.destination as? VideoDetailsViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

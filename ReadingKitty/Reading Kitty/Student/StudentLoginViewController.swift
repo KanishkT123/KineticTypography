@@ -33,6 +33,7 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         nameBox.delegate = self
         updateColors()
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Make both labels the same size. nameLevel already has size constraints, so make colorLabel match
         colorLabel.font = nameLabel.font
@@ -108,16 +109,18 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in Welcome
-        if segue.destination is ViewController {
-            let Destination = segue.destination as? ViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in StudentLevels
-        if segue.destination is StudentLevelsViewController {
-            let Destination = segue.destination as? StudentLevelsViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the Welcome scene.
+//        if segue.destination is ViewController {
+//            let Destination = segue.destination as? ViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the StudentLevels scene.
+//        if segue.destination is StudentLevelsViewController {
+//            let Destination = segue.destination as? StudentLevelsViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

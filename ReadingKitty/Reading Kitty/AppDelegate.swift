@@ -29,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = initialViewController
         } else {
             print("App launched for first time")
+            
+            // Set up UserDefaults.
+            setUpDefaults()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             
             // Set the initial view controller.
@@ -40,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func setUpDefaults() {
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

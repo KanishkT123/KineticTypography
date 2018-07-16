@@ -23,6 +23,7 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         titleBox.delegate = self
         error.textColor = UIColor.clear
     }
@@ -63,16 +64,18 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in the TeacherWelcome scene.
-        if segue.destination is TeacherWelcomeViewController {
-            let Destination = segue.destination as? TeacherWelcomeViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in the NewBookDetails scene.
-        if segue.destination is NewBookDetailsViewController {
-            let Destination = segue.destination as? NewBookDetailsViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the TeacherWelcome scene.
+//        if segue.destination is TeacherWelcomeViewController {
+//            let Destination = segue.destination as? TeacherWelcomeViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the NewBookDetails scene.
+//        if segue.destination is NewBookDetailsViewController {
+//            let Destination = segue.destination as? NewBookDetailsViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

@@ -34,6 +34,7 @@ class VideoPlayerViewController: UIViewController {
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         if makeNewVideo {
             // Show loading icon, and hide play and done buttons
@@ -125,22 +126,24 @@ class VideoPlayerViewController: UIViewController {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in the Welcome scene.
-        if segue.destination is ViewController {
-            // This is the first section and the first question.
-            modelController.mySection = 0
-            modelController.myQuestion = 0
-            
-            // Reset values
-            modelController.currentRanges = []
-            modelController.currentAttributes = []
-            modelController.allText = []
-            modelController.allRanges = []
-            modelController.allAttributes = []
-            
-            // Update the modelController.
-            let Destination = segue.destination as? ViewController
-            Destination?.modelController = modelController
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
+        
+//        // Update the modelController in the Welcome scene.
+//        if segue.destination is ViewController {
+//            // This is the first section and the first question.
+//            modelController.mySection = 0
+//            modelController.myQuestion = 0
+//
+//            // Reset values
+//            modelController.currentRanges = []
+//            modelController.currentAttributes = []
+//            modelController.allText = []
+//            modelController.allRanges = []
+//            modelController.allAttributes = []
+//
+//            // Update the modelController.
+//            let Destination = segue.destination as? ViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

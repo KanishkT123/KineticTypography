@@ -67,6 +67,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         rank1Table.delegate = self
         rank1Table.dataSource = self
         rank2Table.delegate = self
@@ -218,8 +219,20 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     /********** SEGUE FUNCTIONS **********/
-    // When the user clicks on the back button, it segues to the EditBook scene.
+    // When the user clicks on the back button, it moves the book in the modelController if needed, and segues to the EditBook scene.
     @IBAction func backButton(_ sender: Any) {
+        if newLevel != currentLevel {
+            // Delete the book from its old level in allBooks.
+            for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
+                if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
+                    modelController.allBooks[currentLevel].remove(at: bookIndex)
+                }
+            }
+            
+            // Add the book to its new level in allBooks.
+            modelController.allBooks[newLevel].append(modelController.myBook)
+        }
+        
         // Segue to the EditBook scene
         self.performSegue(withIdentifier: "EditBook", sender: self)
     }
@@ -257,147 +270,70 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // When the user clicks on the "update level" button, it updates the level.
     @IBAction func rank1Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[0]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank2Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[1]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank3Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[2]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank4Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[3]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank5Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[4]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank6Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[5]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank7Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[6]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     @IBAction func rank8Button(_ sender: Any) {
-        // Get the new level
+        // Update the level.
         newLevel = levelRankings[7]
-        
-        // Delete the book from its old level in allBooks.
-        for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-            if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                modelController.allBooks[currentLevel].remove(at: bookIndex)
-            }
-        }
-        
-        // Add the book to its new level in allBooks.
-        modelController.allBooks[newLevel].append(modelController.myBook)
-        currentLevel = newLevel
         
         // Update the header.
         bookLevel.text = "Level \(String(newLevel + 1))"
+    }
+    
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        UserDefaults.standard.set(modelController, forKey: "modelController")
+        
+//        // Update the modelController in the EditBook scene.
+//        if segue.destination is EditBookViewController {
+//            let Destination = segue.destination as? EditBookViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }

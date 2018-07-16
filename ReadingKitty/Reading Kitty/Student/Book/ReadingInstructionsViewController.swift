@@ -29,6 +29,7 @@ class ReadingInstructionsViewController: UIViewController {
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         updateColors()
         
         // Set header.
@@ -75,19 +76,21 @@ class ReadingInstructionsViewController: UIViewController {
 
     // Pass shared data.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Update the modelController in the Graphics scene.
-        if segue.destination is GraphicsViewController {
-            let Destination = segue.destination as? GraphicsViewController
-            Destination?.modelController = modelController
-            Destination?.myText = myText
-            Destination?.answerRanges = answerRanges
-            Destination?.mySeparator = mySeparator
-        }
+        UserDefaults.standard.set(modelController, forKey: "modelController")
         
-        // Update the modelController in the Reading scene.
-        if segue.destination is ReadingViewController {
-            let Destination = segue.destination as? ReadingViewController
-            Destination?.modelController = modelController
-        }
+//        // Update the modelController in the Graphics scene.
+//        if segue.destination is GraphicsViewController {
+//            let Destination = segue.destination as? GraphicsViewController
+//            Destination?.modelController = modelController
+//            Destination?.myText = myText
+//            Destination?.answerRanges = answerRanges
+//            Destination?.mySeparator = mySeparator
+//        }
+//
+//        // Update the modelController in the Reading scene.
+//        if segue.destination is ReadingViewController {
+//            let Destination = segue.destination as? ReadingViewController
+//            Destination?.modelController = modelController
+//        }
     }
 }
