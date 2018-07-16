@@ -95,7 +95,7 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
     // When user clicks go button, it saves the name and goes to the StudentLevels scene if the student input a name
     @IBAction func goButton(_ sender: Any) {
         // Submit name
-        textFieldShouldReturn(nameBox)
+        nameBox.resignFirstResponder()
         
         // Save name
         modelController.updateName(newName: nameBox.text!)

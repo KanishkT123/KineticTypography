@@ -69,6 +69,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         
         // Set the book title.
         bookTitle.text = modelController.myBook.file
+        bookTitle.baselineAdjustment = .alignCenters
         
         // Allow the book text to be edited.
         bookText.delegate = self

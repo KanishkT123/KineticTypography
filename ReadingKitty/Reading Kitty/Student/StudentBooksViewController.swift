@@ -78,21 +78,11 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     
 
     /********** PARSING FUNCTIONS **********/
-    // Parses the book. Note: Books that are premade on the app are saved in the Bundle, which is read only. Books that have been made manually in the app are saved in the FileManager, which can be edited.
+    // Parses the book.
     func startParse() {
         // Access the book file.
         let fileName = modelController.myBook.file
-        
-        // Assign the path, as if the book is in the Bundle.
-        let path = Bundle.main.path(forResource: fileName, ofType: "xml")
-        
-        // If the path does not exist, then the book is in the FileManager. Assign the url accordingly.
-        var url:URL = URL(fileURLWithPath: "")
-        if path == nil {
-            url = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
-        } else {
-            url = URL(fileURLWithPath: path!)
-        }
+        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
         
         // Parse the book.
         let parser: XMLParser = XMLParser(contentsOf: url)!

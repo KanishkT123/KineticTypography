@@ -41,6 +41,9 @@
 		EBE769CF20CB2BE500A365C3 /* SavedVideosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769CE20CB2BE500A365C3 /* SavedVideosViewController.swift */; };
 		EBE769D120CB2C5700A365C3 /* StudentLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769D020CB2C5700A365C3 /* StudentLoginViewController.swift */; };
 		EBE769D320CB325000A365C3 /* TeacherLevelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE769D220CB325000A365C3 /* TeacherLevelsViewController.swift */; };
+		EBE9EC8020FD0A2000DE96C1 /* DevicesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE9EC7F20FD0A2000DE96C1 /* DevicesTableViewCell.swift */; };
+		EBE9EC8320FD218800DE96C1 /* EditHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE9EC8220FD218800DE96C1 /* EditHeaderViewController.swift */; };
+		EBE9EC8520FD41BD00DE96C1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE9EC8420FD41BD00DE96C1 /* LoginViewController.swift */; };
 		EBF44F7220D817DA00BD7440 /* StudentBooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF44F7120D817DA00BD7440 /* StudentBooksViewController.swift */; };
 		EBF44F7620D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml in Resources */ = {isa = PBXBuildFile; fileRef = EBF44F7520D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml */; };
 /* End PBXBuildFile section */
@@ -82,6 +85,9 @@
 		EBE769CE20CB2BE500A365C3 /* SavedVideosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedVideosViewController.swift; sourceTree = "<group>"; };
 		EBE769D020CB2C5700A365C3 /* StudentLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLoginViewController.swift; sourceTree = "<group>"; };
 		EBE769D220CB325000A365C3 /* TeacherLevelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherLevelsViewController.swift; sourceTree = "<group>"; };
+		EBE9EC7F20FD0A2000DE96C1 /* DevicesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTableViewCell.swift; sourceTree = "<group>"; };
+		EBE9EC8220FD218800DE96C1 /* EditHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHeaderViewController.swift; sourceTree = "<group>"; };
+		EBE9EC8420FD41BD00DE96C1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EBF44F7120D817DA00BD7440 /* StudentBooksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentBooksViewController.swift; sourceTree = "<group>"; };
 		EBF44F7520D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "There was an Old Woman Who Lived in a Shoe.xml"; path = "Reading Kitty/Reading Kitty files/Books/There was an Old Woman Who Lived in a Shoe.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,8 +154,7 @@
 				EBE769D220CB325000A365C3 /* TeacherLevelsViewController.swift */,
 				EB921F9520CEF61000CD6FE3 /* LevelDetailsViewController.swift */,
 				EB0DDF3E20F94FC100E0C441 /* BooksTableViewCell.swift */,
-				EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */,
-				EB6F7AE320F96EC30040D37B /* SectionsTableViewCell.swift */,
+				EBE9EC8120FD214400DE96C1 /* Edit Book */,
 			);
 			path = Levels;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 				EBCF2DDA20C59E7500862F7F /* Info.plist */,
 				EB921F9D20CF35E500CD6FE3 /* ModelController.swift */,
 				EBCF2DD020C59E7300862F7F /* ViewController.swift */,
+				EBE9EC8420FD41BD00DE96C1 /* LoginViewController.swift */,
 				EB44D17A20D19481007A5D77 /* Student */,
 				EB44D17920D19406007A5D77 /* Teacher */,
 				EB86FDB420E2F78B001ECF41 /* ForwardSegue.swift */,
@@ -211,6 +217,17 @@
 				EBA2004220E3F6E900E301A8 /* TableSegue.swift */,
 			);
 			path = "Reading Kitty";
+			sourceTree = "<group>";
+		};
+		EBE9EC8120FD214400DE96C1 /* Edit Book */ = {
+			isa = PBXGroup;
+			children = (
+				EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */,
+				EBE9EC7F20FD0A2000DE96C1 /* DevicesTableViewCell.swift */,
+				EB6F7AE320F96EC30040D37B /* SectionsTableViewCell.swift */,
+				EBE9EC8220FD218800DE96C1 /* EditHeaderViewController.swift */,
+			);
+			path = "Edit Book";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +311,7 @@
 				EBA2004320E3F6E900E301A8 /* TableSegue.swift in Sources */,
 				EB73DD5320D1DA0A000C46C3 /* TeacherWelcomeViewController.swift in Sources */,
 				EB73DD5120D1D0FA000C46C3 /* VideoDetailsViewController.swift in Sources */,
+				EBE9EC8320FD218800DE96C1 /* EditHeaderViewController.swift in Sources */,
 				EBCF2DD120C59E7300862F7F /* ViewController.swift in Sources */,
 				EB86FDB520E2F78B001ECF41 /* ForwardSegue.swift in Sources */,
 				EB921F9E20CF35E500CD6FE3 /* ModelController.swift in Sources */,
@@ -307,11 +325,13 @@
 				EBE769D320CB325000A365C3 /* TeacherLevelsViewController.swift in Sources */,
 				EB86C33B20D9809300AE752B /* QuestionViewController.swift in Sources */,
 				EB8B9A1920E6B9E300CEAAE6 /* VideoPlayerViewController.swift in Sources */,
+				EBE9EC8520FD41BD00DE96C1 /* LoginViewController.swift in Sources */,
 				EB1ECDBC20EC1EA000649CAB /* NewBookDetailsViewController.swift in Sources */,
 				EB0DDF3F20F94FC100E0C441 /* BooksTableViewCell.swift in Sources */,
 				EB921F9620CEF61000CD6FE3 /* LevelDetailsViewController.swift in Sources */,
 				EB6F7AE420F96EC30040D37B /* SectionsTableViewCell.swift in Sources */,
 				EBAA0EB720D3143700552B40 /* SecurityQuestionViewController.swift in Sources */,
+				EBE9EC8020FD0A2000DE96C1 /* DevicesTableViewCell.swift in Sources */,
 				EBE769CF20CB2BE500A365C3 /* SavedVideosViewController.swift in Sources */,
 				EBCF2DCF20C59E7300862F7F /* AppDelegate.swift in Sources */,
 				EB55EA1E20DD97FE00F28E69 /* GraphicsViewController.swift in Sources */,

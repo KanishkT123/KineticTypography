@@ -45,16 +45,18 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateColors()
-        bookTitle.text = modelController.myBook.file
+        
+        
         bookText.delegate = self
         bookText.isSelectable = true
         bookText.isEditable = false
         
+        // Set header.
+        bookTitle.text = modelController.myBook.file
+        bookTitle.baselineAdjustment = .alignCenters
+        
         // Update the text, question, and answers when moving to a new question.
         updateQuestion()
-        
-        // Start at top of text
-        bookText.scrollsToTop = true
         
         // Reset timer
         if scrollTimer != nil {
@@ -67,6 +69,9 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         invalidated = false
         flashIndicator()
         scrollTimer = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(flashIndicator), userInfo: nil, repeats: true)
+        
+        // Start at top of text
+        bookText.scrollsToTop = true
     }
     
     func updateColors() {

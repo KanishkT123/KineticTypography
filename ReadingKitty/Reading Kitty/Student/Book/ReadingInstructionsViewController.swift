@@ -30,7 +30,10 @@ class ReadingInstructionsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateColors()
+        
+        // Set header.
         bookTitle.text = modelController.myBook.file
+        bookTitle.baselineAdjustment = .alignCenters
     }
     
     func updateColors() {
@@ -54,7 +57,7 @@ class ReadingInstructionsViewController: UIViewController {
         mySeparator = modelController.myBook.sections[modelController.mySection].separator
         answerRanges = modelController.currentRanges.last!
         
-        // Go to Graphics scene.
+        // Go to the Graphics scene.
         self.performSegue(withIdentifier: "Graphics", sender: self)
     }
 
@@ -74,7 +77,6 @@ class ReadingInstructionsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Update the modelController in the Graphics scene.
         if segue.destination is GraphicsViewController {
-            // Update the GraphicsmodelController.
             let Destination = segue.destination as? GraphicsViewController
             Destination?.modelController = modelController
             Destination?.myText = myText

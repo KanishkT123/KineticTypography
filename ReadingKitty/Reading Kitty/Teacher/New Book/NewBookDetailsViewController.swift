@@ -61,6 +61,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         
         // Set header
         bookTitleLabel.text = modelController.myBook.file
+        bookTitleLabel.baselineAdjustment = .alignCenters
         bookDetails.text = "Section \(modelController.myBook.sections.count + 1)"
         
         // Hide errors

@@ -83,6 +83,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         
         // Set the header.
         bookTitleLabel.text = modelController.myBook.file
+        bookTitleLabel.baselineAdjustment = .alignCenters
         
         // Hide the error.
         error.isHidden = true

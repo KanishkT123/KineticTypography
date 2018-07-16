@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     // Reference to levels, books, and devices
     var modelController = ModelController()
     
-    
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the student button, it sends them to the StudentLogin scene
     @IBAction func studentButton(_ sender: UIButton) {

@@ -15,6 +15,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Set initial view controller.
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // If this is the first time the app has been launched, the initial view controller will be the login scene.
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore {
+            print("App already launched")
+            
+            // Set the initial view controller.
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "Welcome") as? ViewController
+            self.window?.rootViewController = initialViewController
+        } else {
+            print("App launched for first time")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            
+            // Set the initial view controller.
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "Login") as? LoginViewController
+            self.window?.rootViewController = initialViewController
+            initialViewController?.firstLaunch = true
+        }
+        
+        self.window?.makeKeyAndVisible()
+        
         return true
     }
 

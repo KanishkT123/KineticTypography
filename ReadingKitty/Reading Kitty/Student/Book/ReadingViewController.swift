@@ -41,10 +41,14 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateColors()
-        bookTitle.text = modelController.myBook.file
+        
         bookText.delegate = self
         bookText.isSelectable = false
         bookText.isEditable = false
+        
+        // Set header.
+        bookTitle.text = modelController.myBook.file
+        bookTitle.baselineAdjustment = .alignCenters
         
         // Update the book text.
         let tempText: NSMutableAttributedString = NSMutableAttributedString(string: "")

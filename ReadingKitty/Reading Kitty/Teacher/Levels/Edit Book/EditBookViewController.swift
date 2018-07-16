@@ -38,7 +38,8 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         
         // Set header.
         bookTitle.text = modelController.myBook.file
-        bookLevel.text = "Level \(String(modelController.myLevel))"
+        bookTitle.baselineAdjustment = .alignCenters
+        bookLevel.text = "Level \(String(modelController.myLevel + 1))"
         
         // Set bookDevices
         updateBookDevices()
@@ -73,23 +74,19 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == devicesTable {
             // Access the current row.
-            let Cell:UITableViewCell = devicesTable.dequeueReusableCell(withIdentifier: "Device")!
+            let Cell:DevicesTableViewCell = devicesTable.dequeueReusableCell(withIdentifier: "Device") as! DevicesTableViewCell
             
-            // Set the title.
-            let title:String = bookDevices[indexPath.row]
-            
-            // Inputs and centers (supposedly) the title
-            Cell.textLabel?.text = title
-            Cell.textLabel?.textAlignment = .center
+            // Set the label
+            Cell.deviceLabel.text = bookDevices[indexPath.row]
             
             return Cell
         } else {
             // Access the current row.
-            let Cell:SectionsTableViewCell = sectionsTable.dequeueReusableCell(withIdentifier: "section") as! SectionsTableViewCell
+            let Cell:SectionsTableViewCell = sectionsTable.dequeueReusableCell(withIdentifier: "Section") as! SectionsTableViewCell
             Cell.delegate = self
 
             // Set labels and text.
-            Cell.sectionLabel.text = "Section \(String(indexPath.row))"
+            Cell.sectionLabel.text = "Section \(String(indexPath.row + 1))"
             Cell.sectionText.text = modelController.myBook.sections[indexPath.row].text.string
             
             return Cell
@@ -102,4 +99,26 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     /// Edit buttons
+    
+    /********** SEGUE FUNCTIONS **********/
+    // When user clicks the back button, it send them to the StudentLogin scene
+    @IBAction func backButton(_ sender: Any) {
+        // Go to StudentLogin
+        self.performSegue(withIdentifier: "LevelDetails", sender: self)
+    }
+    
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the modelController in LevelDetails
+        if segue.destination is LevelDetailsViewController {
+            let Destination = segue.destination as? LevelDetailsViewController
+            Destination?.modelController = modelController
+        }
+        
+        // Update the modelController in ...
+        if segue.destination is ViewController {
+            let Destination = segue.destination as? ViewController
+            Destination?.modelController = modelController
+        }
+    }
 }

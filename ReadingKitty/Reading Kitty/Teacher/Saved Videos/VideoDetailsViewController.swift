@@ -28,6 +28,7 @@ class VideoDetailsViewController: UIViewController {
         
         // Set correct video title
         videoLabel.text = modelController.getVideoTitle()
+        videoLabel.baselineAdjustment = .alignCenters
         
         // Set correct feedback
         feedbackBox.text = modelController.getVideo().feedback

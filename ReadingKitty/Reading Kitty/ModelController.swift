@@ -62,57 +62,75 @@ class ModelController {
     
     /********** STATIC VARIABLES **********/
     // Reading and grade level arrays. The length should be the same for both arrays.
-    let readingLevels = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"]
-    let gradeLevels = ["Kindergarten", "Kindergarten", "1st Grade", "1st Grade", "2nd Grade", "2nd Grade", "3rd Grade", "3rd Grade"]
+    let readingLevels:[String] = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"]
+    let gradeLevels:[String] = ["Kindergarten", "Kindergarten", "1st Grade", "1st Grade", "2nd Grade", "2nd Grade", "3rd Grade", "3rd Grade"]
     
-    // A list of lists. The books for each level are in the sub-lists.
-    var allBooks = [// Level 1 books start
-                    [],
-                    // Level 2 books start
-                    [Book(file: "There was an Old Woman Who Lived in a Shoe", sections: [])],
-                    // Level 3 books start
-                    [],
-                    // Level 4 books start
-                    [],
-                    // Level 5 books start
-                    [],
-                    // Level 6 books start
-                    [],
-                    // Level 7 books start
-                    [],
-                    // Level 8 books start
-                    []]
+    // A list of the default books that are stored in the bundle.
+    let defaultBooks:[[Book]] = [// Level 1 books start
+                                 [],
+                                 // Level 2 books start
+                                 [Book(file: "There was an Old Woman Who Lived in a Shoe", sections: [])],
+                                 // Level 3 books start
+                                 [],
+                                 // Level 4 books start
+                                 [],
+                                 // Level 5 books start
+                                 [],
+                                 // Level 6 books start
+                                 [],
+                                 // Level 7 books start
+                                 [],
+                                 // Level 8 books start
+                                 []]
+    
+    // A list of the books for each level that are stored in the documents directory.
+    var allBooks:[[Book]] = [// Level 1 books start
+                             [],
+                             // Level 2 books start
+                             [],
+                             // Level 3 books start
+                             [],
+                             // Level 4 books start
+                             [],
+                             // Level 5 books start
+                             [],
+                             // Level 6 books start
+                             [],
+                             // Level 7 books start
+                             [],
+                             // Level 8 books start
+                             []]
     
     // A list of lists. The literary devices for each level are in the sub-lists.
-    let allDevices = [// Level 1 devices start
-                      ["Device 1",
-                       "Device 2"],
-                      // Level 2 devices start
-                      ["Device 2",
-                       "Device 3",
-                       "Device 4"],
-                      // Level 3 devices start
-                      ["Device 4",
-                       "Device 5",
-                       "Device 6"],
-                      // Level 4 devices start
-                      ["Device 5",
-                       "Device 6",
-                       "Device 7"],
-                      // Level 5 devices start
-                      ["Device 6",
-                       "Device 7"],
-                      // Level 6 devices start
-                      ["Device 6",
-                       "Device 7",
-                       "Device 8",
-                       "Device 9"],
-                      // Level 7 devices start
-                      ["Device 9",
-                       "Device 10"],
-                      // Level 8 devices start
-                      ["Device 10",
-                       "Device 11"]]
+    let allDevices:[[String]] = [// Level 1 devices start
+                                  ["Device 1",
+                                   "Device 2"],
+                                  // Level 2 devices start
+                                  ["Device 2",
+                                   "Device 3",
+                                   "Device 4"],
+                                  // Level 3 devices start
+                                  ["Device 4",
+                                   "Device 5",
+                                   "Device 6"],
+                                  // Level 4 devices start
+                                  ["Device 5",
+                                   "Device 6",
+                                   "Device 7"],
+                                  // Level 5 devices start
+                                  ["Device 6",
+                                   "Device 7"],
+                                  // Level 6 devices start
+                                  ["Device 6",
+                                   "Device 7",
+                                   "Device 8",
+                                   "Device 9"],
+                                  // Level 7 devices start
+                                  ["Device 9",
+                                   "Device 10"],
+                                  // Level 8 devices start
+                                  ["Device 10",
+                                   "Device 11"]]
     
     // Color schemes
     let colors:[Color] = [Color(light: 0xFDDFDF, background: 0xFF7272, regular: 0xFF2300, dark: 0xCA0000), // red

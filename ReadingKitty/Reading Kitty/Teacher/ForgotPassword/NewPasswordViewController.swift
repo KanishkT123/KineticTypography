@@ -63,8 +63,10 @@ class NewPasswordViewController: UIViewController, UITextFieldDelegate {
     // When user clicks the setPassword button, it checks if the passwords are the same, saves the new password, and send them to the TeacherWelcome scene
     @IBAction func setPassword(_ sender: Any) {
         // submit both textboxes
-        self.textFieldShouldEndEditing(newBox)
-        self.textFieldShouldEndEditing(confirmBox)
+        newBox.resignFirstResponder()
+        confirmBox.resignFirstResponder()
+        newPassword = newBox.text!
+        confirmPassword = confirmBox.text!
         
         // check if passwords match and don't equal ""
         if newPassword == confirmPassword && newPassword != "" {
