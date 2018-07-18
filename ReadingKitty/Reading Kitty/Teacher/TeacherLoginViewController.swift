@@ -20,7 +20,7 @@ class TeacherLoginViewController: UIViewController, UITextFieldDelegate {
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         passwordBox.delegate = self
     }
     
@@ -59,24 +59,24 @@ class TeacherLoginViewController: UIViewController, UITextFieldDelegate {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in Welcome
-//        if segue.destination is ViewController {
-//            let Destination = segue.destination as? ViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in SecurityQuestion
-//        if segue.destination is SecurityQuestionViewController {
-//            let Destination = segue.destination as? SecurityQuestionViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in Welcome
+        if segue.destination is ViewController {
+            let Destination = segue.destination as? ViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController in SecurityQuestion
+        if segue.destination is SecurityQuestionViewController {
+            let Destination = segue.destination as? SecurityQuestionViewController
+            Destination?.modelController = modelController
+        }
     }
 }

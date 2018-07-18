@@ -25,7 +25,7 @@ class VideoDetailsViewController: UIViewController {
     // When view controller appears, set the correct video title as the header and the correct feedback as the infobox
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set correct video title
         videoLabel.text = modelController.getVideoTitle()
@@ -91,12 +91,12 @@ class VideoDetailsViewController: UIViewController {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in SavedVideos
-//        if segue.destination is SavedVideosViewController {
-//            let Destination = segue.destination as? SavedVideosViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in SavedVideos
+        if segue.destination is SavedVideosViewController {
+            let Destination = segue.destination as? SavedVideosViewController
+            Destination?.modelController = modelController
+        }
     }
 }

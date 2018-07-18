@@ -45,7 +45,7 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateColors()
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         bookText.delegate = self
         bookText.isSelectable = true
@@ -331,22 +331,22 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in the StudentBooks scene.
-//        if segue.destination is StudentBooksViewController {
-//            // Update the modelController.
-//            let Destination = segue.destination as? StudentBooksViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController, myText, and answerRanges in the Graphics scene.
-//        if segue.destination is GraphicsViewController {
-//            let Destination = segue.destination as? GraphicsViewController
-//            Destination?.modelController = modelController
-//            Destination?.myText = myText
-//            Destination?.answerRanges = answerRanges
-//            Destination?.mySeparator = mySeparator
-//        }
+        // Update the modelController in the StudentBooks scene.
+        if segue.destination is StudentBooksViewController {
+            // Update the modelController.
+            let Destination = segue.destination as? StudentBooksViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController, myText, and answerRanges in the Graphics scene.
+        if segue.destination is GraphicsViewController {
+            let Destination = segue.destination as? GraphicsViewController
+            Destination?.modelController = modelController
+            Destination?.myText = myText
+            Destination?.answerRanges = answerRanges
+            Destination?.mySeparator = mySeparator
+        }
     }
 }

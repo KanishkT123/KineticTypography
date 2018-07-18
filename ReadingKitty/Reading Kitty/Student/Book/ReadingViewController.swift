@@ -40,7 +40,7 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         updateColors()
         
         bookText.delegate = self
@@ -177,20 +177,20 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in the VideoPlayer scene.
-//        if segue.destination is VideoPlayerViewController {
-//            // Update the modelController.
-//            let Destination = segue.destination as? VideoPlayerViewController
-//            Destination?.modelController = modelController
-//            Destination?.makeNewVideo = true
-//        }
-//
-//        // Update the modelController in the ReadingInstructions scene.
-//        if segue.destination is ReadingInstructionsViewController {
-//            let Destination = segue.destination as? ReadingInstructionsViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in the VideoPlayer scene.
+        if segue.destination is VideoPlayerViewController {
+            // Update the modelController.
+            let Destination = segue.destination as? VideoPlayerViewController
+            Destination?.modelController = modelController
+            Destination?.makeNewVideo = true
+        }
+
+        // Update the modelController in the ReadingInstructions scene.
+        if segue.destination is ReadingInstructionsViewController {
+            let Destination = segue.destination as? ReadingInstructionsViewController
+            Destination?.modelController = modelController
+        }
     }
 }

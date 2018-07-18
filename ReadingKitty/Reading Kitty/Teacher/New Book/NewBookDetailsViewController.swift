@@ -51,7 +51,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         textBox.delegate = self
         newQuestion.delegate = self
         newAnswer.delegate = self
@@ -487,18 +487,18 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     /********** SEGUE FUNCTIONS **********/
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in NewBook
-//        if segue.destination is NewBookViewController {
-//            let Destination = segue.destination as? NewBookViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in NewBookLevel
-//        if segue.destination is NewBookLevelViewController {
-//            let Destination = segue.destination as? NewBookLevelViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in NewBook
+        if segue.destination is NewBookViewController {
+            let Destination = segue.destination as? NewBookViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController in NewBookLevel
+        if segue.destination is NewBookLevelViewController {
+            let Destination = segue.destination as? NewBookLevelViewController
+            Destination?.modelController = modelController
+        }
     }
 }

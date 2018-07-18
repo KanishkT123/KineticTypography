@@ -67,7 +67,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         rank1Table.delegate = self
         rank1Table.dataSource = self
         rank2Table.delegate = self
@@ -328,12 +328,12 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in the EditBook scene.
-//        if segue.destination is EditBookViewController {
-//            let Destination = segue.destination as? EditBookViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in the EditBook scene.
+        if segue.destination is EditBookViewController {
+            let Destination = segue.destination as? EditBookViewController
+            Destination?.modelController = modelController
+        }
     }
 }

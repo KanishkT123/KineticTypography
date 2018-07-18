@@ -29,7 +29,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     // When the view controller appears, ...
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
         // Set delegates.
         devicesTable.delegate = self
@@ -116,18 +116,18 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in the LevelDetails scene.
-//        if segue.destination is LevelDetailsViewController {
-//            let Destination = segue.destination as? LevelDetailsViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the EditHeader scene.
-//        if segue.destination is EditHeaderViewController {
-//            let Destination = segue.destination as? EditHeaderViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in the LevelDetails scene.
+        if segue.destination is LevelDetailsViewController {
+            let Destination = segue.destination as? LevelDetailsViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController in the EditHeader scene.
+        if segue.destination is EditHeaderViewController {
+            let Destination = segue.destination as? EditHeaderViewController
+            Destination?.modelController = modelController
+        }
     }
 }

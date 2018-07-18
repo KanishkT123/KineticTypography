@@ -15,7 +15,7 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
     }
     
     /********** SEGUE FUNCTIONS **********/
@@ -33,19 +33,19 @@ class ViewController: UIViewController {
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in StudentLogin
-//        if segue.destination is StudentLoginViewController {
-//            let Destination = segue.destination as? StudentLoginViewController
-//            Destination?.modelController = modelController
-//        }
-//        
-//        // Update the modelController in TeacherLogin
-//        if segue.destination is TeacherLoginViewController {
-//            let Destination = segue.destination as? TeacherLoginViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in StudentLogin
+        if segue.destination is StudentLoginViewController {
+            let Destination = segue.destination as? StudentLoginViewController
+            Destination?.modelController = modelController
+        }
+        
+        // Update the modelController in TeacherLogin
+        if segue.destination is TeacherLoginViewController {
+            let Destination = segue.destination as? TeacherLoginViewController
+            Destination?.modelController = modelController
+        }
     }
 }
 

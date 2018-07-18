@@ -19,7 +19,7 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         levelsTable.delegate = self
         levelsTable.dataSource = self
     }
@@ -71,18 +71,18 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in LevelDetails
-//        if segue.destination is LevelDetailsViewController {
-//            let Destination = segue.destination as? LevelDetailsViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.modelController = modelController
+        }
+
+        // Update the modelController in LevelDetails
+        if segue.destination is LevelDetailsViewController {
+            let Destination = segue.destination as? LevelDetailsViewController
+            Destination?.modelController = modelController
+        }
     }
 }

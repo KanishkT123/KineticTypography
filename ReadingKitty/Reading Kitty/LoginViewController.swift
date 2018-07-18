@@ -27,7 +27,7 @@ class LoginViewController: UIViewController, XMLParserDelegate {
         // If this is the first time the app has launched, the default books will be copied into the documents directory.
         if firstLaunch {
             // Start saving data.
-            UserDefaults.standard.set(modelController, forKey: "modelController")
+            //UserDefaults.standard.set(modelController, forKey: "modelController")
             
             firstLaunch = false
             for level:Int in 0..<modelController.defaultBooks.count {
@@ -55,7 +55,7 @@ class LoginViewController: UIViewController, XMLParserDelegate {
             }
         } else {
             // Access previously saved data.
-            modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+            //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         }
     }
     
@@ -86,12 +86,12 @@ class LoginViewController: UIViewController, XMLParserDelegate {
     
     // Pass shared data.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserDefaults.standard.set(modelController, forKey: "modelController")
+        //UserDefaults.standard.set(modelController, forKey: "modelController")
         
-//        // Update the modelController in the Welcome scene.
-//        if segue.destination is ViewController {
-//            let Destination = segue.destination as? ViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the modelController in the Welcome scene.
+        if segue.destination is ViewController {
+            let Destination = segue.destination as? ViewController
+            Destination?.modelController = modelController
+        }
     }
 }
