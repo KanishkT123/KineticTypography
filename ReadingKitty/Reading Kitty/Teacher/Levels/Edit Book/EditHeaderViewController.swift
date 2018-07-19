@@ -20,8 +20,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     // Udpate title.
     @IBOutlet weak var titleBox: UITextField!
     
-    // Update level.
-    var currentLevel:Int = 0
+    // New level.
     var newLevel:Int = 0
     
     // Level devices
@@ -60,14 +59,27 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var rank8Level: UILabel!
     @IBOutlet weak var rank8Table: UITableView!
     
-    // Reference to levels, books, and devices
-    var modelController = ModelController()
-    
+    // UserDefaults variables.
+    var myBook:Book = Book(file: "", sections: [])
+    var myLevel:Int = 0
+    var allBooks:[[Book]] = []
+    var allDevices:[[String]] = []
     
     /********** VIEW FUNCTIONS **********/
+    /*
+     This function sets the delegates and header, and ranks the levels.
+     It is called when the view controller is about to appear.
+    */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        
+        // Get UserDefaults values.
+        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
+        myLevel = UserDefaults.standard.object(forKey: "myLevel") as! Int
+        allBooks = UserDefaults.standard.object(forKey: "allBooks") as! [[Book]]
+        allDevices = UserDefaults.standard.object(forKey: "allDevices") as! [[String]]
+        
+        // Set the delegates.
         rank1Table.delegate = self
         rank1Table.dataSource = self
         rank2Table.delegate = self
@@ -85,13 +97,10 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         rank8Table.delegate = self
         rank8Table.dataSource = self
         
-        // Set the currentLevel.
-        currentLevel = modelController.myLevel
-        
         // Set the header.
-        bookTitle.text = modelController.myBook.file
+        bookTitle.text = myBook.file
         bookTitle.baselineAdjustment = .alignCenters
-        bookLevel.text = "Level \(String(currentLevel + 1))"
+        bookLevel.text = "Level \(String(myLevel + 1))"
         
         // Rank the levels depending on the devices asked about in the story.
         updateBookDevices()
@@ -101,10 +110,10 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     /*
      This function fills bookDevices with all of the devices that show up in currentBook. The devices in currentBook may have repetition, but bookDevices should not have repetition.
-     */
+    */
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
-        for section:BookSection in modelController.myBook.sections {
+        for section:BookSection in myBook.sections {
             let sectionDevices:[String] = section.devices
             for device:String in sectionDevices {
                 // The following if statement checks for repetition before added the device to bookDevices.
@@ -121,12 +130,11 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
      Variables:
      levelDevicesAll: all of the devices assigned to the current level.
      levelDevicesBook: all of the devices in the current level that appeaer in the book.
-     */
-    
+    */
     func rankLevels() {
         // Update bookDevicesPerLevel.
         for level in 0..<8 {
-            let levelDevicesAll:[String] = modelController.allDevices[level]
+            let levelDevicesAll:[String] = allDevices[level]
             var levelDevicesBook:[String] = []
             for device:String in levelDevicesAll {
                 // The following if statement checks if the device appears in the book.
@@ -150,6 +158,9 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
+    /*
+     This function updates the rank labels to match how the levels have been ranked.
+    */
     func updateRanking() {
         let levelLabels:[String] = ["Level 1 (Kindergarten)", "Level 2 (Kindergarten)", "Level 3 (1st Grade)", "Level 4 (1st Grade)", "Level 5 (2nd Grade)", "Level 6 (2nd Grade)", "Level 7 (3rd Grade)", "Level 8 (3rd Grade)"]
         
@@ -164,11 +175,12 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         rank8Level.text = levelLabels[levelRankings[7]]
     }
     
+    /*
+     This function sets the number of rows to the number of devices in the rank's level.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == rank1Table {
-            let numRows = bookDevicesPerLevel[levelRankings[0]].count
-            
-            return numRows
+            return bookDevicesPerLevel[levelRankings[0]].count
         } else if tableView == rank2Table {
             return bookDevicesPerLevel[levelRankings[1]].count
         } else if tableView == rank3Table {
@@ -211,7 +223,6 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         let Cell = tableView.dequeueReusableCell(withIdentifier: "Device", for: indexPath)
         
         // Set title
-        print(bookDevicesPerLevel[level][indexPath.row])
         Cell.textLabel?.text = bookDevicesPerLevel[level][indexPath.row]
         
         return Cell
@@ -221,16 +232,17 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     /********** SEGUE FUNCTIONS **********/
     // When the user clicks on the back button, it moves the book in the modelController if needed, and segues to the EditBook scene.
     @IBAction func backButton(_ sender: Any) {
-        if newLevel != currentLevel {
+        if newLevel != myLevel {
             // Delete the book from its old level in allBooks.
-            for bookIndex:Int in 0..<modelController.allBooks[currentLevel].count {
-                if modelController.allBooks[currentLevel][bookIndex].file == modelController.myBook.file {
-                    modelController.allBooks[currentLevel].remove(at: bookIndex)
+            for bookIndex:Int in 0..<allBooks[myLevel].count {
+                if allBooks[myLevel][bookIndex].file == myBook.file {
+                    allBooks[myLevel].remove(at: bookIndex)
                 }
             }
             
             // Add the book to its new level in allBooks.
-            modelController.allBooks[newLevel].append(modelController.myBook)
+            allBooks[newLevel].append(myBook)
+            UserDefaults.standard.set(allBooks, forKey: "allBooks")
         }
         
         // Segue to the EditBook scene
@@ -241,7 +253,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func updateTitleButton(_ sender: Any) {
         if titleBox.text != "" {
             // Get the original and new titles.
-            let originalTitle:String = modelController.myBook.file
+            let originalTitle:String = myBook.file
             let newTitle:String = titleBox.text!
             
             // Update xml file name to title.            
@@ -254,14 +266,16 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             
             // Update title in myBook.
-            modelController.myBook.file = newTitle
+            myBook.file = newTitle
+            UserDefaults.standard.set(myBook, forKey: "myBook")
             
             // Update title in allBooks.
-            for bookIndex:Int in 0..<modelController.allBooks[modelController.myLevel].count {
-                if modelController.allBooks[modelController.myLevel][bookIndex].file == originalTitle {
-                    modelController.allBooks[modelController.myLevel][bookIndex].file = newTitle
+            for bookIndex:Int in 0..<allBooks[myLevel].count {
+                if allBooks[myLevel][bookIndex].file == originalTitle {
+                    allBooks[myLevel][bookIndex].file = newTitle
                 }
             }
+            UserDefaults.standard.set(allBooks, forKey: "allBooks")
             
             // Update the header.
             bookTitle.text = newTitle
@@ -326,14 +340,14 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         bookLevel.text = "Level \(String(newLevel + 1))"
     }
     
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in the EditBook scene.
-        if segue.destination is EditBookViewController {
-            let Destination = segue.destination as? EditBookViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in the EditBook scene.
+//        if segue.destination is EditBookViewController {
+//            let Destination = segue.destination as? EditBookViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

@@ -597,7 +597,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RGN-0d-JOP" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="mid-32-a4B">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="mid-32-a4B">
                                         <rect key="frame" x="420" y="9.5" width="184" height="95.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -946,7 +946,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2u-4W-OZ8" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Mvk-9k-ilF">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="Mvk-9k-ilF">
                                         <rect key="frame" x="420" y="3" width="184" height="109"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -1555,7 +1555,7 @@
                                 <rect key="frame" x="0.0" y="20" width="1024" height="230.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick a Book" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fBz-Cm-sF4">
-                                        <rect key="frame" x="319" y="3" width="387" height="224.5"/>
+                                        <rect key="frame" x="318.5" y="3" width="387" height="224.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1665,8 +1665,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pJg-LW-F8M" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sUA-FO-wZI">
-                                        <rect key="frame" x="346" y="3" width="331" height="109"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="sUA-FO-wZI">
+                                        <rect key="frame" x="346.5" y="3" width="331" height="109"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1902,7 +1902,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yb7-Kv-iZ1" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gex-fg-1GR">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="gex-fg-1GR">
                                         <rect key="frame" x="346.5" y="3" width="331" height="109"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -2288,7 +2288,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKh-gc-cWv" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QPv-6Y-x4a">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="QPv-6Y-x4a">
                                         <rect key="frame" x="347" y="3" width="331" height="109"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -2446,7 +2446,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2e-RA-LSE" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4Ko-Po-zeh">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="4Ko-Po-zeh">
                                         <rect key="frame" x="346" y="3" width="331" height="109"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -2729,25 +2729,36 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ICa-94-ZbQ" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="idE-EJ-DTN">
-                                        <rect key="frame" x="387" y="3" width="250.5" height="55"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="idE-EJ-DTN">
+                                        <rect key="frame" x="407" y="3" width="210.5" height="66"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NOR-kM-gPx">
+                                        <rect key="frame" x="358" y="67.5" width="307" height="3"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="3" id="bNf-9Q-Ght"/>
+                                        </constraints>
+                                        <viewLayoutGuide key="safeArea" id="c1I-Ws-M2p"/>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="buP-UP-jef" userLabel="Details">
-                                        <rect key="frame" x="434" y="58" width="156.5" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <rect key="frame" x="453.5" y="69" width="118" height="49"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.81960784310000001" green="0.94509803920000002" blue="0.99215686270000003" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="idE-EJ-DTN" firstAttribute="bottom" secondItem="ICa-94-ZbQ" secondAttribute="centerY" id="4xV-FV-JzN"/>
+                                    <constraint firstItem="NOR-kM-gPx" firstAttribute="centerY" secondItem="ICa-94-ZbQ" secondAttribute="centerY" multiplier="1.2" id="0Ym-A7-eMc"/>
+                                    <constraint firstItem="NOR-kM-gPx" firstAttribute="width" secondItem="ICa-94-ZbQ" secondAttribute="width" multiplier="0.3" id="2mc-gv-VNE"/>
+                                    <constraint firstItem="NOR-kM-gPx" firstAttribute="centerX" secondItem="ICa-94-ZbQ" secondAttribute="centerX" id="3z4-ha-czL"/>
+                                    <constraint firstItem="idE-EJ-DTN" firstAttribute="bottom" secondItem="ICa-94-ZbQ" secondAttribute="centerY" multiplier="1.2" id="4xV-FV-JzN"/>
                                     <constraint firstItem="buP-UP-jef" firstAttribute="bottom" secondItem="ICa-94-ZbQ" secondAttribute="bottom" constant="3" id="ULD-Aw-cu7"/>
                                     <constraint firstItem="idE-EJ-DTN" firstAttribute="centerX" secondItem="ICa-94-ZbQ" secondAttribute="centerX" id="fT0-GZ-A13"/>
-                                    <constraint firstItem="buP-UP-jef" firstAttribute="top" secondItem="ICa-94-ZbQ" secondAttribute="centerY" id="gmB-dU-7Gh"/>
+                                    <constraint firstItem="buP-UP-jef" firstAttribute="top" secondItem="ICa-94-ZbQ" secondAttribute="centerY" multiplier="1.2" id="gmB-dU-7Gh"/>
                                     <constraint firstItem="buP-UP-jef" firstAttribute="centerX" secondItem="ICa-94-ZbQ" secondAttribute="centerX" id="hKq-ty-nBs"/>
                                     <constraint firstItem="idE-EJ-DTN" firstAttribute="top" secondItem="ICa-94-ZbQ" secondAttribute="top" constant="3" id="scs-Hk-jef"/>
                                 </constraints>
@@ -3585,7 +3596,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AQi-Gy-5LB" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dvN-kM-GiF">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="dvN-kM-GiF">
                                         <rect key="frame" x="346.5" y="3" width="331" height="95.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="80"/>
                                         <nil key="textColor"/>
@@ -4423,7 +4434,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HRO-5A-AwI" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1az-jO-9OD" userLabel="Title">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="1az-jO-9OD" userLabel="Title">
                                         <rect key="frame" x="465.5" y="3" width="93.5" height="66"/>
                                         <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="50"/>
                                         <nil key="textColor"/>
@@ -4664,7 +4675,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hS2-T4-P9P" userLabel="Header">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="115"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yM6-DL-0TN">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Book Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="yM6-DL-0TN">
                                         <rect key="frame" x="407" y="3" width="210.5" height="66"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                         <nil key="textColor"/>
@@ -5558,6 +5569,7 @@
         <image name="Yellow Button" width="78" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="KRb-4b-iuq"/>
         <segue reference="DHr-S2-wU6"/>
         <segue reference="KEz-bv-DJR"/>
         <segue reference="Nci-7N-Ts5"/>
@@ -5565,13 +5577,13 @@
         <segue reference="U60-dP-8Hz"/>
         <segue reference="SDC-Yg-IEt"/>
         <segue reference="Vyf-yH-1UE"/>
-        <segue reference="Sr8-X1-4uL"/>
+        <segue reference="BQR-05-Yov"/>
         <segue reference="HWa-h7-u2n"/>
         <segue reference="5vd-ZD-GHF"/>
         <segue reference="fgr-Na-zO8"/>
         <segue reference="JZZ-3C-1Oo"/>
         <segue reference="dje-Td-RXP"/>
         <segue reference="IuI-Po-k8d"/>
-        <segue reference="nPH-KR-h9H"/>
+        <segue reference="I0D-k1-iIv"/>
     </inferredMetricsTieBreakers>
 </document>

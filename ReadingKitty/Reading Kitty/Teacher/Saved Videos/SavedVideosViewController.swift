@@ -13,20 +13,35 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
     // Table
     @IBOutlet weak var videosTable: UITableView!
     
-    // Reference to levels, books, and devices
-    var modelController:ModelController = ModelController()
+    // Video variables.
+    var videoTitles:[String] = []
+    
+    // UserDefaults variables.
+    var savedVideos:[Video] = []
+    
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        
+        // Get UserDefaults values.
+        savedVideos = UserDefaults.standard.object(forKey: "savedVideos") as! [Video]
+        
+        // Set delegates.
         videosTable.delegate = self
         videosTable.dataSource = self
+        
+        // Get video titles.
+        for video:Video in savedVideos {
+            // Add each video title to videoTitles
+            let videoTitle:String = "\(video.name) - \(video.book.file)"
+            videoTitles.append(videoTitle)
+        }
     }
     
     // Sets the number of rows to the number of saved videos.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelController.savedVideos.count
+        return savedVideos.count
     }
     
     // Configures each cell by row.
@@ -35,7 +50,7 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
         let Cell:UITableViewCell = videosTable.dequeueReusableCell(withIdentifier: "Video")!
         
         // Gets saved video title
-        let videoTitle = modelController.getVideoTitles()[indexPath.row]
+        let videoTitle = videoTitles[indexPath.row]
         let title = videoTitle
         
         // Inputs and centers (supposedly) the title and subtitle
@@ -56,26 +71,26 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
     // If a cell is selected, go to the VideoDetails scene.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Update the selected cell row to myVideo.
-        modelController.updateVideo(newVideo: indexPath.row)
+        UserDefaults.standard.set(indexPath.row, forKey: "myVideo")
         
         // Go to the VideoDetails scene.
         self.performSegue(withIdentifier: "VideoDetails", sender: self)
     }
 
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in TeacherWelcome
-        if segue.destination is TeacherWelcomeViewController {
-            let Destination = segue.destination as? TeacherWelcomeViewController
-            Destination?.modelController = modelController
-        }
-
-        // Update the modelController in VideoDetails
-        if segue.destination is VideoDetailsViewController {
-            let Destination = segue.destination as? VideoDetailsViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in TeacherWelcome
+//        if segue.destination is TeacherWelcomeViewController {
+//            let Destination = segue.destination as? TeacherWelcomeViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in VideoDetails
+//        if segue.destination is VideoDetailsViewController {
+//            let Destination = segue.destination as? VideoDetailsViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

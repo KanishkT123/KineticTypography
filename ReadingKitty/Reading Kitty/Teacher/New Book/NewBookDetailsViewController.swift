@@ -44,14 +44,18 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var sectionSeparatorError: UILabel!
     @IBOutlet weak var sectionQuestionError: UILabel!
     
-    // Reference to levels, books, and devices
-    var modelController = ModelController()
+    // UserDefaults variables.
+    var myBook:Book = Book(file: "", sections: [])
 
 
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        
+        // Get UserDefaults values.
+        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
+
+        // Set delegates.
         textBox.delegate = self
         newQuestion.delegate = self
         newAnswer.delegate = self
@@ -60,12 +64,12 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         questionsTable.delegate = self
         questionsTable.dataSource = self
         
-        // Set header
-        bookTitleLabel.text = modelController.myBook.file
+        // Set header.
+        bookTitleLabel.text = myBook.file
         bookTitleLabel.baselineAdjustment = .alignCenters
-        bookDetails.text = "Section \(modelController.myBook.sections.count + 1)"
+        bookDetails.text = "Section \(myBook.sections.count + 1)"
         
-        // Hide errors
+        // Hide errors.
         oopsErrors.isHidden = true
         questionQuestionError.isHidden = true
         questionDeviceError.isHidden = true
@@ -357,7 +361,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
         
-        if modelController.myBook.sections.count == 0 {
+        if myBook.sections.count == 0 {
 //            // Clear new question
 //            newQuestion.text = ""
 //            deviceDrop.setTitle("Select a Literary Device", for: .normal)
@@ -367,10 +371,11 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             self.performSegue(withIdentifier: "NewBook", sender: self)
         } else {
             // Previous section is deleted from newBook.
-            let previousSection = modelController.myBook.sections.removeLast()
+            let previousSection = myBook.sections.removeLast()
+            UserDefaults.standard.set(myBook, forKey: "myBook")
             
             // Update bookDetails to previous section.
-            bookDetails.text = "Section \(modelController.myBook.sections.count + 1)"
+            bookDetails.text = "Section \(myBook.sections.count + 1)"
             
             // Update text to previous section.
             textBox.text = previousSection.text.string
@@ -403,7 +408,8 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         // Check if new section has all pieces
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
             // Save newSection to newBook.
-            modelController.newBookSection(text: NSMutableAttributedString(string: textBox.text), questions: currentQuestions, devices: currentDevices, answers: currentAnswers, separator: separatorDrop.currentTitle!)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            myBook.sections.append(newBookSection)
             
             // Clear everything.
             //currentSection = []
@@ -420,7 +426,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             questionsTable.reloadData()
             
             // Update bookDetails.
-            bookDetails.text = "Section \(modelController.myBook.sections.count + 1)"
+            bookDetails.text = "Section \(myBook.sections.count + 1)"
         } else {
             oopsErrors.isHidden = false
             if textBox.text == "" {
@@ -449,7 +455,8 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         // Check if new section has all pieces
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
             // Save newSection to newBook.
-            modelController.newBookSection(text: NSMutableAttributedString(string: textBox.text), questions: currentQuestions, devices: currentDevices, answers: currentAnswers, separator: separatorDrop.currentTitle!)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            myBook.sections.append(newBookSection)
             
             // Clear everything.
             currentQuestions = []
@@ -485,20 +492,20 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     
 
     /********** SEGUE FUNCTIONS **********/
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in NewBook
-        if segue.destination is NewBookViewController {
-            let Destination = segue.destination as? NewBookViewController
-            Destination?.modelController = modelController
-        }
-
-        // Update the modelController in NewBookLevel
-        if segue.destination is NewBookLevelViewController {
-            let Destination = segue.destination as? NewBookLevelViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in NewBook
+//        if segue.destination is NewBookViewController {
+//            let Destination = segue.destination as? NewBookViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in NewBookLevel
+//        if segue.destination is NewBookLevelViewController {
+//            let Destination = segue.destination as? NewBookLevelViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

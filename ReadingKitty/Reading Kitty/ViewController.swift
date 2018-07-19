@@ -10,13 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     /********** LOCAL VARIABLES **********/
-    // Reference to levels, books, and devices
-    var modelController = ModelController()
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
-    }
+//    // Reference to levels, books, and devices
+//    var modelController = ModelController()
     
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the student button, it sends them to the StudentLogin scene
@@ -27,25 +22,24 @@ class ViewController: UIViewController {
     
     // When user clicks the teacher button, it sends them to the TeacherLogin scene
     @IBAction func teacherButton(_ sender: UIButton) {
-        // Go to the TeacherLogin scene.
         self.performSegue(withIdentifier: "TeacherLogin", sender: self)
     }
-    
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in StudentLogin
-        if segue.destination is StudentLoginViewController {
-            let Destination = segue.destination as? StudentLoginViewController
-            Destination?.modelController = modelController
-        }
-        
-        // Update the modelController in TeacherLogin
-        if segue.destination is TeacherLoginViewController {
-            let Destination = segue.destination as? TeacherLoginViewController
-            Destination?.modelController = modelController
-        }
-    }
+//
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in StudentLogin
+//        if segue.destination is StudentLoginViewController {
+//            let Destination = segue.destination as? StudentLoginViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in TeacherLogin
+//        if segue.destination is TeacherLoginViewController {
+//            let Destination = segue.destination as? TeacherLoginViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }
 

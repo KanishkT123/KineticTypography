@@ -15,38 +15,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Set initial view controller.
+        // Access the iPad window and Main.storyboard.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        // If this is the first time the app has been launched, the initial view controller will be the login scene.
+
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        print(launchedBefore)
         if launchedBefore {
+            // For this case, the app has already been launched before.
             print("App already launched")
             
-            // Set the initial view controller.
+            // Set the initial view controller to be the Welcome scene.
             let initialViewController = storyboard.instantiateViewController(withIdentifier: "Welcome") as? ViewController
             self.window?.rootViewController = initialViewController
         } else {
+            // For this case, the app is being launched for the first time.
             print("App launched for first time")
-            
-            // Set up UserDefaults.
-            setUpDefaults()
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-            
-            // Set the initial view controller.
+
+            // Set the initial view controller to be the Login scene.
             let initialViewController = storyboard.instantiateViewController(withIdentifier: "Login") as? LoginViewController
             self.window?.rootViewController = initialViewController
-            initialViewController?.firstLaunch = true
         }
         
+        // Make the iPad window visible.
         self.window?.makeKeyAndVisible()
         
         return true
-    }
-    
-    func setUpDefaults() {
-        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -57,10 +51,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        
+        // Save modelController to UserDefaults?
+        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+        // Get modelController from UserDefaults?
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -69,8 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Save modelController to UserDefaults?
     }
-
-
 }
 

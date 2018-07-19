@@ -24,16 +24,23 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     var tempDevices: [String] = []
     var tempAnswers: [[String]] = []
     var tempSeparator:String = ""
-    
-    // Reference to data
-    var modelController:ModelController = ModelController()
+
+    // UserDefaults variables.
+    var myColor:Int = 0
+    var allBooks:[[Book]] = []
+    var myLevel:Int = 0
+    var myBook:Book = Book(file: "", sections: [])
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
-        // Give access to editing the table.
+        // Get UserDefaults values.
+        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
+        allBooks = UserDefaults.standard.object(forKey: "allBooks") as! [[Book]]
+        myLevel = UserDefaults.standard.object(forKey: "myLevel") as! Int
+        
+        // Set delegates.
         booksTable.delegate = self
         booksTable.dataSource = self
         
@@ -42,15 +49,15 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func updateColors() {
-        background.backgroundColor = modelController.getColorBackground(color: modelController.myColor, opacity: 1.0)
-        header.backgroundColor = modelController.getColorLight(color: modelController.myColor, opacity: 0.8)
-        booksTable.separatorColor = modelController.getColorLight(color: modelController.myColor, opacity: 1.0)
+        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
+        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
+        booksTable.separatorColor = getColorLight(color: myColor, opacity: 1.0)
         // cells are updated in tableView below
     }
     
     // Sets the number of rows to the number of books.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelController.getBooks().count
+        return allBooks[myLevel].count
     }
     
     // Configures each cell by row.
@@ -59,7 +66,7 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
         let Cell:UITableViewCell = booksTable.dequeueReusableCell(withIdentifier: "Book")!
         
         // Get book title.
-        let book:Book = modelController.getBooks()[indexPath.row]
+        let book:Book = allBooks[myLevel][indexPath.row]
         let title:String = book.file
         
         // Input and center the title and subtitle.
@@ -67,11 +74,11 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
         Cell.textLabel?.textAlignment = .center
         
         // Update colors
-        var textColor:UIColor = modelController.getColorLight(color: modelController.myColor, opacity: 1.0)
-        if modelController.myColor == 2 {
+        var textColor:UIColor = getColorLight(color: myColor, opacity: 1.0)
+        if myColor == 2 {
             textColor = UIColor.black
         }
-        Cell.backgroundColor = modelController.getColorDark(color: modelController.myColor, opacity: 0.8)
+        Cell.backgroundColor = getColorDark(color: myColor, opacity: 0.8)
         Cell.textLabel?.textColor = textColor
         
         return Cell
@@ -82,7 +89,7 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     // Parses the book.
     func startParse() {
         // Access the book file.
-        let fileName = modelController.myBook.file
+        let fileName = myBook.file
         let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
         
         // Parse the book.
@@ -157,7 +164,8 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
         
         if elementName == "section" {
             // Modify tempText from String to NSMutableAttributedString.
-            let attributedText = NSMutableAttributedString(string: tempText, attributes: modelController.standardAttributes)
+            let standardAttributes = UserDefaults.standard.object(forKey: "standardAttributes") as! [NSAttributedStringKey: NSObject]
+            let attributedText = NSMutableAttributedString(string: tempText, attributes: standardAttributes)
             
             // Add spacing between paragraphs.
             let paragraphStyle = NSMutableParagraphStyle()
@@ -166,7 +174,9 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
             attributedText.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedText.length))
             
             // Make a new BookSection with the collected information.
-            modelController.newBookSection(text: attributedText, questions: tempQuestions, devices: tempDevices, answers: tempAnswers, separator: tempSeparator)
+            let newBookSection:BookSection = BookSection(text: attributedText, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
+            myBook.sections.append(newBookSection)
+            
             // Reset all temporary variables. tempCharacters doesn't need to be reset because it is reset at every start tag.
             tempText = ""
             tempQuestions = []
@@ -179,37 +189,38 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the StudentLogin scene
     @IBAction func backButton(_ sender: Any) {
-        // Go to StudentLogin
         self.performSegue(withIdentifier: "StudentLevels", sender: self)
     }
     
     // If a cell is selected, go to the ... scene.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Update the selected book to myBook.
-        let currentBook = modelController.getBooks()[indexPath.row]
-        modelController.updateBook(newBook: currentBook)
+        myBook = allBooks[myLevel][indexPath.row]
         
         // Parse the selected book.
         startParse()
+        
+        // Update myBook in UserDefaults after myBook has been parsed.
+        UserDefaults.standard.set(myBook, forKey: "myBook")
         
         // Go to the Question scene.
         self.performSegue(withIdentifier: "Question", sender: self)
     }
     
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in StudentLevels
-        if segue.destination is StudentLevelsViewController {
-            let Destination = segue.destination as? StudentLevelsViewController
-            Destination?.modelController = modelController
-        }
-
-        // Update the modelController in Question
-        if segue.destination is QuestionViewController {
-            let Destination = segue.destination as? QuestionViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in StudentLevels
+//        if segue.destination is StudentLevelsViewController {
+//            let Destination = segue.destination as? StudentLevelsViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in Question
+//        if segue.destination is QuestionViewController {
+//            let Destination = segue.destination as? QuestionViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

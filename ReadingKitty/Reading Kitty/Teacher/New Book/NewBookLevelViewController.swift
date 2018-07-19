@@ -57,14 +57,22 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var rank8Level: UILabel!
     @IBOutlet weak var rank8Table: UITableView!
     
-    // Reference to levels, books, and devices
-    var modelController = ModelController()
+    // UserDefaults variables.
+    var myBook:Book = Book(file: "", sections: [])
+    var allBooks:[[Book]] = []
+    var allDevices:[[String]] = []
     
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        
+        // Get UserDefaults values.
+        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
+        allBooks = UserDefaults.standard.object(forKey: "allBooks") as! [[Book]]
+        allDevices = UserDefaults.standard.object(forKey: "allDevices") as! [[String]]
+        
+        // Set delegates.
         rank1Table.delegate = self
         rank1Table.dataSource = self
         rank2Table.delegate = self
@@ -83,7 +91,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         rank8Table.dataSource = self
         
         // Set the header.
-        bookTitleLabel.text = modelController.myBook.file
+        bookTitleLabel.text = myBook.file
         bookTitleLabel.baselineAdjustment = .alignCenters
         
         // Hide the error.
@@ -100,7 +108,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     */
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
-        for section:BookSection in modelController.myBook.sections {
+        for section:BookSection in myBook.sections {
             let sectionDevices:[String] = section.devices
             for device:String in sectionDevices {
                 // The following if statement checks for repetition before added the device to bookDevices.
@@ -122,7 +130,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     func rankLevels() {
         // Update bookDevicesPerLevel.
         for level in 0..<8 {
-            let levelDevicesAll:[String] = modelController.allDevices[level]
+            let levelDevicesAll:[String] = allDevices[level]
             var levelDevicesBook:[String] = []
             for device:String in levelDevicesAll {
                 // The following if statement checks if the device appears in the book.
@@ -304,7 +312,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         xmlText.append("<article>")
         
         // Add each section to xmlText
-        for section:BookSection in modelController.myBook.sections {
+        for section:BookSection in myBook.sections {
             // Start the section
             xmlText.append("<section>")
             
@@ -345,7 +353,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         
         // Create xml file from string
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filename = path?.appendingPathComponent(modelController.myBook.file + ".xml")
+        let filename = path?.appendingPathComponent(myBook.file + ".xml")
         do {
             try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
         } catch {
@@ -353,7 +361,8 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         // Save book in the level data in the modelController.
-        modelController.allBooks[levelSelected].append(modelController.myBook)
+        allBooks[levelSelected].append(myBook)
+        UserDefaults.standard.set(allBooks, forKey: "allBooks")
     }
     
     func write(text: String, to fileNamed: String, folder: String = "SavedFiles") {
@@ -364,14 +373,14 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         try? text.write(to: file, atomically: false, encoding: String.Encoding.utf8)
     }
     
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in TeacherWelcome
-        if segue.destination is TeacherWelcomeViewController {
-            let Destination = segue.destination as? TeacherWelcomeViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in TeacherWelcome
+//        if segue.destination is TeacherWelcomeViewController {
+//            let Destination = segue.destination as? TeacherWelcomeViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

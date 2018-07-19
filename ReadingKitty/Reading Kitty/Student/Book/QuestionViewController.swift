@@ -16,7 +16,7 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var clearButton: UIView!
     @IBOutlet weak var goButton: UIView!
     
-    // Label
+    // Header
     @IBOutlet weak var bookTitle: UILabel!
     
     // Book info
@@ -38,21 +38,43 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     var scrollTimer: Timer!
     var invalidated: Bool = false
     
-    // Reference to data
-    var modelController:ModelController = ModelController()
+    // UserDefault variables
+    var myColor:Int = 0
+    var myBook:Book = Book(file: "", sections: [])
+    var mySectionNum:Int = 0
+    var myQuestionNum:Int = 0
+    var currentRanges:[[NSRange]] = []
+    var currentAttributes:[[NSAttributedStringKey : Any]] = []
+    var allText:[NSMutableAttributedString] = []
+    var allRanges:[[[NSRange]]] = []
+    var allAttributes:[[[NSAttributedStringKey : Any]]] = []
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateColors()
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
+        // Get UserDefaults values.
+        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
+        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
+        mySectionNum = UserDefaults.standard.object(forKey: "mySectionNum") as! Int
+        myQuestionNum = UserDefaults.standard.object(forKey: "myQuestionNum") as! Int
+        currentRanges = UserDefaults.standard.object(forKey: "currentRanges") as! [[NSRange]]
+        currentAttributes = UserDefaults.standard.object(forKey: "currentAttributes") as! [[NSAttributedStringKey : Any]]
+        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
+        allRanges = UserDefaults.standard.object(forKey: "allRanges") as! [[[NSRange]]]
+        allAttributes = UserDefaults.standard.object(forKey: "allAttributes") as! [[[NSAttributedStringKey : Any]]]
+        
+        
+        // Set delegates.
         bookText.delegate = self
         bookText.isSelectable = true
         bookText.isEditable = false
         
+        // Update the color scheme.
+        updateColors()
+        
         // Set header.
-        bookTitle.text = modelController.myBook.file
+        bookTitle.text = myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         
         // Update the text, question, and answers when moving to a new question.
@@ -75,10 +97,10 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     }
     
     func updateColors() {
-        background.backgroundColor = modelController.getColorBackground(color: modelController.myColor, opacity: 1.0)
-        header.backgroundColor = modelController.getColorLight(color: modelController.myColor, opacity: 0.8)
-        goButton.backgroundColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
-        clearButton.backgroundColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
+        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
+        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
+        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        clearButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
     }
     
     /*
@@ -89,12 +111,10 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     */
     func updateQuestion() {
         // Access the correct text, question, and answers.
-        print(modelController.myBook.sections.count)
-        print(modelController.mySection)
-        let mySection:BookSection = modelController.myBook.sections[modelController.mySection]
+        let mySection:BookSection = myBook.sections[mySectionNum]
         myText = mySection.text
-        myQuestion = mySection.questions[modelController.myQuestion]
-        myAnswers = mySection.answers[modelController.myQuestion]
+        myQuestion = mySection.questions[myQuestionNum]
+        myAnswers = mySection.answers[myQuestionNum]
         mySeparator = mySection.separator
         wordRanges = []
         correctAnswers = []
@@ -107,7 +127,8 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
             // Find the first word.
             let space:String = " "
             if textCopy.contains(space) {
-                // There are multiple words.
+                // For this case, there are multiple words.
+                
                 // The default values of the first word separator are those of the first space.
                 var firstRangeCopy:Range<String.Index> = textCopy.range(of: space)!
                 var firstEnd:Int = firstRangeCopy.upperBound.encodedOffset
@@ -154,7 +175,8 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
                 textBeforeCopy += firstEnd
                 
             } else {
-                // There is only one word.
+                // For this case, there is only one word.
+                
                 // Make the word a link in myText.
                 let wordLength:Int = textCopy.count
                 let rangeOriginal:NSRange = NSMakeRange(textBeforeCopy, wordLength)
@@ -191,10 +213,11 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         
         // Reset attributes to standard
         let myRange:NSRange = NSMakeRange(0, myText.length)
+        let standardAttributes = UserDefaults.standard.object(forKey: "standardAttributes") as! [NSAttributedStringKey: NSObject]
         myText.removeAttribute(.backgroundColor, range: myRange)
         myText.removeAttribute(.shadow, range: myRange)
         myText.removeAttribute(.underlineStyle, range: myRange)
-        myText.addAttributes(modelController.standardAttributes, range: myRange)
+        myText.addAttributes(standardAttributes, range: myRange)
         
         // Update bookText and bookQuestion.
         bookText.attributedText = myText
@@ -214,7 +237,7 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         // Make word unselectable and change its color
         myText.removeAttribute(.link, range: characterRange)
-        myText.addAttribute(.foregroundColor, value: modelController.getColorRegular(color: modelController.myColor, opacity: 1.0), range: characterRange)
+        myText.addAttribute(.foregroundColor, value: getColorRegular(color: myColor, opacity: 1.0), range: characterRange)
         bookText.attributedText = myText
 
         // Find characterRange location in wordRanges
@@ -236,13 +259,14 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the StudentBooks scene.
     @IBAction func backButton(_ sender: Any) {        
-        if modelController.myQuestion != 0 {
+        if myQuestionNum != 0 {
             // This is not the first question.
-            modelController.myQuestion -= 1
+            myQuestionNum -= 1
+            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
 
             // Get previous separator and answer ranges
-            mySeparator = modelController.myBook.sections[modelController.mySection].separator
-            answerRanges = modelController.currentRanges.last!
+            mySeparator = myBook.sections[mySectionNum].separator
+            answerRanges = currentRanges.last!
             
             // Stop timer
             scrollTimer.invalidate()
@@ -251,21 +275,28 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
             
             // Go to Graphics scene.
             self.performSegue(withIdentifier: "GraphicsBack", sender: self)
-        } else if modelController.mySection != 0 {
+        } else if mySectionNum != 0 {
             // This is the first question, but not the first section.
-            modelController.mySection -= 1
-            modelController.myQuestion = modelController.myBook.sections[modelController.mySection].questions.count - 1
+            mySectionNum -= 1
+            myQuestionNum = myBook.sections[mySectionNum].questions.count - 1
+            UserDefaults.standard.set(mySectionNum, forKey: "mySectionNum")
+            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
             
             // Get previous text
-            myText = modelController.allText.removeLast()
+            myText = allText.removeLast()
+            UserDefaults.standard.set(allText, forKey: "allText")
             
             // Get previous ranges and attributes
-            modelController.currentRanges = modelController.allRanges.removeLast()
-            modelController.currentAttributes = modelController.allAttributes.removeLast()
+            currentRanges = allRanges.removeLast()
+            currentAttributes = allAttributes.removeLast()
+            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
+            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
+            UserDefaults.standard.set(allRanges, forKey: "allRanges")
+            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
             
             // Get previous separator and answer ranges
-            mySeparator = modelController.myBook.sections[modelController.mySection].separator
-            answerRanges = modelController.currentRanges.last!
+            mySeparator = myBook.sections[mySectionNum].separator
+            answerRanges = currentRanges.last!
             
             // Stop timer
             scrollTimer.invalidate()
@@ -276,15 +307,15 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
             self.performSegue(withIdentifier: "GraphicsBack", sender: self)
         } else {
             // This is the first section and the first question.
-            modelController.mySection = 0
-            modelController.myQuestion = 0
+            UserDefaults.standard.set(0, forKey: "mySectionNum")
+            UserDefaults.standard.set(0, forKey: "myQuestionNum")
             
             // Reset values
-            modelController.currentRanges = []
-            modelController.currentAttributes = []
-            modelController.allText = []
-            modelController.allRanges = []
-            modelController.allAttributes = []
+            UserDefaults.standard.set([], forKey: "currentRanges")
+            UserDefaults.standard.set([], forKey: "currentAttributes")
+            UserDefaults.standard.set([], forKey: "allText")
+            UserDefaults.standard.set([], forKey: "allRanges")
+            UserDefaults.standard.set([], forKey: "allAttributes")
             
             // Stop timer
             scrollTimer.invalidate()
@@ -304,49 +335,51 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     
     // When the user clicks the refresh button, it resets the links and colors
     @IBAction func clearButton(_ sender: Any) {
-        
         updateQuestion()
     }
     
-    // When user clicks the go button, it sends them to the ... scene
+    // When user clicks the go button, it sends them to the Graphics scene.
     @IBAction func goButton(_ sender: Any) {
         // check if answer is correct
         if correctAnswers == attemptedAnswers {
+            // For this case, the user's answers are correct.
+            
+            // Update failedAttempt to record that the attempted answers are correct.
             failedAttempt = false
             
-            // Stop timer
+            // Stop the scrollTimer.
             scrollTimer.invalidate()
             scrollTimer = nil
             invalidated = true
             
-            // Go to Graphics scene.
+            // Go to the Graphics scene.
             self.performSegue(withIdentifier: "Graphics", sender: self)
         } else {
+            // For this case, the user's answers are not correct.
+            
+            // Update failedAttempt to record that the attempted answers are not correct.
             failedAttempt = true
 
-            // Try again.
+            // Clear the attempted answers.
             updateQuestion()
         }
     }
     
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in the StudentBooks scene.
-        if segue.destination is StudentBooksViewController {
-            // Update the modelController.
-            let Destination = segue.destination as? StudentBooksViewController
-            Destination?.modelController = modelController
-        }
-
-        // Update the modelController, myText, and answerRanges in the Graphics scene.
-        if segue.destination is GraphicsViewController {
-            let Destination = segue.destination as? GraphicsViewController
-            Destination?.modelController = modelController
-            Destination?.myText = myText
-            Destination?.answerRanges = answerRanges
-            Destination?.mySeparator = mySeparator
-        }
-    }
+//    // Pass saved data at segues.
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        // Update the modelController in the StudentBooks scene.
+//        if segue.destination is StudentBooksViewController {
+//            let Destination = segue.destination as? StudentBooksViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController, myText, and answerRanges in the Graphics scene.
+//        if segue.destination is GraphicsViewController {
+//            let Destination = segue.destination as? GraphicsViewController
+//            Destination?.modelController = modelController
+//            Destination?.myText = myText
+//            Destination?.answerRanges = answerRanges
+//            Destination?.mySeparator = mySeparator
+//        }
+//    }
 }

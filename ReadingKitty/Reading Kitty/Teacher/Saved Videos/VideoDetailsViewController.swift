@@ -18,21 +18,36 @@ class VideoDetailsViewController: UIViewController {
     // Textbox
     @IBOutlet weak var feedbackBox: UITextView!
     
-    // Reference to levels, books, and devices
-    var modelController = ModelController()
+    // Video variables.
+    var videoTitles:[String] = []
+    
+    // UserDefaults variables.
+    var savedVideos:[Video] = []
+    var myVideo:Int = 0
+    
     
     /********** VIEW FUNCTIONS **********/
     // When view controller appears, set the correct video title as the header and the correct feedback as the infobox
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
+        
+        // Get UserDefaults values.
+        savedVideos = UserDefaults.standard.object(forKey: "savedVideos") as! [Video]
+        myVideo = UserDefaults.standard.object(forKey: "myVideo") as! Int
+        
+        // Get video titles.
+        for video:Video in savedVideos {
+            // Add each video title to videoTitles
+            let videoTitle:String = "\(video.name) - \(video.book.file)"
+            videoTitles.append(videoTitle)
+        }
         
         // Set correct video title
-        videoLabel.text = modelController.getVideoTitle()
+        videoLabel.text = videoTitles[myVideo]
         videoLabel.baselineAdjustment = .alignCenters
         
         // Set correct feedback
-        feedbackBox.text = modelController.getVideo().feedback
+        feedbackBox.text = savedVideos[myVideo].feedback
     }
     
     override func didReceiveMemoryWarning() {
@@ -50,7 +65,7 @@ class VideoDetailsViewController: UIViewController {
     // When user clicks the play button, it plays the video and send them to the Player scene
     @IBAction func playVideo(_ sender: Any) {
         // Get video
-        let currentVideo = modelController.getVideo()
+        let currentVideo = savedVideos[myVideo]
         
         // Play video
         if let path = Bundle.main.path(forResource: currentVideo.file, ofType: "mp4") {
@@ -67,7 +82,7 @@ class VideoDetailsViewController: UIViewController {
     // When user clicks the export button, it exports the video.
     @IBAction func exportButton(_ sender: Any) {
         // Get video
-        let currentVideo = modelController.getVideo()
+        let currentVideo = savedVideos[myVideo]
         
         // Download video
         if let path = Bundle.main.path(forResource: currentVideo.file, ofType: "mp4") {
@@ -80,23 +95,22 @@ class VideoDetailsViewController: UIViewController {
     // When user clicks the delete button, it removes the video from the saved videos list and sends them to the SavedVideos scene
     @IBAction func deleteButton(_ sender: Any) {
         // Delete video
-        print(modelController.getVideoTitles())
-        modelController.deleteVideo()
-        print(modelController.getVideoTitles())
+        savedVideos.remove(at: myVideo)
+        UserDefaults.standard.set(savedVideos, forKey: "savedVideos")
         
         // Go to SavedVideos
         self.performSegue(withIdentifier: "SavedVideos", sender: self)
     }
     
     
-    // Passing data
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in SavedVideos
-        if segue.destination is SavedVideosViewController {
-            let Destination = segue.destination as? SavedVideosViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Passing data
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in SavedVideos
+//        if segue.destination is SavedVideosViewController {
+//            let Destination = segue.destination as? SavedVideosViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }

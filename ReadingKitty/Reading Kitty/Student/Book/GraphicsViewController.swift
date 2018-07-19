@@ -25,7 +25,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     var myText:NSMutableAttributedString = NSMutableAttributedString(string: "")
     var answerRanges: [NSRange] = []
     var mySeparator: String = ""
-    var myColor:UIColor = UIColor.black
+    var newColor:UIColor = UIColor.black
     var newAttributes:[NSAttributedStringKey:Any] = [:]
     
     // Scrollbar timer
@@ -48,16 +48,33 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var nextButtons: UIStackView!
     var pickingColor: Bool = true
     
-    // Reference to data
-    var modelController:ModelController = ModelController()
-
+    // UserDefault variables
+    var myColor:Int = 0
+    var myBook:Book = Book(file: "", sections: [])
+    var mySectionNum:Int = 0
+    var myQuestionNum:Int = 0
+    var currentRanges:[[NSRange]] = []
+    var currentAttributes:[[NSAttributedStringKey : Any]] = []
+    var allText:[NSMutableAttributedString] = []
+    var allRanges:[[[NSRange]]] = []
+    var allAttributes:[[[NSAttributedStringKey : Any]]] = []
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //modelController = UserDefaults.standard.object(forKey: "modelController") as! ModelController
         
-        // Set the color scheme (including myColor)
+        // Get UserDefaults values.
+        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
+        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
+        mySectionNum = UserDefaults.standard.object(forKey: "mySectionNum") as! Int
+        myQuestionNum = UserDefaults.standard.object(forKey: "myQuestionNum") as! Int
+        currentRanges = UserDefaults.standard.object(forKey: "currentRanges") as! [[NSRange]]
+        currentAttributes = UserDefaults.standard.object(forKey: "currentAttributes") as! [[NSAttributedStringKey : Any]]
+        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
+        allRanges = UserDefaults.standard.object(forKey: "allRanges") as! [[[NSRange]]]
+        allAttributes = UserDefaults.standard.object(forKey: "allAttributes") as! [[[NSAttributedStringKey : Any]]]
+        
+        // Set the color scheme (including newColor)
         updateColors()
         
         // Show color options and go button
@@ -69,10 +86,10 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         nextButtons.isHidden = true
         
         // Set the book title.
-        bookTitle.text = modelController.myBook.file
+        bookTitle.text = myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         
-        // Allow the book text to be edited.
+        // Set delegates.
         bookText.delegate = self
         bookText.isEditable = false
         
@@ -101,54 +118,54 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Updates the color scheme of the scene.
     func updateColors() {
-        background.backgroundColor = modelController.getColorBackground(color: modelController.myColor, opacity: 1.0)
-        header.backgroundColor = modelController.getColorLight(color: modelController.myColor, opacity: 0.8)
-        goButton.backgroundColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
-        againButton.backgroundColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
-        doneButton.backgroundColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
-        myColor = modelController.getColorRegular(color: modelController.myColor, opacity: 1.0)
+        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
+        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
+        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        againButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        doneButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        newColor = getColorRegular(color: myColor, opacity: 1.0)
     }
     
     // Update the attributes of the buttons
     func updateButtons() {
-        // The big, small, and color buttons will have myColor text.
-        bigButton.setTitleColor(myColor, for: .normal)
-        smallButton.setTitleColor(myColor, for: .normal)
-        colorButton.setTitleColor(myColor, for: .normal)
+        // The big, small, and color buttons will have newColor text.
+        bigButton.setTitleColor(newColor, for: .normal)
+        smallButton.setTitleColor(newColor, for: .normal)
+        colorButton.setTitleColor(newColor, for: .normal)
         
-        // The highlight button will have a myColor highlight and have black text. If myColor is black, the text will be white so it is visible.
+        // The highlight button will have a newColor highlight and have black text. If newColor is black, the text will be white so it is visible.
         var textColor:UIColor = UIColor.black
-        if myColor == UIColor.black {
+        if newColor == UIColor.black {
             textColor = UIColor.white
         }
         let highlight:NSMutableAttributedString = NSMutableAttributedString(string: "Highlight")
-        highlight.addAttribute(.backgroundColor, value: myColor, range: NSMakeRange(0, highlight.length))
+        highlight.addAttribute(.backgroundColor, value: newColor, range: NSMakeRange(0, highlight.length))
         highlight.addAttribute(.foregroundColor, value: textColor, range: NSMakeRange(0, highlight.length))
         highlightButton.setAttributedTitle(highlight, for: .normal)
         
-        // The shadow button will have a myColor shadow and have black text.
+        // The shadow button will have a newColor shadow and have black text.
         let newShadow:NSShadow = NSShadow()
         newShadow.shadowBlurRadius = 3
         newShadow.shadowOffset = CGSize(width: 3, height: 3)
-        newShadow.shadowColor = myColor
+        newShadow.shadowColor = newColor
         let shadow:NSMutableAttributedString = NSMutableAttributedString(string: "Shadow")
         shadow.addAttribute(.shadow, value: newShadow, range: NSMakeRange(0, shadow.length))
         shadow.addAttribute(.foregroundColor, value: UIColor.black, range: NSMakeRange(0, shadow.length))
         shadowButton.setAttributedTitle(shadow, for: .normal)
         
-        // The underline button will have a myColor underline and have black text.
+        // The underline button will have a newColor underline and have black text.
         let underline:NSMutableAttributedString = NSMutableAttributedString(string: "Underline")
         underline.addAttribute(.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: NSMakeRange(0, underline.length))
-        underline.addAttribute(.underlineColor, value: myColor, range: NSMakeRange(0, underline.length))
+        underline.addAttribute(.underlineColor, value: newColor, range: NSMakeRange(0, underline.length))
         underline.addAttribute(.foregroundColor, value: UIColor.black, range: NSMakeRange(0, underline.length))
         underlineButton.setAttributedTitle(underline, for: .normal)
     }
     
     // Makes previously saved attributes visible.
     func addAllAttributes() {
-        for question:Int in 0..<modelController.currentRanges.count {
-            for range:NSRange in modelController.currentRanges[question] {
-                myText.addAttributes(modelController.currentAttributes[question], range: range)
+        for question:Int in 0..<currentRanges.count {
+            for range:NSRange in currentRanges[question] {
+                myText.addAttributes(currentAttributes[question], range: range)
             }
         }
     }
@@ -160,46 +177,46 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     }
     
     /********** COLOR FUNCTIONS **********/
-    // When a color is selected, update myColor and update the color of the go button
+    // When a color is selected, update newColor and update the color of the go button
     @IBAction func redButton(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 0, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 0, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func orangeButton(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 1, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 1, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func yellow(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 2, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 2, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func greenButton(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 3, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 3, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func blueButton(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 4, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 4, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func purpleButton(_ sender: Any) {
-        myColor = modelController.getColorRegular(color: 5, opacity: 1.0)
-        goButton.backgroundColor = myColor
+        newColor = getColorRegular(color: 5, opacity: 1.0)
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func blackButton(_ sender: Any) {
-        myColor = UIColor.black
-        goButton.backgroundColor = myColor
+        newColor = UIColor.black
+        goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.white, for: .normal)
     }
     
@@ -233,16 +250,16 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         var newSize:CGFloat = 0.0
         
         // Check if the button has been unpressed.
-        if buttonsPressed[0] && buttonsColor[0] == myColor{
+        if buttonsPressed[0] && buttonsColor[0] == newColor {
             // The big button has been unpressed.
             buttonsPressed[0] = false
             
             // Set the new size of the answers.
             newSize = 35.0
         } else {
-            // The big button has been pressed with the color myColor.
+            // The big button has been pressed with the color newColor.
             buttonsPressed[0] = true
-            buttonsColor[0] = myColor
+            buttonsColor[0] = newColor
             
             // Set the new size of the answers.
             newSize = 60.0
@@ -250,7 +267,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         
         // Update the size and color in newAttributes and myText.
         newAttributes[NSAttributedStringKey.font] = UIFont.systemFont(ofSize: newSize)
-        newAttributes[NSAttributedStringKey.foregroundColor] = myColor
+        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
@@ -262,7 +279,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     // Highlights the answers when the highlight button is pressed.
     @IBAction func highlightButton(_ sender: Any) {
         // Check if the button has been unpressed.
-        if buttonsPressed[1] && buttonsColor[1] == myColor{
+        if buttonsPressed[1] && buttonsColor[1] == newColor {
             // The highlight button has been unpressed.
             buttonsPressed[1] = false
             
@@ -272,12 +289,12 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
                 myText.removeAttribute(.backgroundColor, range: range)
             }
         } else {
-            // The highlight button has been pressed with the color myColor.
+            // The highlight button has been pressed with the color newColor.
             buttonsPressed[1] = true
-            buttonsColor[1] = myColor
+            buttonsColor[1] = newColor
             
             // Add a highlight to newAttributes and myText.
-            newAttributes[NSAttributedStringKey.backgroundColor] = myColor
+            newAttributes[NSAttributedStringKey.backgroundColor] = newColor
             for range:NSRange in answerRanges {
                 myText.addAttributes(newAttributes, range: range)
             }
@@ -290,7 +307,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     // Adds a shadow to the answers when the shadow button is pressed.
     @IBAction func shadowButton(_ sender: Any) {
         // Check if the button has been unpressed.
-        if buttonsPressed[2] && buttonsColor[2] == myColor{
+        if buttonsPressed[2] && buttonsColor[2] == newColor {
             // The shadow button has been unpressed.
             buttonsPressed[2] = false
             
@@ -300,15 +317,15 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
                 myText.removeAttribute(.shadow, range: range)
             }
         } else {
-            // The shadow button has been pressed with the color myColor.
+            // The shadow button has been pressed with the color newColor.
             buttonsPressed[2] = true
-            buttonsColor[2] = myColor
+            buttonsColor[2] = newColor
             
             // Create a shadow.
             let newShadow:NSShadow = NSShadow()
             newShadow.shadowBlurRadius = 3
             newShadow.shadowOffset = CGSize(width: 3, height: 3)
-            newShadow.shadowColor = myColor
+            newShadow.shadowColor = newColor
             
             // Add the shadow to newAttributes and myText.
             newAttributes[NSAttributedStringKey.shadow] = newShadow
@@ -330,16 +347,16 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         var newSize:CGFloat = 0.0
         
         // Check if the button has been unpressed.
-        if buttonsPressed[3] && buttonsColor[3] == myColor{
+        if buttonsPressed[3] && buttonsColor[3] == newColor {
             // The small button has been unpressed.
             buttonsPressed[3] = false
             
             // Set the new size of the answers.
             newSize = 35.0
         } else {
-            // The small button has been pressed with the color myColor.
+            // The small button has been pressed with the color newColor.
             buttonsPressed[3] = true
-            buttonsColor[3] = myColor
+            buttonsColor[3] = newColor
             
             // Set the new size of the answers.
             newSize = 20.0
@@ -347,7 +364,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         
         // Update the size and color in newAttributes and myText.
         newAttributes[NSAttributedStringKey.font] = UIFont.systemFont(ofSize: newSize)
-        newAttributes[NSAttributedStringKey.foregroundColor] = myColor
+        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
@@ -359,7 +376,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     // Underlines the answers when the underline button is pressed.
     @IBAction func underlineButton(_ sender: Any) {
         // Check if the button has been unpressed.
-        if buttonsPressed[4] && buttonsColor[4] == myColor{
+        if buttonsPressed[4] && buttonsColor[4] == newColor {
             // The underline button has been unpressed.
             buttonsPressed[4] = false
             
@@ -369,13 +386,13 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
                 myText.removeAttribute(.underlineStyle, range: range)
             }
         } else {
-            // The underline button has been pressed with the color myColor.
+            // The underline button has been pressed with the color newColor.
             buttonsPressed[4] = true
-            buttonsColor[4] = myColor
+            buttonsColor[4] = newColor
             
             // Add an underline to newAttributes and myText.
             newAttributes[NSAttributedStringKey.underlineStyle] = NSUnderlineStyle.styleSingle.rawValue
-            newAttributes[NSAttributedStringKey.underlineColor] = myColor
+            newAttributes[NSAttributedStringKey.underlineColor] = newColor
             for range:NSRange in answerRanges {
                 myText.addAttributes(newAttributes, range: range)
             }
@@ -387,12 +404,12 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Changes the text color of the answers when the color button is pressed.
     @IBAction func colorButton(_ sender: Any) {
-        // The color button automatically sets the saved colors of the big button and the small button to myColor.
-        buttonsColor[0] = myColor
-        buttonsColor[3] = myColor
+        // The color button automatically sets the saved colors of the big button and the small button to newColor.
+        buttonsColor[0] = newColor
+        buttonsColor[3] = newColor
         
         // Update the text color in newAttributes and myText.
-        newAttributes[NSAttributedStringKey.foregroundColor] = myColor
+        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
@@ -429,15 +446,18 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     // When user clicks the go button, it sends them to the ... scene
     @IBAction func doneButton(_ sender: Any) {
         // Update modelController
-        modelController.currentRanges.append(answerRanges)
-        modelController.currentAttributes.append(newAttributes)
+        currentRanges.append(answerRanges)
+        currentAttributes.append(newAttributes)
+        UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
+        UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
         
         // Update the question and go to the correct scene
-        let mySections:[BookSection] = modelController.myBook.sections
-        let myQuestions:[String] = mySections[modelController.mySection].questions
-        if myQuestions.count > modelController.myQuestion + 1 {
+        let mySections:[BookSection] = myBook.sections
+        let myQuestions:[String] = mySections[mySectionNum].questions
+        if myQuestions.count > myQuestionNum + 1 {
             // There are still questions left. Go to next question.
-            modelController.myQuestion += 1
+            myQuestionNum += 1
+            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
             
             // Stop timer
             scrollTimer.invalidate()
@@ -446,22 +466,29 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
             
             // Go to Question scene.
             self.performSegue(withIdentifier: "Question", sender: self)
-        } else if mySections.count > modelController.mySection + 1 {
+        } else if mySections.count > mySectionNum + 1 {
             // There are no questions left in the section, but there are more sections left.
             // Save and reset currentRanges and currentAttributes.
-            modelController.allRanges.append(modelController.currentRanges)
-            modelController.allAttributes.append(modelController.currentAttributes)
-            modelController.currentRanges = []
-            modelController.currentAttributes = []
+            allRanges.append(currentRanges)
+            allAttributes.append(currentAttributes)
+            currentRanges = []
+            currentAttributes = []
+            UserDefaults.standard.set(allRanges, forKey: "allRanges")
+            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
+            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
+            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
             
             // Add section text to allText.
             let separator:NSAttributedString = NSAttributedString(string: mySeparator)
             myText.append(separator)
-            modelController.allText.append(myText)
+            allText.append(myText)
+            UserDefaults.standard.set(allText, forKey: "allText")
             
             // Go to next section.
-            modelController.mySection += 1
-            modelController.myQuestion = 0
+            mySectionNum += 1
+            myQuestionNum = 0
+            UserDefaults.standard.set(mySectionNum, forKey: "mySectionNum")
+            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
             
             // Stop timer
             scrollTimer.invalidate()
@@ -473,15 +500,20 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         } else {
             // There are no questions left in the section, and there are no sections left in the book.
             // Save and reset currentRanges and currentAttributes.
-            modelController.allRanges.append(modelController.currentRanges)
-            modelController.allAttributes.append(modelController.currentAttributes)
-            modelController.currentRanges = []
-            modelController.currentAttributes = []
+            allRanges.append(currentRanges)
+            allAttributes.append(currentAttributes)
+            currentRanges = []
+            currentAttributes = []
+            UserDefaults.standard.set(allRanges, forKey: "allRanges")
+            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
+            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
+            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
             
             // Add section text and separator to allText.
             let separator:NSAttributedString = NSAttributedString(string: mySeparator)
             myText.append(separator)
-            modelController.allText.append(myText)
+            allText.append(myText)
+            UserDefaults.standard.set(allText, forKey: "allText")
             
             // Stop timer
             scrollTimer.invalidate()
@@ -493,20 +525,20 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    // Pass shared data.
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in the Question scene.
-        if segue.destination is QuestionViewController {
-            let Destination = segue.destination as? QuestionViewController
-            Destination?.modelController = modelController
-        }
-
-        // Update the modelController in the ReadingInstructions scene.
-        if segue.destination is ReadingInstructionsViewController {
-            let Destination = segue.destination as? ReadingInstructionsViewController
-            Destination?.modelController = modelController
-        }
-    }
+//    // Pass shared data.
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        //UserDefaults.standard.set(modelController, forKey: "modelController")
+//
+//        // Update the modelController in the Question scene.
+//        if segue.destination is QuestionViewController {
+//            let Destination = segue.destination as? QuestionViewController
+//            Destination?.modelController = modelController
+//        }
+//
+//        // Update the modelController in the ReadingInstructions scene.
+//        if segue.destination is ReadingInstructionsViewController {
+//            let Destination = segue.destination as? ReadingInstructionsViewController
+//            Destination?.modelController = modelController
+//        }
+//    }
 }
