@@ -8,10 +8,10 @@ She had so many children,
 And loved them all, too.</text>
         <separator>new line</separator>
         <question>Tap the words that rhyme with "boo".</question>
-        <device>device 1</device>
+        <device>Device 1</device>
         <answer>Who, shoe, too</answer>
         <question>Tap the words that have two syllables.</question>
-        <device>device 2</device>
+        <device>Device 2</device>
         <answer>woman, children</answer>
     </section>
     <section>
@@ -21,7 +21,7 @@ Then kissed them all gladly
 And sent them to bed.</text>
         <separator>none</separator>
         <question>Tap the words that rhyme with "head".</question>
-        <device>device 3</device>
+        <device>Device 3</device>
         <answer>said, bread, bed</answer>
     </section>
 </article>

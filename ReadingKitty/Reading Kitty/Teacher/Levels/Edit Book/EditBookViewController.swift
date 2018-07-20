@@ -22,12 +22,16 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     var bookDevices:[String] = []
     
     var data:Data = Data()
+    var library:Library = Library()
     
     
     /********** VIEW FUNCTIONS **********/
     // When the view controller appears, ...
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Get UserDefaults values.
+        library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
         devicesTable.delegate = self
@@ -108,6 +112,17 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     // When user clicks the edit header button, it sends them to the EditHeader scene.
     @IBAction func editHeader(_ sender: Any) {
         self.performSegue(withIdentifier: "EditHeader", sender: self)
+    }
+    
+    //
+    @IBAction func deleteButton(_ sender: Any) {
+//        for book in library.books {
+//            if book.file == data.myBook.file {
+//                library.books.remove(at: <#T##Int#>)
+//            }
+//        }
+        
+        self.performSegue(withIdentifier: "LevelDetails", sender: self)
     }
     
     // Passing data

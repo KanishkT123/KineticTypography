@@ -74,6 +74,14 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Get UserDefaults values.
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
+        // Set newLevel
+        newLevel = data.myBook.level
+        
+        // Rank the levels depending on the devices asked about in the story.
+        updateBookDevices()
+        rankLevels()
+        updateRanking()
+        
         // Set the delegates.
         rank1Table.delegate = self
         rank1Table.dataSource = self
@@ -96,11 +104,6 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         bookLevel.text = "Level \(String(data.myLevel + 1))"
-        
-        // Rank the levels depending on the devices asked about in the story.
-        updateBookDevices()
-        rankLevels()
-        updateRanking()
     }
     
     /*
@@ -109,8 +112,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
         for section:BookSection in data.myBook.sections {
-            let sectionDevices:[String] = section.devices
-            for device:String in sectionDevices {
+            for device:String in section.devices {
                 // The following if statement checks for repetition before added the device to bookDevices.
                 if !bookDevices.contains(device) {
                     bookDevices.append(device)
@@ -128,17 +130,20 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     */
     func rankLevels() {
         // Update bookDevicesPerLevel.
+        print(bookDevices)
         for level in 0..<8 {
-            let levelDevicesAll:[String] = data.allDevices[level]
             var levelDevicesBook:[String] = []
-            for device:String in levelDevicesAll {
+            print(data.allDevices[level])
+            for device:String in data.allDevices[level] {
                 // The following if statement checks if the device appears in the book.
                 if bookDevices.contains(device) {
                     levelDevicesBook.append(device)
                 }
             }
+            print(levelDevicesBook)
             bookDevicesPerLevel.append(levelDevicesBook)
         }
+        print(bookDevicesPerLevel)
         
         // Update levelRankings.
         var count:Int = 0
@@ -151,6 +156,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             count += 1
         }
+        print(levelRankings)
     }
     
     /*
