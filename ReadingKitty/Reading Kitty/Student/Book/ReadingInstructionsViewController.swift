@@ -24,41 +24,25 @@ class ReadingInstructionsViewController: UIViewController {
     var answerRanges: [NSRange] = []
     
     // UserDefault variables
-    var myColor:Int = 0
-    var myBook:Book = Book(file: "", sections: [])
-    var mySectionNum:Int = 0
-    var currentRanges:[[NSRange]] = []
-    var currentAttributes:[[NSAttributedStringKey : Any]] = []
-    var allText:[NSMutableAttributedString] = []
-    var allRanges:[[[NSRange]]] = []
-    var allAttributes:[[[NSAttributedStringKey : Any]]] = []
+    var data:Data = Data()
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Get UserDefaults values.
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
-        mySectionNum = UserDefaults.standard.object(forKey: "mySectionNum") as! Int
-        currentRanges = UserDefaults.standard.object(forKey: "currentRanges") as! [[NSRange]]
-        currentAttributes = UserDefaults.standard.object(forKey: "currentAttributes") as! [[NSAttributedStringKey : Any]]
-        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
-        allRanges = UserDefaults.standard.object(forKey: "allRanges") as! [[[NSRange]]]
-        allAttributes = UserDefaults.standard.object(forKey: "allAttributes") as! [[[NSAttributedStringKey : Any]]]
-        
         // Update the color scheme.
         updateColors()
         
         // Set header.
-        bookTitle.text = myBook.file
+        bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
     }
     
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
-        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        header.backgroundColor = colorScheme.getColorLight(opacity: 0.8)
+        goButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
     }
     
     
@@ -66,20 +50,15 @@ class ReadingInstructionsViewController: UIViewController {
     // When user clicks the back button, it send them to the Graphics scene.
     @IBAction func backButton(_ sender: Any) {
         // Get previous text
-        myText = allText.removeLast()
-        UserDefaults.standard.set(allText, forKey: "allText")
+        myText = data.allText.removeLast()
         
         // Get previous ranges and attributes
-        currentRanges = allRanges.removeLast()
-        currentAttributes = allAttributes.removeLast()
-        UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
-        UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
-        UserDefaults.standard.set(allRanges, forKey: "allRanges")
-        UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
+        data.currentRanges = data.allRanges.removeLast()
+        data.currentAttributes = data.allAttributes.removeLast()
         
         // Get previous separator and answer ranges
-        mySeparator = myBook.sections[mySectionNum].separator
-        answerRanges = currentRanges.last!
+        mySeparator = data.myBook.sections[data.mySectionNum].separator
+        answerRanges = data.currentRanges.last!
         
         // Go to the Graphics scene.
         self.performSegue(withIdentifier: "Graphics", sender: self)
@@ -98,21 +77,19 @@ class ReadingInstructionsViewController: UIViewController {
 
     // Pass shared data.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in the Graphics scene.
+        // Update the data in the Graphics scene.
         if segue.destination is GraphicsViewController {
             let Destination = segue.destination as? GraphicsViewController
-            //Destination?.modelController = modelController
+            Destination?.data = data
             Destination?.myText = myText
             Destination?.answerRanges = answerRanges
             Destination?.mySeparator = mySeparator
         }
 
-//        // Update the modelController in the Reading scene.
-//        if segue.destination is ReadingViewController {
-//            let Destination = segue.destination as? ReadingViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the data in the Reading scene.
+        if segue.destination is ReadingViewController {
+            let Destination = segue.destination as? ReadingViewController
+            Destination?.data = data
+        }
     }
 }

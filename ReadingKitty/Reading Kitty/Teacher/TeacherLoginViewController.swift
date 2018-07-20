@@ -13,7 +13,7 @@ class TeacherLoginViewController: UIViewController, UITextFieldDelegate {
     // The text field that the user inputs their password
     @IBOutlet weak var passwordBox: UITextField!
     
-    // UserDefault variables
+    var data:Data = Data()
     var password:String = ""
     
     /********** VIEW FUNCTIONS **********/
@@ -21,7 +21,7 @@ class TeacherLoginViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
 
         // Get UserDefaults values.
-        password = UserDefaults.standard.object(forKey: "password") as! String
+        password = UserDefaults.standard.string(forKey: "password")!
         
         // Set delegates.
         passwordBox.delegate = self
@@ -58,26 +58,24 @@ class TeacherLoginViewController: UIViewController, UITextFieldDelegate {
         self.performSegue(withIdentifier: "SecurityQuestion", sender: self)
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in Welcome
-//        if segue.destination is ViewController {
-//            let Destination = segue.destination as? ViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in SecurityQuestion
-//        if segue.destination is SecurityQuestionViewController {
-//            let Destination = segue.destination as? SecurityQuestionViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in Welcome
+        if segue.destination is ViewController {
+            let Destination = segue.destination as? ViewController
+            Destination?.data = data
+        }
+
+        // Update the data in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+
+        // Update the data in SecurityQuestion
+        if segue.destination is SecurityQuestionViewController {
+            let Destination = segue.destination as? SecurityQuestionViewController
+            Destination?.data = data
+        }
+    }
 }

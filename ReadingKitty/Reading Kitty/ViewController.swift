@@ -10,8 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     /********** LOCAL VARIABLES **********/
-//    // Reference to levels, books, and devices
-//    var modelController = ModelController()
+    var data = Data()
     
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the student button, it sends them to the StudentLogin scene
@@ -24,22 +23,20 @@ class ViewController: UIViewController {
     @IBAction func teacherButton(_ sender: UIButton) {
         self.performSegue(withIdentifier: "TeacherLogin", sender: self)
     }
-//
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in StudentLogin
-//        if segue.destination is StudentLoginViewController {
-//            let Destination = segue.destination as? StudentLoginViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in TeacherLogin
-//        if segue.destination is TeacherLoginViewController {
-//            let Destination = segue.destination as? TeacherLoginViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in StudentLogin
+        if segue.destination is StudentLoginViewController {
+            let Destination = segue.destination as? StudentLoginViewController
+            Destination?.data = data
+        }
+
+        // Update the data in TeacherLogin
+        if segue.destination is TeacherLoginViewController {
+            let Destination = segue.destination as? TeacherLoginViewController
+            Destination?.data = data
+        }
+    }
 }
 

@@ -14,17 +14,12 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var levelsTable: UITableView!
     
     // UserDefaults variables.
-    var readingLevels:[String] = []
-    var gradeLevels:[String] = []
+    var data:Data = Data()
     
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        readingLevels = UserDefaults.standard.object(forKey: "readingLevels") as! [String]
-        gradeLevels = UserDefaults.standard.object(forKey: "gradeLevels") as! [String]
         
         // Set delegates.
         levelsTable.delegate = self
@@ -33,7 +28,7 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     
     // Sets the number of rows to the number of levels.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return readingLevels.count
+        return data.readingLevels.count
     }
     
     // Configures each cell by row.
@@ -42,10 +37,10 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
         let Cell:UITableViewCell = levelsTable.dequeueReusableCell(withIdentifier: "Level")!
         
         // Gets reading title and grade subtitle
-        let readingLevel = readingLevels[indexPath.row]
+        let readingLevel = data.readingLevels[indexPath.row]
         let title = readingLevel
         
-        let gradeLevel = gradeLevels[indexPath.row]
+        let gradeLevel = data.gradeLevels[indexPath.row]
         let subtitle = gradeLevel
         
         // Inputs and centers (supposedly) the title and subtitle
@@ -68,26 +63,24 @@ class TeacherLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     // If a cell is selected, go to the LevelDetails scene.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Update the selected cell row to myLevel.
-        UserDefaults.standard.set(indexPath.row, forKey: "myLevel")
+        data.myLevel = indexPath.row
         
         // Go to the LevelDetails scene.
         self.performSegue(withIdentifier: "LevelDetails", sender: self)
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//        
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in LevelDetails
-//        if segue.destination is LevelDetailsViewController {
-//            let Destination = segue.destination as? LevelDetailsViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+
+        // Update the data in LevelDetails
+        if segue.destination is LevelDetailsViewController {
+            let Destination = segue.destination as? LevelDetailsViewController
+            Destination?.data = data
+        }
+    }
 }

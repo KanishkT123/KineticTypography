@@ -24,19 +24,15 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var inputBackground: UIView!
     
-    // UserDefaults variables.
-    var name:String = ""
-    var myColor:Int = 0
+    // Data
+    var data:Data = Data()
+    
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Reset name so an old name isn't used automatically.
-        UserDefaults.standard.set("", forKey: "name")
-        
-        // Get UserDefaults values.
-        name = UserDefaults.standard.object(forKey: "name") as! String
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
+        data.name = ""
         
         // Set delegates.
         nameBox.delegate = self
@@ -50,36 +46,37 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
     
     // Update the color scheme based on what color the user chose at the login.
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        inputBackground.backgroundColor = getColorDark(color: myColor, opacity: 0.8)
-        nameBox.backgroundColor = getColorLight(color: myColor, opacity: 1.0)
-        nameBox.textColor = getColorRegular(color: myColor, opacity: 1.0)
-        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        inputBackground.backgroundColor = colorScheme.getColorDark(opacity: 0.8)
+        nameBox.backgroundColor = colorScheme.getColorLight(opacity: 1.0)
+        nameBox.textColor = colorScheme.getColorRegular(opacity: 1.0)
+        goButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
     }
     
     // When a color is selected, update myColor and update colors in the scene
     @IBAction func redButton(_ sender: Any) {
-        myColor = 0
+        data.myColor = 0
         updateColors()
     }
     @IBAction func orangeButton(_ sender: Any) {
-        myColor = 1
+        data.myColor = 1
         updateColors()
     }
     @IBAction func yellowButton(_ sender: Any) {
-        myColor = 2
+        data.myColor = 2
         updateColors()
     }
     @IBAction func greenButton(_ sender: Any) {
-        myColor = 3
+        data.myColor = 3
         updateColors()
     }
     @IBAction func blueButton(_ sender: Any) {
-        myColor = 4
+        data.myColor = 4
         updateColors()
     }
     @IBAction func purpleButton(_ sender: Any) {
-        myColor = 5
+        data.myColor = 5
         updateColors()
     }
     
@@ -103,26 +100,23 @@ class StudentLoginViewController: UIViewController, UITextFieldDelegate {
         
         // If the user inputed a name, save the name and color, and go to StudentLevels.
         if nameBox.text != "" {
-            UserDefaults.standard.set(nameBox.text!, forKey: "name")
-            UserDefaults.standard.set(myColor, forKey: "myColor")
+            data.name = nameBox.text!
             self.performSegue(withIdentifier: "StudentLevels", sender: self)
         }
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//        
-//        // Update the modelController in the Welcome scene.
-//        if segue.destination is ViewController {
-//            let Destination = segue.destination as? ViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the StudentLevels scene.
-//        if segue.destination is StudentLevelsViewController {
-//            let Destination = segue.destination as? StudentLevelsViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the Welcome scene.
+        if segue.destination is ViewController {
+            let Destination = segue.destination as? ViewController
+            Destination?.data = data
+        }
+
+        // Update the data in the StudentLevels scene.
+        if segue.destination is StudentLevelsViewController {
+            let Destination = segue.destination as? StudentLevelsViewController
+            Destination?.data = data
+        }
+    }
 }

@@ -17,7 +17,8 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
     var videoTitles:[String] = []
     
     // UserDefaults variables.
-    var savedVideos:[Video] = []
+    var data:Data = Data()
+    var library:Library = Library()
     
     
     /********** VIEW FUNCTIONS **********/
@@ -25,23 +26,23 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
-        savedVideos = UserDefaults.standard.object(forKey: "savedVideos") as! [Video]
+        library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
         videosTable.delegate = self
         videosTable.dataSource = self
         
         // Get video titles.
-        for video:Video in savedVideos {
+        for video:Video in library.videos {
             // Add each video title to videoTitles
-            let videoTitle:String = "\(video.name) - \(video.book.file)"
+            let videoTitle:String = "\(video.name) - \(video.bookTitle)"
             videoTitles.append(videoTitle)
         }
     }
     
     // Sets the number of rows to the number of saved videos.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return savedVideos.count
+        return library.videos.count
     }
     
     // Configures each cell by row.
@@ -64,33 +65,30 @@ class SavedVideosViewController: UIViewController, UITableViewDelegate, UITableV
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the TeacherWelcome scene
     @IBAction func backButton(_ sender: Any) {
-        // Go to TeacherWelcome
         self.performSegue(withIdentifier: "TeacherWelcome", sender: self)
     }
     
     // If a cell is selected, go to the VideoDetails scene.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Update the selected cell row to myVideo.
-        UserDefaults.standard.set(indexPath.row, forKey: "myVideo")
+        data.myVideo = indexPath.row
         
         // Go to the VideoDetails scene.
         self.performSegue(withIdentifier: "VideoDetails", sender: self)
     }
 
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in VideoDetails
-//        if segue.destination is VideoDetailsViewController {
-//            let Destination = segue.destination as? VideoDetailsViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+
+        // Update the data in VideoDetails
+        if segue.destination is VideoDetailsViewController {
+            let Destination = segue.destination as? VideoDetailsViewController
+            Destination?.data = data
+        }
+    }
 }

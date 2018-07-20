@@ -49,30 +49,11 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     var pickingColor: Bool = true
     
     // UserDefault variables
-    var myColor:Int = 0
-    var myBook:Book = Book(file: "", sections: [])
-    var mySectionNum:Int = 0
-    var myQuestionNum:Int = 0
-    var currentRanges:[[NSRange]] = []
-    var currentAttributes:[[NSAttributedStringKey : Any]] = []
-    var allText:[NSMutableAttributedString] = []
-    var allRanges:[[[NSRange]]] = []
-    var allAttributes:[[[NSAttributedStringKey : Any]]] = []
+    var data:Data = Data()
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
-        mySectionNum = UserDefaults.standard.object(forKey: "mySectionNum") as! Int
-        myQuestionNum = UserDefaults.standard.object(forKey: "myQuestionNum") as! Int
-        currentRanges = UserDefaults.standard.object(forKey: "currentRanges") as! [[NSRange]]
-        currentAttributes = UserDefaults.standard.object(forKey: "currentAttributes") as! [[NSAttributedStringKey : Any]]
-        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
-        allRanges = UserDefaults.standard.object(forKey: "allRanges") as! [[[NSRange]]]
-        allAttributes = UserDefaults.standard.object(forKey: "allAttributes") as! [[[NSAttributedStringKey : Any]]]
         
         // Set the color scheme (including newColor)
         updateColors()
@@ -86,7 +67,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         nextButtons.isHidden = true
         
         // Set the book title.
-        bookTitle.text = myBook.file
+        bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         
         // Set delegates.
@@ -118,12 +99,13 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Updates the color scheme of the scene.
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
-        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
-        againButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
-        doneButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
-        newColor = getColorRegular(color: myColor, opacity: 1.0)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        header.backgroundColor = colorScheme.getColorLight(opacity: 0.8)
+        goButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
+        againButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
+        doneButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
+        newColor = colorScheme.getColorRegular(opacity: 1.0)
     }
     
     // Update the attributes of the buttons
@@ -163,9 +145,9 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Makes previously saved attributes visible.
     func addAllAttributes() {
-        for question:Int in 0..<currentRanges.count {
-            for range:NSRange in currentRanges[question] {
-                myText.addAttributes(currentAttributes[question], range: range)
+        for question:Int in 0..<data.currentRanges.count {
+            for range:NSRange in data.currentRanges[question] {
+                myText.addAttributes(data.currentAttributes[question], range: range)
             }
         }
     }
@@ -179,37 +161,43 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     /********** COLOR FUNCTIONS **********/
     // When a color is selected, update newColor and update the color of the go button
     @IBAction func redButton(_ sender: Any) {
-        newColor = getColorRegular(color: 0, opacity: 1.0)
+        let redColorScheme = data.colors[0]
+        newColor = redColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func orangeButton(_ sender: Any) {
-        newColor = getColorRegular(color: 1, opacity: 1.0)
+        let orangeColorScheme = data.colors[1]
+        newColor = orangeColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func yellow(_ sender: Any) {
-        newColor = getColorRegular(color: 2, opacity: 1.0)
+        let yellowColorScheme = data.colors[2]
+        newColor = yellowColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func greenButton(_ sender: Any) {
-        newColor = getColorRegular(color: 3, opacity: 1.0)
+        let greenColorScheme = data.colors[3]
+        newColor = greenColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func blueButton(_ sender: Any) {
-        newColor = getColorRegular(color: 4, opacity: 1.0)
+        let blueColorScheme = data.colors[4]
+        newColor = blueColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
     
     @IBAction func purpleButton(_ sender: Any) {
-        newColor = getColorRegular(color: 5, opacity: 1.0)
+        let purpleColorScheme = data.colors[5]
+        newColor = purpleColorScheme.getColorRegular(opacity: 1.0)
         goButton.backgroundColor = newColor
         goButton.setTitleColor(UIColor.black, for: .normal)
     }
@@ -446,18 +434,15 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     // When user clicks the go button, it sends them to the ... scene
     @IBAction func doneButton(_ sender: Any) {
         // Update modelController
-        currentRanges.append(answerRanges)
-        currentAttributes.append(newAttributes)
-        UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
-        UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
+        data.currentRanges.append(answerRanges)
+        data.currentAttributes.append(newAttributes)
         
         // Update the question and go to the correct scene
-        let mySections:[BookSection] = myBook.sections
-        let myQuestions:[String] = mySections[mySectionNum].questions
-        if myQuestions.count > myQuestionNum + 1 {
+        let mySections:[BookSection] = data.myBook.sections
+        let myQuestions:[String] = mySections[data.mySectionNum].questions
+        if myQuestions.count > data.myQuestionNum + 1 {
             // There are still questions left. Go to next question.
-            myQuestionNum += 1
-            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
+            data.myQuestionNum += 1
             
             // Stop timer
             scrollTimer.invalidate()
@@ -466,29 +451,22 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
             
             // Go to Question scene.
             self.performSegue(withIdentifier: "Question", sender: self)
-        } else if mySections.count > mySectionNum + 1 {
+        } else if mySections.count > data.mySectionNum + 1 {
             // There are no questions left in the section, but there are more sections left.
             // Save and reset currentRanges and currentAttributes.
-            allRanges.append(currentRanges)
-            allAttributes.append(currentAttributes)
-            currentRanges = []
-            currentAttributes = []
-            UserDefaults.standard.set(allRanges, forKey: "allRanges")
-            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
-            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
-            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
+            data.allRanges.append(data.currentRanges)
+            data.allAttributes.append(data.currentAttributes)
+            data.currentRanges = []
+            data.currentAttributes = []
             
             // Add section text to allText.
             let separator:NSAttributedString = NSAttributedString(string: mySeparator)
             myText.append(separator)
-            allText.append(myText)
-            UserDefaults.standard.set(allText, forKey: "allText")
+            data.allText.append(myText)
             
             // Go to next section.
-            mySectionNum += 1
-            myQuestionNum = 0
-            UserDefaults.standard.set(mySectionNum, forKey: "mySectionNum")
-            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
+            data.mySectionNum += 1
+            data.myQuestionNum = 0
             
             // Stop timer
             scrollTimer.invalidate()
@@ -500,20 +478,15 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         } else {
             // There are no questions left in the section, and there are no sections left in the book.
             // Save and reset currentRanges and currentAttributes.
-            allRanges.append(currentRanges)
-            allAttributes.append(currentAttributes)
-            currentRanges = []
-            currentAttributes = []
-            UserDefaults.standard.set(allRanges, forKey: "allRanges")
-            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
-            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
-            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
+            data.allRanges.append(data.currentRanges)
+            data.allAttributes.append(data.currentAttributes)
+            data.currentRanges = []
+            data.currentAttributes = []
             
             // Add section text and separator to allText.
             let separator:NSAttributedString = NSAttributedString(string: mySeparator)
             myText.append(separator)
-            allText.append(myText)
-            UserDefaults.standard.set(allText, forKey: "allText")
+            data.allText.append(myText)
             
             // Stop timer
             scrollTimer.invalidate()
@@ -525,20 +498,18 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-//    // Pass shared data.
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in the Question scene.
-//        if segue.destination is QuestionViewController {
-//            let Destination = segue.destination as? QuestionViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the ReadingInstructions scene.
-//        if segue.destination is ReadingInstructionsViewController {
-//            let Destination = segue.destination as? ReadingInstructionsViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Pass shared data.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the Question scene.
+        if segue.destination is QuestionViewController {
+            let Destination = segue.destination as? QuestionViewController
+            Destination?.data = data
+        }
+
+        // Update the data in the ReadingInstructions scene.
+        if segue.destination is ReadingInstructionsViewController {
+            let Destination = segue.destination as? ReadingInstructionsViewController
+            Destination?.data = data
+        }
+    }
 }

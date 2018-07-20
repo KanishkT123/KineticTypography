@@ -34,20 +34,11 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     var invalidated: Bool = false
     
     // UserDefault variables
-    var myColor:Int = 0
-    var myBook:Book = Book(file: "", sections: [])
-    var allText:[NSMutableAttributedString] = []
-    var audioURL:URL = URL(fileURLWithPath: "")
+    var data:Data = Data()
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
-        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
-        audioURL = UserDefaults.standard.object(forKey: "allText") as! URL
         
         // Update the color scheme.
         updateColors()
@@ -58,12 +49,12 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         bookText.isEditable = false
         
         // Set header.
-        bookTitle.text = myBook.file
+        bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         
         // Update the book text.
         let tempText: NSMutableAttributedString = NSMutableAttributedString(string: "")
-        for text in allText {
+        for text in data.allText {
             tempText.append(text)
         }
         bookText.attributedText = tempText
@@ -116,8 +107,9 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     }
     
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        header.backgroundColor = colorScheme.getColorLight(opacity: 0.8)
     }
     
     @objc func flashIndicator() {
@@ -154,8 +146,7 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         }
         print("got here")
         // Save audio
-        audioURL = (audioRecorder?.url)!
-        UserDefaults.standard.set(audioURL, forKey: "audioURL")
+        data.audioURL = (audioRecorder?.url)!
         
         // Go to the VideoPlayer scene
         goToVideoPlayer()
@@ -181,27 +172,23 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         invalidated = true
         
         // Go to the VideoPlayer scene
-        print("got here too")
         self.performSegue(withIdentifier: "VideoPlayer", sender: self)
     }
     
     
     // Passing data
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //UserDefaults.standard.set(modelController, forKey: "modelController")
-        
-        // Update the modelController in the VideoPlayer scene.
+        // Update the data in the VideoPlayer scene.
         if segue.destination is VideoPlayerViewController {
-            // Update the modelController.
             let Destination = segue.destination as? VideoPlayerViewController
-            //Destination?.modelController = modelController
+            Destination?.data = data
             Destination?.makeNewVideo = true
         }
 
-//        // Update the modelController in the ReadingInstructions scene.
-//        if segue.destination is ReadingInstructionsViewController {
-//            let Destination = segue.destination as? ReadingInstructionsViewController
-//            Destination?.modelController = modelController
-//        }
+        // Update the data in the ReadingInstructions scene.
+        if segue.destination is ReadingInstructionsViewController {
+            let Destination = segue.destination as? ReadingInstructionsViewController
+            Destination?.data = data
+        }
     }
 }

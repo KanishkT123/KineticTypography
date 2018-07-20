@@ -22,8 +22,8 @@ class VideoDetailsViewController: UIViewController {
     var videoTitles:[String] = []
     
     // UserDefaults variables.
-    var savedVideos:[Video] = []
-    var myVideo:Int = 0
+    var data:Data = Data()
+    var library:Library = Library()
     
     
     /********** VIEW FUNCTIONS **********/
@@ -32,40 +32,34 @@ class VideoDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
-        savedVideos = UserDefaults.standard.object(forKey: "savedVideos") as! [Video]
-        myVideo = UserDefaults.standard.object(forKey: "myVideo") as! Int
+        library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Get video titles.
-        for video:Video in savedVideos {
+        for video:Video in library.videos {
             // Add each video title to videoTitles
-            let videoTitle:String = "\(video.name) - \(video.book.file)"
+            let videoTitle:String = "\(video.name) - \(video.bookTitle)"
             videoTitles.append(videoTitle)
         }
         
         // Set correct video title
-        videoLabel.text = videoTitles[myVideo]
+        videoLabel.text = videoTitles[data.myVideo]
         videoLabel.baselineAdjustment = .alignCenters
         
         // Set correct feedback
-        feedbackBox.text = savedVideos[myVideo].feedback
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        feedbackBox.text = library.videos[data.myVideo].feedback
     }
     
     
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the SavedVideos scene
     @IBAction func backButton(_ sender: Any) {
-        // Go to SavedVideos
         self.performSegue(withIdentifier: "SavedVideos", sender: self)
     }
     
     // When user clicks the play button, it plays the video and send them to the Player scene
     @IBAction func playVideo(_ sender: Any) {
         // Get video
-        let currentVideo = savedVideos[myVideo]
+        let currentVideo = library.videos[data.myVideo]
         
         // Play video
         if let path = Bundle.main.path(forResource: currentVideo.file, ofType: "mp4") {
@@ -82,7 +76,7 @@ class VideoDetailsViewController: UIViewController {
     // When user clicks the export button, it exports the video.
     @IBAction func exportButton(_ sender: Any) {
         // Get video
-        let currentVideo = savedVideos[myVideo]
+        let currentVideo = library.videos[data.myVideo]
         
         // Download video
         if let path = Bundle.main.path(forResource: currentVideo.file, ofType: "mp4") {
@@ -95,22 +89,20 @@ class VideoDetailsViewController: UIViewController {
     // When user clicks the delete button, it removes the video from the saved videos list and sends them to the SavedVideos scene
     @IBAction func deleteButton(_ sender: Any) {
         // Delete video
-        savedVideos.remove(at: myVideo)
-        UserDefaults.standard.set(savedVideos, forKey: "savedVideos")
+        library.videos.remove(at: data.myVideo)
+        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
         
         // Go to SavedVideos
         self.performSegue(withIdentifier: "SavedVideos", sender: self)
     }
     
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in SavedVideos
-//        if segue.destination is SavedVideosViewController {
-//            let Destination = segue.destination as? SavedVideosViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in SavedVideos
+        if segue.destination is SavedVideosViewController {
+            let Destination = segue.destination as? SavedVideosViewController
+            Destination?.data = data
+        }
+    }
 }

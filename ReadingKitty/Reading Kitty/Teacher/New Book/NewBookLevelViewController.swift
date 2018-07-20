@@ -23,7 +23,6 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     // Level devices
     var bookDevicesPerLevel: [[String]] = []
     var levelRankings: [Int] = []
-    var levelSelected: Int = 0
     
     // Rank 1
     @IBOutlet weak var rank1Level: UILabel!
@@ -58,9 +57,8 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var rank8Table: UITableView!
     
     // UserDefaults variables.
-    var myBook:Book = Book(file: "", sections: [])
-    var allBooks:[[Book]] = []
-    var allDevices:[[String]] = []
+    var data:Data = Data()
+    var library:Library = Library()
     
     
     /********** VIEW FUNCTIONS **********/
@@ -68,9 +66,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
-        allBooks = UserDefaults.standard.object(forKey: "allBooks") as! [[Book]]
-        allDevices = UserDefaults.standard.object(forKey: "allDevices") as! [[String]]
+        library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
         rank1Table.delegate = self
@@ -91,7 +87,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         rank8Table.dataSource = self
         
         // Set the header.
-        bookTitleLabel.text = myBook.file
+        bookTitleLabel.text = data.myBook.file
         bookTitleLabel.baselineAdjustment = .alignCenters
         
         // Hide the error.
@@ -108,7 +104,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     */
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
-        for section:BookSection in myBook.sections {
+        for section:BookSection in data.myBook.sections {
             let sectionDevices:[String] = section.devices
             for device:String in sectionDevices {
                 // The following if statement checks for repetition before added the device to bookDevices.
@@ -130,7 +126,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     func rankLevels() {
         // Update bookDevicesPerLevel.
         for level in 0..<8 {
-            let levelDevicesAll:[String] = allDevices[level]
+            let levelDevicesAll:[String] = data.allDevices[level]
             var levelDevicesBook:[String] = []
             for device:String in levelDevicesAll {
                 // The following if statement checks if the device appears in the book.
@@ -170,9 +166,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == rank1Table {
-            let numRows = bookDevicesPerLevel[levelRankings[0]].count
-            
-            return numRows
+            return bookDevicesPerLevel[levelRankings[0]].count
         } else if tableView == rank2Table {
             return bookDevicesPerLevel[levelRankings[1]].count
         } else if tableView == rank3Table {
@@ -226,7 +220,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     // When the user clicks on the "select level" button, it saves the level selected, saves the book as an xml file, and segues to the TeacherWelcome scene
     @IBAction func rank1Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[0]
+        data.myBook.level = levelRankings[0]
         
         // Save the book as an xml file
         saveToXML()
@@ -236,7 +230,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank2Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[1]
+        data.myBook.level = levelRankings[1]
         
         // Save the book as an xml file
         saveToXML()
@@ -246,7 +240,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank3Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[2]
+        data.myBook.level = levelRankings[2]
         
         // Save the book as an xml file
         saveToXML()
@@ -256,7 +250,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank4Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[3]
+        data.myBook.level = levelRankings[3]
         
         // Save the book as an xml file
         saveToXML()
@@ -266,7 +260,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank5Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[4]
+        data.myBook.level = levelRankings[4]
         
         // Save the book as an xml file
         saveToXML()
@@ -276,7 +270,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank6Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[5]
+        data.myBook.level = levelRankings[5]
         
         // Save the book as an xml file
         saveToXML()
@@ -286,7 +280,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank7Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[6]
+        data.myBook.level = levelRankings[6]
         
         // Save the book as an xml file
         saveToXML()
@@ -296,7 +290,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     }
     @IBAction func rank8Button(_ sender: Any) {
         // Save the level selected
-        levelSelected = levelRankings[7]
+        data.myBook.level = levelRankings[7]
         
         // Save the book as an xml file
         saveToXML()
@@ -312,7 +306,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         xmlText.append("<article>")
         
         // Add each section to xmlText
-        for section:BookSection in myBook.sections {
+        for section:BookSection in data.myBook.sections {
             // Start the section
             xmlText.append("<section>")
             
@@ -353,16 +347,17 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         
         // Create xml file from string
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filename = path?.appendingPathComponent(myBook.file + ".xml")
+        let filename = path?.appendingPathComponent(data.myBook.file + ".xml")
         do {
             try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             print("error in making xml file")
         }
         
-        // Save book in the level data in the modelController.
-        allBooks[levelSelected].append(myBook)
-        UserDefaults.standard.set(allBooks, forKey: "allBooks")
+        // Save book in the level data in the library.
+        data.myBook.sections = []
+        library.books.append(data.myBook)
+        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
     }
     
     func write(text: String, to fileNamed: String, folder: String = "SavedFiles") {
@@ -373,14 +368,12 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
         try? text.write(to: file, atomically: false, encoding: String.Encoding.utf8)
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+    }
 }

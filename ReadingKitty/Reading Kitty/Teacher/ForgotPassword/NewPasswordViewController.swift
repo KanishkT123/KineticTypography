@@ -19,6 +19,8 @@ class NewPasswordViewController: UIViewController, UITextFieldDelegate {
     var newPassword: String = ""
     var confirmPassword: String = ""
     
+    var data:Data = Data()
+    
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -100,20 +102,18 @@ class NewPasswordViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in SecurityQuestion
-//        if segue.destination is SecurityQuestionViewController {
-//            let Destination = segue.destination as? SecurityQuestionViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in TeacherWelcome
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in SecurityQuestion
+        if segue.destination is SecurityQuestionViewController {
+            let Destination = segue.destination as? SecurityQuestionViewController
+            Destination?.data = data
+        }
+
+        // Update the data in TeacherWelcome
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+    }
 }

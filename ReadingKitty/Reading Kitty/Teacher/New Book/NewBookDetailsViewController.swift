@@ -17,7 +17,8 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     // New book data
     var currentQuestions:[String] = [] // [question, question, question...]
     var currentDevices:[String] = [] // [device, device, device...]
-    var currentAnswers:[[String]] = [] // [answers, answers, answers...] answers = answer, answer, answer...
+    var currentAnswers:[[String]] = [] // [answers, answers, answers...]
+                                        // answers = answer, answer, answer...
 
     // Text
     @IBOutlet weak var textBox: UITextView!
@@ -45,15 +46,12 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var sectionQuestionError: UILabel!
     
     // UserDefaults variables.
-    var myBook:Book = Book(file: "", sections: [])
+    var data:Data = Data()
 
 
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
 
         // Set delegates.
         textBox.delegate = self
@@ -65,9 +63,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         questionsTable.dataSource = self
         
         // Set header.
-        bookTitleLabel.text = myBook.file
+        bookTitleLabel.text = data.myBook.file
         bookTitleLabel.baselineAdjustment = .alignCenters
-        bookDetails.text = "Section \(myBook.sections.count + 1)"
+        bookDetails.text = "Section \(data.myBook.sections.count + 1)"
         
         // Hide errors.
         oopsErrors.isHidden = true
@@ -361,7 +359,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
         
-        if myBook.sections.count == 0 {
+        if data.myBook.sections.count == 0 {
 //            // Clear new question
 //            newQuestion.text = ""
 //            deviceDrop.setTitle("Select a Literary Device", for: .normal)
@@ -371,11 +369,10 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             self.performSegue(withIdentifier: "NewBook", sender: self)
         } else {
             // Previous section is deleted from newBook.
-            let previousSection = myBook.sections.removeLast()
-            UserDefaults.standard.set(myBook, forKey: "myBook")
+            let previousSection = data.myBook.sections.removeLast()
             
             // Update bookDetails to previous section.
-            bookDetails.text = "Section \(myBook.sections.count + 1)"
+            bookDetails.text = "Section \(data.myBook.sections.count + 1)"
             
             // Update text to previous section.
             textBox.text = previousSection.text.string
@@ -409,7 +406,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
             // Save newSection to newBook.
             let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
-            myBook.sections.append(newBookSection)
+            data.myBook.sections.append(newBookSection)
             
             // Clear everything.
             //currentSection = []
@@ -426,7 +423,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             questionsTable.reloadData()
             
             // Update bookDetails.
-            bookDetails.text = "Section \(myBook.sections.count + 1)"
+            bookDetails.text = "Section \(data.myBook.sections.count + 1)"
         } else {
             oopsErrors.isHidden = false
             if textBox.text == "" {
@@ -456,7 +453,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
             // Save newSection to newBook.
             let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
-            myBook.sections.append(newBookSection)
+            data.myBook.sections.append(newBookSection)
             
             // Clear everything.
             currentQuestions = []
@@ -492,20 +489,18 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     
 
     /********** SEGUE FUNCTIONS **********/
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in NewBook
-//        if segue.destination is NewBookViewController {
-//            let Destination = segue.destination as? NewBookViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in NewBookLevel
-//        if segue.destination is NewBookLevelViewController {
-//            let Destination = segue.destination as? NewBookLevelViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in NewBook
+        if segue.destination is NewBookViewController {
+            let Destination = segue.destination as? NewBookViewController
+            Destination?.data = data
+        }
+
+        // Update the data in NewBookLevel
+        if segue.destination is NewBookLevelViewController {
+            let Destination = segue.destination as? NewBookLevelViewController
+            Destination?.data = data
+        }
+    }
 }

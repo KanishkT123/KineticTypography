@@ -21,14 +21,12 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     var myColor:Int = 0
     var readingLevels:[String] = []
     
+    var data:Data = Data()
+    
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
-        readingLevels = UserDefaults.standard.object(forKey: "readingLevels") as! [String]
         
         // Set delegates.
         levelsTable.delegate = self
@@ -40,15 +38,16 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     
     // Update the color scheme based on what color the user chose at the login.
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
-        levelsTable.separatorColor = getColorLight(color: myColor, opacity: 1.0)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        header.backgroundColor = colorScheme.getColorLight(opacity: 0.8)
+        levelsTable.separatorColor = colorScheme.getColorLight(opacity: 1.0)
         // The cells are updated in tableView function below.
     }
     
     // Sets the number of rows to the number of levels.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return readingLevels.count
+        return data.readingLevels.count
     }
     
     // Configures each cell by row.
@@ -57,7 +56,7 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
         let Cell:UITableViewCell = levelsTable.dequeueReusableCell(withIdentifier: "Level")!
         
         // Gets reading title
-        let readingLevel = readingLevels[indexPath.row]
+        let readingLevel = data.readingLevels[indexPath.row]
         let title = readingLevel
         
         // Inputs and centers (supposedly) the title and subtitle
@@ -65,11 +64,12 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
         Cell.textLabel?.textAlignment = .center
         
         // Update colors
-        var textColor:UIColor = getColorLight(color: myColor, opacity: 1.0)
-        if myColor == 2 {
+        let colorScheme:Color = data.colors[data.myColor]
+        var textColor:UIColor = colorScheme.getColorLight(opacity: 1.0)
+        if data.myColor == 2 {
             textColor = UIColor.black
         }
-        Cell.backgroundColor = getColorDark(color: myColor, opacity: 0.8)
+        Cell.backgroundColor = colorScheme.getColorDark(opacity: 0.8)
         Cell.textLabel?.textColor = textColor
         
         return Cell
@@ -85,26 +85,24 @@ class StudentLevelsViewController: UIViewController, UITableViewDelegate, UITabl
     // If a cell is selected, go to the ... scene.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Update the selected cell row to myLevel
-        UserDefaults.standard.set(indexPath.row, forKey: "myLevel")
+        data.myLevel = indexPath.row
         
         // Go to the StudentBooks scene.
         self.performSegue(withIdentifier: "StudentBooks", sender: self)
     }
 
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in StudentLogin
-//        if segue.destination is StudentLoginViewController {
-//            let Destination = segue.destination as? StudentLoginViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in StudentBooks
-//        if segue.destination is StudentBooksViewController {
-//            let Destination = segue.destination as? StudentBooksViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in StudentLogin
+        if segue.destination is StudentLoginViewController {
+            let Destination = segue.destination as? StudentLoginViewController
+            Destination?.data = data
+        }
+
+        // Update the data in StudentBooks
+        if segue.destination is StudentBooksViewController {
+            let Destination = segue.destination as? StudentBooksViewController
+            Destination?.data = data
+        }
+    }
 }

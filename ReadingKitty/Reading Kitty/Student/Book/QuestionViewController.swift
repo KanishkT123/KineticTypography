@@ -38,32 +38,11 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     var scrollTimer: Timer!
     var invalidated: Bool = false
     
-    // UserDefault variables
-    var myColor:Int = 0
-    var myBook:Book = Book(file: "", sections: [])
-    var mySectionNum:Int = 0
-    var myQuestionNum:Int = 0
-    var currentRanges:[[NSRange]] = []
-    var currentAttributes:[[NSAttributedStringKey : Any]] = []
-    var allText:[NSMutableAttributedString] = []
-    var allRanges:[[[NSRange]]] = []
-    var allAttributes:[[[NSAttributedStringKey : Any]]] = []
+    var data:Data = Data()
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myColor = UserDefaults.standard.object(forKey: "myColor") as! Int
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
-        mySectionNum = UserDefaults.standard.object(forKey: "mySectionNum") as! Int
-        myQuestionNum = UserDefaults.standard.object(forKey: "myQuestionNum") as! Int
-        currentRanges = UserDefaults.standard.object(forKey: "currentRanges") as! [[NSRange]]
-        currentAttributes = UserDefaults.standard.object(forKey: "currentAttributes") as! [[NSAttributedStringKey : Any]]
-        allText = UserDefaults.standard.object(forKey: "allText") as! [NSMutableAttributedString]
-        allRanges = UserDefaults.standard.object(forKey: "allRanges") as! [[[NSRange]]]
-        allAttributes = UserDefaults.standard.object(forKey: "allAttributes") as! [[[NSAttributedStringKey : Any]]]
-        
         
         // Set delegates.
         bookText.delegate = self
@@ -74,7 +53,7 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         updateColors()
         
         // Set header.
-        bookTitle.text = myBook.file
+        bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
         
         // Update the text, question, and answers when moving to a new question.
@@ -97,10 +76,11 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     }
     
     func updateColors() {
-        background.backgroundColor = getColorBackground(color: myColor, opacity: 1.0)
-        header.backgroundColor = getColorLight(color: myColor, opacity: 0.8)
-        goButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
-        clearButton.backgroundColor = getColorRegular(color: myColor, opacity: 1.0)
+        let colorScheme:Color = data.colors[data.myColor]
+        background.backgroundColor = colorScheme.getColorBackground(opacity: 1.0)
+        header.backgroundColor = colorScheme.getColorLight(opacity: 0.8)
+        goButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
+        clearButton.backgroundColor = colorScheme.getColorRegular(opacity: 1.0)
     }
     
     /*
@@ -111,10 +91,10 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     */
     func updateQuestion() {
         // Access the correct text, question, and answers.
-        let mySection:BookSection = myBook.sections[mySectionNum]
+        let mySection:BookSection = data.myBook.sections[data.mySectionNum]
         myText = mySection.text
-        myQuestion = mySection.questions[myQuestionNum]
-        myAnswers = mySection.answers[myQuestionNum]
+        myQuestion = mySection.questions[data.myQuestionNum]
+        myAnswers = mySection.answers[data.myQuestionNum]
         mySeparator = mySection.separator
         wordRanges = []
         correctAnswers = []
@@ -213,7 +193,7 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         
         // Reset attributes to standard
         let myRange:NSRange = NSMakeRange(0, myText.length)
-        let standardAttributes = UserDefaults.standard.object(forKey: "standardAttributes") as! [NSAttributedStringKey: NSObject]
+        let standardAttributes = data.standardAttributes
         myText.removeAttribute(.backgroundColor, range: myRange)
         myText.removeAttribute(.shadow, range: myRange)
         myText.removeAttribute(.underlineStyle, range: myRange)
@@ -236,8 +216,9 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     // When the user taps on a word, it becomes unselectable and changes colors. Disables the url link.
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         // Make word unselectable and change its color
+        let colorScheme:Color = data.colors[data.myColor]
         myText.removeAttribute(.link, range: characterRange)
-        myText.addAttribute(.foregroundColor, value: getColorRegular(color: myColor, opacity: 1.0), range: characterRange)
+        myText.addAttribute(.foregroundColor, value: colorScheme.getColorRegular(opacity: 1.0), range: characterRange)
         bookText.attributedText = myText
 
         // Find characterRange location in wordRanges
@@ -259,14 +240,13 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the StudentBooks scene.
     @IBAction func backButton(_ sender: Any) {        
-        if myQuestionNum != 0 {
+        if data.myQuestionNum != 0 {
             // This is not the first question.
-            myQuestionNum -= 1
-            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
+            data.myQuestionNum -= 1
 
             // Get previous separator and answer ranges
-            mySeparator = myBook.sections[mySectionNum].separator
-            answerRanges = currentRanges.last!
+            mySeparator = data.myBook.sections[data.mySectionNum].separator
+            answerRanges = data.currentRanges.last!
             
             // Stop timer
             scrollTimer.invalidate()
@@ -275,28 +255,21 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
             
             // Go to Graphics scene.
             self.performSegue(withIdentifier: "GraphicsBack", sender: self)
-        } else if mySectionNum != 0 {
+        } else if data.mySectionNum != 0 {
             // This is the first question, but not the first section.
-            mySectionNum -= 1
-            myQuestionNum = myBook.sections[mySectionNum].questions.count - 1
-            UserDefaults.standard.set(mySectionNum, forKey: "mySectionNum")
-            UserDefaults.standard.set(myQuestionNum, forKey: "myQuestionNum")
+            data.mySectionNum -= 1
+            data.myQuestionNum = data.myBook.sections[data.mySectionNum].questions.count - 1
             
             // Get previous text
-            myText = allText.removeLast()
-            UserDefaults.standard.set(allText, forKey: "allText")
+            myText = data.allText.removeLast()
             
             // Get previous ranges and attributes
-            currentRanges = allRanges.removeLast()
-            currentAttributes = allAttributes.removeLast()
-            UserDefaults.standard.set(currentRanges, forKey: "currentRanges")
-            UserDefaults.standard.set(currentAttributes, forKey: "currentAttributes")
-            UserDefaults.standard.set(allRanges, forKey: "allRanges")
-            UserDefaults.standard.set(allAttributes, forKey: "allAttributes")
+            data.currentRanges = data.allRanges.removeLast()
+            data.currentAttributes = data.allAttributes.removeLast()
             
             // Get previous separator and answer ranges
-            mySeparator = myBook.sections[mySectionNum].separator
-            answerRanges = currentRanges.last!
+            mySeparator = data.myBook.sections[data.mySectionNum].separator
+            answerRanges = data.currentRanges.last!
             
             // Stop timer
             scrollTimer.invalidate()
@@ -307,15 +280,15 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
             self.performSegue(withIdentifier: "GraphicsBack", sender: self)
         } else {
             // This is the first section and the first question.
-            UserDefaults.standard.set(0, forKey: "mySectionNum")
-            UserDefaults.standard.set(0, forKey: "myQuestionNum")
+            data.mySectionNum = 0
+            data.myQuestionNum = 0
             
             // Reset values
-            UserDefaults.standard.set([], forKey: "currentRanges")
-            UserDefaults.standard.set([], forKey: "currentAttributes")
-            UserDefaults.standard.set([], forKey: "allText")
-            UserDefaults.standard.set([], forKey: "allRanges")
-            UserDefaults.standard.set([], forKey: "allAttributes")
+            data.currentRanges = []
+            data.currentAttributes = []
+            data.allText = []
+            data.allRanges = []
+            data.allAttributes = []
             
             // Stop timer
             scrollTimer.invalidate()
@@ -365,21 +338,21 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-//    // Pass saved data at segues.
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        // Update the modelController in the StudentBooks scene.
-//        if segue.destination is StudentBooksViewController {
-//            let Destination = segue.destination as? StudentBooksViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController, myText, and answerRanges in the Graphics scene.
-//        if segue.destination is GraphicsViewController {
-//            let Destination = segue.destination as? GraphicsViewController
-//            Destination?.modelController = modelController
-//            Destination?.myText = myText
-//            Destination?.answerRanges = answerRanges
-//            Destination?.mySeparator = mySeparator
-//        }
-//    }
+    // Pass saved data at segues.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the StudentBooks scene.
+        if segue.destination is StudentBooksViewController {
+            let Destination = segue.destination as? StudentBooksViewController
+            Destination?.data = data
+        }
+
+        // Update the data, myText, and answerRanges in the Graphics scene.
+        if segue.destination is GraphicsViewController {
+            let Destination = segue.destination as? GraphicsViewController
+            Destination?.data = data
+            Destination?.myText = myText
+            Destination?.answerRanges = answerRanges
+            Destination?.mySeparator = mySeparator
+        }
+    }
 }

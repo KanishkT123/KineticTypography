@@ -21,19 +21,13 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     // Book info
     var bookDevices:[String] = []
     
-    // UserDefaults variables.
-    var myLevel:Int = 0
-    var myBook:Book = Book(file: "", sections: [])
+    var data:Data = Data()
     
     
     /********** VIEW FUNCTIONS **********/
     // When the view controller appears, ...
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myLevel = UserDefaults.standard.object(forKey: "myLevel") as! Int
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
         
         // Set delegates.
         devicesTable.delegate = self
@@ -42,9 +36,9 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         sectionsTable.dataSource = self
         
         // Set header.
-        bookTitle.text = myBook.file
+        bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
-        bookLevel.text = "Level \(String(myLevel + 1))"
+        bookLevel.text = "Level \(String(data.myBook.level + 1))"
         
         // Set bookDevices
         updateBookDevices()
@@ -55,7 +49,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
      */
     func updateBookDevices() {
         // The third element in each section in currentBook represents the devices in that section.
-        for section:BookSection in myBook.sections {
+        for section:BookSection in data.myBook.sections {
             let sectionDevices:[String] = section.devices
             for device:String in sectionDevices {
                 // The following if statement checks for repetition before added the device to bookDevices.
@@ -71,7 +65,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         if tableView == devicesTable {
             return bookDevices.count
         } else {
-            return myBook.sections.count
+            return data.myBook.sections.count
         }
     }
     
@@ -92,7 +86,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
 
             // Set labels and text.
             Cell.sectionLabel.text = "Section \(String(indexPath.row + 1))"
-            Cell.sectionText.text = myBook.sections[indexPath.row].text.string
+            Cell.sectionText.text = data.myBook.sections[indexPath.row].text.string
             
             return Cell
         }
@@ -103,7 +97,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
-    /// Edit buttons
+    /// Edit section buttons
     
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the StudentLogin scene
@@ -116,20 +110,18 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         self.performSegue(withIdentifier: "EditHeader", sender: self)
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in the LevelDetails scene.
-//        if segue.destination is LevelDetailsViewController {
-//            let Destination = segue.destination as? LevelDetailsViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the EditHeader scene.
-//        if segue.destination is EditHeaderViewController {
-//            let Destination = segue.destination as? EditHeaderViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the LevelDetails scene.
+        if segue.destination is LevelDetailsViewController {
+            let Destination = segue.destination as? LevelDetailsViewController
+            Destination?.data = data
+        }
+
+        // Update the data in the EditHeader scene.
+        if segue.destination is EditHeaderViewController {
+            let Destination = segue.destination as? EditHeaderViewController
+            Destination?.data = data
+        }
+    }
 }

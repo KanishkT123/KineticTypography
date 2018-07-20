@@ -17,15 +17,12 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var error: UITextField!
     
     // UserDefaults variables.
-    var myBook:Book = Book(file: "", sections: [])
+    var data:Data = Data()
     
     
     /********** VIEW FUNCTIONS **********/
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Get UserDefaults values.
-        myBook = UserDefaults.standard.object(forKey: "myBook") as! Book
         
         // Set delegate.
         titleBox.delegate = self
@@ -45,8 +42,7 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     // When text field is going inactive (through tabbing or returning), it saves the title.
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         // Save title to myBook.
-        myBook = Book(file: textField.text!, sections: [])
-        UserDefaults.standard.set(myBook, forKey: "myBook")
+        data.myBook = Book(file: textField.text!, level: 0, sections: [])
 
         return true
     }
@@ -60,7 +56,7 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     
     // When the user clicks the next button, it sends them to the NewBookDetails scene if a title has been entered. Otherwise, an error message is shown.
     @IBAction func nextButton(_ sender: Any) {
-        if myBook.file == "" {
+        if data.myBook.file == "" {
             error.textColor = UIColor.red
         } else {
             // Go to the NewBookDetails scene.
@@ -68,20 +64,18 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in the TeacherWelcome scene.
-//        if segue.destination is TeacherWelcomeViewController {
-//            let Destination = segue.destination as? TeacherWelcomeViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the NewBookDetails scene.
-//        if segue.destination is NewBookDetailsViewController {
-//            let Destination = segue.destination as? NewBookDetailsViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the TeacherWelcome scene.
+        if segue.destination is TeacherWelcomeViewController {
+            let Destination = segue.destination as? TeacherWelcomeViewController
+            Destination?.data = data
+        }
+
+        // Update the data in the NewBookDetails scene.
+        if segue.destination is NewBookDetailsViewController {
+            let Destination = segue.destination as? NewBookDetailsViewController
+            Destination?.data = data
+        }
+    }
 }

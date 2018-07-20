@@ -25,12 +25,9 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     var tempAnswers: [[String]] = []
     var tempSeparator:String = ""
     
-    // UserDefaults variables.
-    var readingLevels:[String] = []
-    var myLevel:Int = 0
-    var allDevices:[[String]] = []
-    var allBooks:[[Book]] = []
-    var myBook:Book = Book(file: "", sections: [])
+    var data:Data = Data()
+    var library:Library = Library()
+    var levelBooks:[Book] = []
 
     
     /********** VIEW FUNCTIONS **********/
@@ -39,10 +36,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
-        readingLevels = UserDefaults.standard.object(forKey: "readingLevels") as! [String]
-        myLevel = UserDefaults.standard.object(forKey: "myLevel") as! Int
-        allDevices = UserDefaults.standard.object(forKey: "allDevices") as! [[String]]
-        allBooks = UserDefaults.standard.object(forKey: "allBooks") as! [[Book]]
+        library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
         devicesTable.delegate = self
@@ -51,16 +45,22 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         booksTable.dataSource = self
         
         // Set header.
-        readingLabel.text = readingLevels[myLevel]
+        readingLabel.text = data.readingLevels[data.myLevel]
         readingLabel.baselineAdjustment = .alignCenters
     }
     
     // Sets the number of rows.
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == devicesTable {
-            return allDevices[myLevel].count
+            return data.allDevices[data.myLevel].count
         } else {
-            return allBooks[myLevel].count
+            levelBooks = []
+            for book:Book in library.books {
+                if book.level == data.myLevel {
+                    levelBooks.append(book)
+                }
+            }
+            return levelBooks.count
         }
     }
     
@@ -71,7 +71,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             let Cell:UITableViewCell = devicesTable.dequeueReusableCell(withIdentifier: "Device")!
             
             // Set the title.
-            let title:String = allDevices[myLevel][indexPath.row]
+            let title:String = data.allDevices[data.myLevel][indexPath.row]
             
             // Inputs and centers (supposedly) the title
             Cell.textLabel?.text = title
@@ -84,7 +84,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             Cell.delegate = self
             
             // Create book label.
-            Cell.book.text = allBooks[myLevel][indexPath.row].file
+            Cell.book.text = levelBooks[indexPath.row].file
             
             return Cell
         }
@@ -95,7 +95,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     // Parses the book.
     func startParse() {
         // Access the book file.
-        let fileName = myBook.file
+        let fileName = data.myBook.file
         let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
         
         // Parse the book.
@@ -169,7 +169,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         
         if elementName == "section" {
             // Modify tempText from String to NSMutableAttributedString.
-            let standardAttributes = UserDefaults.standard.object(forKey: "standardAttributes") as! [NSAttributedStringKey: NSObject]
+            let standardAttributes = data.standardAttributes
             let attributedText = NSMutableAttributedString(string: tempText, attributes: standardAttributes)
             
             // Add spacing between paragraphs.
@@ -180,7 +180,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             
             // Make a new BookSection with the collected information.
             let newBookSection:BookSection = BookSection(text: attributedText, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
-            myBook.sections.append(newBookSection)
+            data.myBook.sections.append(newBookSection)
             
             // Reset all temporary variables. tempCharacters doesn't need to be reset because it is reset at every start tag.
             tempText = ""
@@ -203,33 +203,28 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         // Get the book's index.
         guard let tappedIndexPath = booksTable.indexPath(for: sender) else { return }
         
-        // Updated the selected book to myBook.
-        myBook = allBooks[myLevel][tappedIndexPath.row]
+        // Update the selected book to myBook.
+        data.myBook = levelBooks[tappedIndexPath.row]
         
         // Parse the selected book.
         startParse()
-        
-        // Update myBook in UserDefaults after myBook has been parsed.
-        UserDefaults.standard.set(myBook, forKey: "myBook")
         
         // Go to the EditBook scene.
         self.performSegue(withIdentifier: "EditBook", sender: self)
     }
     
-//    // Passing data
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        //UserDefaults.standard.set(modelController, forKey: "modelController")
-//
-//        // Update the modelController in the TeacherLevels scene.
-//        if segue.destination is TeacherLevelsViewController {
-//            let Destination = segue.destination as? TeacherLevelsViewController
-//            Destination?.modelController = modelController
-//        }
-//
-//        // Update the modelController in the EditBook scene
-//        if segue.destination is EditBookViewController {
-//            let Destination = segue.destination as? EditBookViewController
-//            Destination?.modelController = modelController
-//        }
-//    }
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the TeacherLevels scene.
+        if segue.destination is TeacherLevelsViewController {
+            let Destination = segue.destination as? TeacherLevelsViewController
+            Destination?.data = data
+        }
+
+        // Update the data in the EditBook scene
+        if segue.destination is EditBookViewController {
+            let Destination = segue.destination as? EditBookViewController
+            Destination?.data = data
+        }
+    }
 }
