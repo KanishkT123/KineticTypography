@@ -38,14 +38,6 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
         
         return true
     }
-    
-    // When text field is going inactive (through tabbing or returning), it saves the title.
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        // Save title to myBook.
-        data.myBook = Book(file: textField.text!, level: 0, sections: [])
-
-        return true
-    }
 
     
     /********** SEGUE FUNCTIONS **********/
@@ -56,9 +48,11 @@ class NewBookViewController: UIViewController, UITextFieldDelegate {
     
     // When the user clicks the next button, it sends them to the NewBookDetails scene if a title has been entered. Otherwise, an error message is shown.
     @IBAction func nextButton(_ sender: Any) {
-        if data.myBook.file == "" {
+        if titleBox.text == "" {
             error.textColor = UIColor.red
         } else {
+            // Save title to myBook.
+            data.myBook = Book(file: titleBox.text!, level: 0, sections: [])
             // Go to the NewBookDetails scene.
             self.performSegue(withIdentifier: "NewBookDetails", sender: self)
         }

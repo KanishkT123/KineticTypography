@@ -30,7 +30,6 @@
 		EB8B9A1920E6B9E300CEAAE6 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8B9A1820E6B9E300CEAAE6 /* VideoPlayerViewController.swift */; };
 		EB921F9620CEF61000CD6FE3 /* LevelDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB921F9520CEF61000CD6FE3 /* LevelDetailsViewController.swift */; };
 		EB921F9E20CF35E500CD6FE3 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB921F9D20CF35E500CD6FE3 /* ModelController.swift */; };
-		EB94356920FFE3A9000D60FB /* GlobalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB94356820FFE3A9000D60FB /* GlobalData.swift */; };
 		EBA2004320E3F6E900E301A8 /* TableSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA2004220E3F6E900E301A8 /* TableSegue.swift */; };
 		EBAA0EB720D3143700552B40 /* SecurityQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAA0EB620D3143700552B40 /* SecurityQuestionViewController.swift */; };
 		EBCF2DCF20C59E7300862F7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF2DCE20C59E7300862F7F /* AppDelegate.swift */; };
@@ -73,7 +72,6 @@
 		EB8B9A1820E6B9E300CEAAE6 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		EB921F9520CEF61000CD6FE3 /* LevelDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDetailsViewController.swift; sourceTree = "<group>"; };
 		EB921F9D20CF35E500CD6FE3 /* ModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
-		EB94356820FFE3A9000D60FB /* GlobalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalData.swift; sourceTree = "<group>"; };
 		EBA2004220E3F6E900E301A8 /* TableSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSegue.swift; sourceTree = "<group>"; };
 		EBAA0EB620D3143700552B40 /* SecurityQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityQuestionViewController.swift; sourceTree = "<group>"; };
 		EBCF2DCB20C59E7200862F7F /* Reading Kitty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reading Kitty.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,7 +207,6 @@
 				EBCF2DD520C59E7500862F7F /* Assets.xcassets */,
 				EBCF2DD720C59E7500862F7F /* LaunchScreen.storyboard */,
 				EBCF2DDA20C59E7500862F7F /* Info.plist */,
-				EB94356820FFE3A9000D60FB /* GlobalData.swift */,
 				EB921F9D20CF35E500CD6FE3 /* ModelController.swift */,
 				EBCF2DD020C59E7300862F7F /* ViewController.swift */,
 				EBE9EC8420FD41BD00DE96C1 /* LoginViewController.swift */,
@@ -323,7 +320,6 @@
 				EBD3643420F54B3A001E1B32 /* NewBookLevelViewController.swift in Sources */,
 				EB65C3F620D31F2A00DCC64F /* NewPasswordViewController.swift in Sources */,
 				EB6F7AE220F96AD50040D37B /* EditBookViewController.swift in Sources */,
-				EB94356920FFE3A9000D60FB /* GlobalData.swift in Sources */,
 				EB1ECDBA20EBE70800649CAB /* NewBookViewController.swift in Sources */,
 				EB0DDF3D20F942B100E0C441 /* AnswersTableViewCell.swift in Sources */,
 				EBE769D320CB325000A365C3 /* TeacherLevelsViewController.swift in Sources */,

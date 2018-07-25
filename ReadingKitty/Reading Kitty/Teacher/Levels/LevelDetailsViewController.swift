@@ -11,7 +11,8 @@ import UIKit
 class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, XMLParserDelegate, BooksTableViewCellDelegate {
     /********** LOCAL VARIABLES **********/
     // Label
-    @IBOutlet weak var readingLabel: UILabel!
+    @IBOutlet weak var readingLevel: UILabel!
+    @IBOutlet weak var gradeLevel: UILabel!
     
     // Tables
     @IBOutlet weak var devicesTable: UITableView!
@@ -45,8 +46,8 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         booksTable.dataSource = self
         
         // Set header.
-        readingLabel.text = data.readingLevels[data.myLevel]
-        readingLabel.baselineAdjustment = .alignCenters
+        readingLevel.text = data.readingLevels[data.myLevel]
+        gradeLevel.text = data.gradeLevels[data.myLevel]
     }
     
     // Sets the number of rows.
