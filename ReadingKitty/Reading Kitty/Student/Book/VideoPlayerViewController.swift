@@ -13,6 +13,9 @@ class VideoPlayerViewController: UIViewController {
     /********** LOCAL VARIABLES **********/
     // Text and video
     var compiledText:NSMutableAttributedString = NSMutableAttributedString(string: "")
+    var audioURL:URL = URL(fileURLWithPath: "")
+    var maxFrequency:Double = 0.0
+    var minFrequency:Double = 0.0
     var videoFileName:String = ""
     var feedback:String = ""
     
@@ -91,6 +94,11 @@ class VideoPlayerViewController: UIViewController {
         for text in data.allText {
             compiledText.append(text)
         }
+        
+        // Get audio
+        audioURL = data.audioURL
+        maxFrequency = data.maxFrequency
+        minFrequency = data.minFrequency
         
         // import video into data set
         

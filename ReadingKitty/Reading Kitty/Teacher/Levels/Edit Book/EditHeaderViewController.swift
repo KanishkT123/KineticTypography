@@ -19,6 +19,7 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Udpate title.
     @IBOutlet weak var titleBox: UITextField!
+    var newTitle:String = ""
     
     // Update level.
     var newLevel:Int = 0
@@ -74,8 +75,9 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
         // Get UserDefaults values.
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
-        // Set newLevel
+        // Set newLevel and newTitle.
         newLevel = data.myBook.level
+        newTitle = data.myBook.file
         
         // Rank the levels depending on the devices asked about in the story.
         updateBookDevices()
@@ -231,50 +233,37 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     /********** SEGUE FUNCTIONS **********/
-    // When the user clicks on the back button, it updates the book's level, and segues to the EditBook scene.
+    // When the user clicks on the back button, it updates the book's title and level, and segues to the EditBook scene.
     @IBAction func backButton(_ sender: Any) {
-        // Update level in myBook.
-        data.myBook.level = newLevel
-        
-        // Update level in library.
-        for bookInt:Int in 0..<library.books.count {
-            if library.books[bookInt].file == data.myBook.file {
-                library.books[bookInt].level = newLevel
-            }
+        // Update xml file name to title.
+        let originalFile = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(data.myBook.file + ".xml"))!
+        let newFile = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(newTitle + ".xml"))!
+        do {
+            try FileManager.default.moveItem(at: originalFile, to: newFile)
+        } catch {
+            print("Error renaming xml file in EditHeaderViewController.")
         }
+        
+        // Update the title in myBook and in library.
+        data.myBook.file = newTitle
+        library.books[data.myBookInt].file = newTitle
+        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
+        
+        // Update the level in myBook and in library.
+        data.myBook.level = newLevel
+        library.books[data.myBookInt].level = newLevel
         UserDefaults.standard.set(library.toDictionary(), forKey: "library")
         
         // Segue to the EditBook scene
         self.performSegue(withIdentifier: "EditBook", sender: self)
     }
     
-    // When the user clicks on the "update title" button, it updates the title. Note: Books that are premade on the app are saved in the Bundle, which is read only. Books that have been made manually in the app are saved in the FileManager, which can be edited.
+    // When the user clicks on the "update title" button, it updates the title.
     @IBAction func updateTitleButton(_ sender: Any) {
         if titleBox.text != "" {
-            // Get the original and new titles.
-            let originalTitle:String = data.myBook.file
-            let newTitle:String = titleBox.text!
-            
-            // Update xml file name to title.            
-            let originalFile = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(originalTitle + ".xml"))!
-            let newFile = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(newTitle + ".xml"))!
-            do {
-                try FileManager.default.moveItem(at: originalFile, to: newFile)
-            } catch {
-                print("Error renaming xml file in EditHeaderViewController.")
-            }
-            
-            // Update title in library.
-            for bookInt:Int in 0..<library.books.count {
-                if library.books[bookInt].file == data.myBook.file {
-                    library.books[bookInt].file = newTitle
-                }
-            }
-            UserDefaults.standard.set(library.toDictionary(), forKey: "library")
-            
-            // Update title in myBook.
-            data.myBook.file = newTitle
-            
+            // Update the title.
+            newTitle = titleBox.text!
+
             // Update the header.
             bookTitle.text = newTitle
         }

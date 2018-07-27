@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import AVKit
+import AudioKit
 
 class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecorderDelegate {
     /********** LOCAL VARIABLES **********/
@@ -28,6 +29,10 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     var isRecording:Bool = false
     var audioRecorder: AVAudioRecorder!
     var audioPlayer: AVAudioPlayer!
+    var audioTimer: Timer!
+    var audioInvalidated: Bool = false
+    let mic = AKMicrophone()
+    var tracker: AKFrequencyTracker!
     
     // Scrollbar timer
     var scrollTimer: Timer!
@@ -70,7 +75,12 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         // Start at top of text
         bookText.scrollsToTop = true
         
-        // Reset timer
+        // Reset timers
+        if audioTimer != nil {
+            audioTimer.invalidate()
+            audioTimer = nil
+            audioInvalidated = true
+        }
         if scrollTimer != nil {
             scrollTimer.invalidate()
             scrollTimer = nil
@@ -91,6 +101,9 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
                               AVNumberOfChannelsKey: 2,
                               AVSampleRateKey: 44100.0] as [String : Any]
         let audioSession = AVAudioSession.sharedInstance()
+        tracker = AKFrequencyTracker.init(mic)
+        let silence = AKBooster(tracker, gain: 0)
+        AudioKit.output = silence
         
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
@@ -133,6 +146,27 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
             
             // Record audio
             audioRecorder?.record()
+            
+            do {
+                try AudioKit.start()
+            } catch {
+                print("audiokit error")
+            }
+            
+            // Start audioTimer
+            invalidated = false
+            audioTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateFrequency), userInfo: nil, repeats: true)
+        }
+    }
+    
+    @objc func updateFrequency() {
+        if tracker.amplitude > 0.1 {
+            if tracker.frequency < data.minFrequency {
+                data.minFrequency = tracker.frequency
+            }
+            if tracker.frequency > data.maxFrequency && tracker.frequency < 1000.0 {
+                data.maxFrequency = tracker.frequency
+            }
         }
     }
     
@@ -142,11 +176,13 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         if audioRecorder?.isRecording == true {
             audioRecorder?.stop()
         } else {
-            print("error 1")
+            print("stop button error")
         }
-        print("got here")
+
         // Save audio
         data.audioURL = (audioRecorder?.url)!
+        print("Max: \(data.maxFrequency)")
+        print("Min: \(data.minFrequency)")
         
         // Go to the VideoPlayer scene
         goToVideoPlayer()

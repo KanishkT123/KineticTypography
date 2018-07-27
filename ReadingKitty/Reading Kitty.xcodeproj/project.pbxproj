@@ -13,6 +13,7 @@
 		EB1ECDBC20EC1EA000649CAB /* NewBookDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1ECDBB20EC1EA000649CAB /* NewBookDetailsViewController.swift */; };
 		EB1ECDC220EC2DC500649CAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB1ECDC020EC2DC500649CAB /* Main.storyboard */; };
 		EB33125920EEE08400A73031 /* QuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB33125820EEE08400A73031 /* QuestionsTableViewCell.swift */; };
+		EB3EC2F7210A812A00F6FF5A /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3EC2F6210A812A00F6FF5A /* AudioKit.framework */; };
 		EB55EA1E20DD97FE00F28E69 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */; };
 		EB65C3F620D31F2A00DCC64F /* NewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65C3F520D31F2A00DCC64F /* NewPasswordViewController.swift */; };
 		EB6F7AE220F96AD50040D37B /* EditBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */; };
@@ -49,12 +50,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2307EDAE799B7E1ED393F188 /* Pods-Reading Kitty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading Kitty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Reading Kitty/Pods-Reading Kitty.release.xcconfig"; sourceTree = "<group>"; };
+		36BED236C598A2FD66C3A0CD /* Pods-Reading Kitty.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reading Kitty.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Reading Kitty/Pods-Reading Kitty.debug.xcconfig"; sourceTree = "<group>"; };
+		D4B8F3583DCA6AA50B8F0115 /* Pods_Reading_Kitty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reading_Kitty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB0DDF3C20F942B100E0C441 /* AnswersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswersTableViewCell.swift; sourceTree = "<group>"; };
 		EB0DDF3E20F94FC100E0C441 /* BooksTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksTableViewCell.swift; sourceTree = "<group>"; };
 		EB1ECDB920EBE70800649CAB /* NewBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBookViewController.swift; sourceTree = "<group>"; };
 		EB1ECDBB20EC1EA000649CAB /* NewBookDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBookDetailsViewController.swift; sourceTree = "<group>"; };
 		EB1ECDC120EC2DC500649CAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EB33125820EEE08400A73031 /* QuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsTableViewCell.swift; sourceTree = "<group>"; };
+		EB3EC2F6210A812A00F6FF5A /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioKit.framework; path = Pods/AudioKit/iOS/AudioKit.framework; sourceTree = "<group>"; };
 		EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
 		EB65C3F520D31F2A00DCC64F /* NewPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordViewController.swift; sourceTree = "<group>"; };
 		EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBookViewController.swift; sourceTree = "<group>"; };
@@ -97,12 +102,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB3EC2F7210A812A00F6FF5A /* AudioKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A1287F34A5EBD86F3F1AFBA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				36BED236C598A2FD66C3A0CD /* Pods-Reading Kitty.debug.xcconfig */,
+				2307EDAE799B7E1ED393F188 /* Pods-Reading Kitty.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6DF6F1E0E6CAAC5F1AC59334 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EB3EC2F6210A812A00F6FF5A /* AudioKit.framework */,
+				D4B8F3583DCA6AA50B8F0115 /* Pods_Reading_Kitty.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EB1ECDB820EBE6B100649CAB /* New Book */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +212,8 @@
 				EB6FA5FB20D4355F00EF0E5A /* Emperor's New Clothes.mp4 */,
 				EBCF2DCD20C59E7200862F7F /* Reading Kitty */,
 				EBCF2DCC20C59E7200862F7F /* Products */,
+				4A1287F34A5EBD86F3F1AFBA /* Pods */,
+				6DF6F1E0E6CAAC5F1AC59334 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -237,6 +263,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EBCF2DDD20C59E7500862F7F /* Build configuration list for PBXNativeTarget "Reading Kitty" */;
 			buildPhases = (
+				4E6E6B2E0882838BD971C67F /* [CP] Check Pods Manifest.lock */,
 				EBCF2DC720C59E7200862F7F /* Sources */,
 				EBCF2DC820C59E7200862F7F /* Frameworks */,
 				EBCF2DC920C59E7200862F7F /* Resources */,
@@ -298,6 +325,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4E6E6B2E0882838BD971C67F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Reading Kitty-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EBCF2DC720C59E7200862F7F /* Sources */ = {
@@ -478,10 +526,15 @@
 		};
 		EBCF2DDE20C59E7500862F7F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36BED236C598A2FD66C3A0CD /* Pods-Reading Kitty.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8ZNKY8GXP7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/AudioKit/iOS",
+				);
 				INFOPLIST_FILE = "Reading Kitty/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -497,10 +550,15 @@
 		};
 		EBCF2DDF20C59E7500862F7F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2307EDAE799B7E1ED393F188 /* Pods-Reading Kitty.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8ZNKY8GXP7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Pods/AudioKit/iOS",
+				);
 				INFOPLIST_FILE = "Reading Kitty/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

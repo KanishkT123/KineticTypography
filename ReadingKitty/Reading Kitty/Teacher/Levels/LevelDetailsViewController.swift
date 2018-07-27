@@ -36,7 +36,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Get UserDefaults values.
+        // Get UserDefaults values.k
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
@@ -204,8 +204,17 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         // Get the book's index.
         guard let tappedIndexPath = booksTable.indexPath(for: sender) else { return }
         
-        // Update the selected book to myBook.
-        data.myBook = levelBooks[tappedIndexPath.row]
+        // Update the selected book.
+        var myBookInt:Int = tappedIndexPath.row
+        for bookInt:Int in 0..<library.books.count {
+            if library.books[bookInt].level == data.myLevel {
+                if myBookInt == 0 {
+                    data.myBookInt = bookInt
+                }
+                myBookInt -= 1
+            }
+        }
+        data.myBook = library.books[data.myBookInt]
         
         // Parse the selected book.
         startParse()

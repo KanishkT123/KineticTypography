@@ -263,6 +263,7 @@ struct Data {
         Color(light: 0xD1F1FD, background: 0x58CFFA, regular: 0x58CEF8, dark: 0x48A5C7), // blue
         Color(light: 0xF7E8FF, background: 0xCA76FF, regular: 0xB229FA, dark: 0x500D7B)] // purple
     var myBook:Book = Book(file: "", level: 0, sections: [])
+    var myBookInt:Int = 0
     let standardAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 35)]
     var mySectionNum:Int = 0
     var myQuestionNum:Int = 0
@@ -272,4 +273,6 @@ struct Data {
     var allRanges:[[[NSRange]]] = []
     var allAttributes:[[[NSAttributedStringKey : Any]]] = []
     var audioURL:URL = URL(fileURLWithPath: "")
+    var maxFrequency:Double = 0.0
+    var minFrequency:Double = 1000.0
 }

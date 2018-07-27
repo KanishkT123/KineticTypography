@@ -116,12 +116,11 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     
     //
     @IBAction func deleteButton(_ sender: Any) {
-//        for book in library.books {
-//            if book.file == data.myBook.file {
-//                library.books.remove(at: <#T##Int#>)
-//            }
-//        }
+        // Remove the book from the library.
+        library.books.remove(at: data.myBookInt)
+        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
         
+        // Go to the LevelDetails scene.
         self.performSegue(withIdentifier: "LevelDetails", sender: self)
     }
     

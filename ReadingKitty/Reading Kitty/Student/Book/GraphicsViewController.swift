@@ -39,12 +39,13 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var smallButton: UIButton!
     @IBOutlet weak var underlineButton: UIButton!
     @IBOutlet weak var colorButton: UIButton!
-    var buttonsPressed:[Bool] = [false, false, false, false, false]
-    var buttonsColor:[UIColor] = [UIColor.black, UIColor.black, UIColor.black, UIColor.black, UIColor.black]
+    var buttonsPressed:[Bool] = [false, false, false, false, false, false]
+    var buttonsColor:[UIColor] = [UIColor.black, UIColor.black, UIColor.black, UIColor.black, UIColor.black, UIColor.black]
     
     // Selection options
     @IBOutlet weak var pickColor: UIStackView!
     @IBOutlet weak var pickGraphics: UIStackView!
+    @IBOutlet weak var graphicsBackground: UIView!
     @IBOutlet weak var nextButtons: UIStackView!
     var pickingColor: Bool = true
     
@@ -64,6 +65,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         
         // Hide graphics options and next buttons
         pickGraphics.isHidden = true
+        graphicsBackground.isHidden = true
         nextButtons.isHidden = true
         
         // Set the book title.
@@ -110,9 +112,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Update the attributes of the buttons
     func updateButtons() {
-        // The big, small, and color buttons will have newColor text.
-        bigButton.setTitleColor(newColor, for: .normal)
-        smallButton.setTitleColor(newColor, for: .normal)
+        // The color button will have newColor text.
         colorButton.setTitleColor(newColor, for: .normal)
         
         // The highlight button will have a newColor highlight and have black text. If newColor is black, the text will be white so it is visible.
@@ -214,12 +214,18 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
             // Hide color options
             pickColor.isHidden = true
             
+            // Update graphicsBackground
+            graphicsBackground.layer.borderWidth = 3
+            graphicsBackground.layer.borderColor = newColor.cgColor
+            
             // Show graphics options
             pickGraphics.isHidden = false
+            graphicsBackground.isHidden = false
             updateButtons()
         } else {
             // Hide graphics options and go button
             pickGraphics.isHidden = true
+            graphicsBackground.isHidden = true
             goButton.isHidden = true
             
             // Show next buttons
@@ -238,7 +244,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         var newSize:CGFloat = 0.0
         
         // Check if the button has been unpressed.
-        if buttonsPressed[0] && buttonsColor[0] == newColor {
+        if buttonsPressed[0] {
             // The big button has been unpressed.
             buttonsPressed[0] = false
             
@@ -247,15 +253,13 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         } else {
             // The big button has been pressed with the color newColor.
             buttonsPressed[0] = true
-            buttonsColor[0] = newColor
             
             // Set the new size of the answers.
             newSize = 60.0
         }
         
-        // Update the size and color in newAttributes and myText.
+        // Update the size in newAttributes and myText.
         newAttributes[NSAttributedStringKey.font] = UIFont.systemFont(ofSize: newSize)
-        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
@@ -266,9 +270,9 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Highlights the answers when the highlight button is pressed.
     @IBAction func highlightButton(_ sender: Any) {
-        // Check if the button has been unpressed.
+        // Check if the button is being unpressed.
         if buttonsPressed[1] && buttonsColor[1] == newColor {
-            // The highlight button has been unpressed.
+            // The highlight button is being unpressed.
             buttonsPressed[1] = false
             
             // Remove the highlight in newAttributes and myText.
@@ -277,9 +281,38 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
                 myText.removeAttribute(.backgroundColor, range: range)
             }
         } else {
-            // The highlight button has been pressed with the color newColor.
+            // The highlight button is being pressed with the color newColor.
             buttonsPressed[1] = true
             buttonsColor[1] = newColor
+            
+            // If the text is also newColor, make the text black so it is visible.
+            if buttonsColor[5] == newColor {
+                newAttributes[NSAttributedStringKey.foregroundColor] = UIColor.black
+                buttonsColor[5] = UIColor.black
+                buttonsPressed[5] = false
+            }
+            
+            // If there is a shadow of newColor, remove it.
+            if buttonsPressed[2] && buttonsColor[2] == newColor {
+                buttonsPressed[2] = false
+                
+                // Remove the shadow in newAttributes and myText.
+                newAttributes.removeValue(forKey: NSAttributedStringKey.shadow)
+                for range:NSRange in answerRanges {
+                    myText.removeAttribute(.shadow, range: range)
+                }
+            }
+            
+            // If there is an underline of newColor, remove it.
+            if buttonsPressed[4] && buttonsColor[4] == newColor {
+                buttonsPressed[4] = false
+                
+                // Remove the underline in newAttributes and myText.
+                newAttributes.removeValue(forKey: NSAttributedStringKey.underlineStyle)
+                for range:NSRange in answerRanges {
+                    myText.removeAttribute(.underlineStyle, range: range)
+                }
+            }
             
             // Add a highlight to newAttributes and myText.
             newAttributes[NSAttributedStringKey.backgroundColor] = newColor
@@ -309,6 +342,17 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
             buttonsPressed[2] = true
             buttonsColor[2] = newColor
             
+            // If there is a highlight of newColor, remove it.
+            if buttonsPressed[1] && buttonsColor[1] == newColor {
+                buttonsPressed[1] = false
+                
+                // Remove the highlight in newAttributes and myText.
+                newAttributes.removeValue(forKey: NSAttributedStringKey.backgroundColor)
+                for range:NSRange in answerRanges {
+                    myText.removeAttribute(.backgroundColor, range: range)
+                }
+            }
+            
             // Create a shadow.
             let newShadow:NSShadow = NSShadow()
             newShadow.shadowBlurRadius = 3
@@ -335,7 +379,7 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         var newSize:CGFloat = 0.0
         
         // Check if the button has been unpressed.
-        if buttonsPressed[3] && buttonsColor[3] == newColor {
+        if buttonsPressed[3] {
             // The small button has been unpressed.
             buttonsPressed[3] = false
             
@@ -344,15 +388,13 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
         } else {
             // The small button has been pressed with the color newColor.
             buttonsPressed[3] = true
-            buttonsColor[3] = newColor
             
             // Set the new size of the answers.
             newSize = 20.0
         }
         
-        // Update the size and color in newAttributes and myText.
+        // Update the size in newAttributes and myText.
         newAttributes[NSAttributedStringKey.font] = UIFont.systemFont(ofSize: newSize)
-        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
@@ -378,6 +420,17 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
             buttonsPressed[4] = true
             buttonsColor[4] = newColor
             
+            // If there is a highlight of newColor, remove it.
+            if buttonsPressed[1] && buttonsColor[1] == newColor {
+                buttonsPressed[1] = false
+                
+                // Remove the highlight in newAttributes and myText.
+                newAttributes.removeValue(forKey: NSAttributedStringKey.backgroundColor)
+                for range:NSRange in answerRanges {
+                    myText.removeAttribute(.backgroundColor, range: range)
+                }
+            }
+            
             // Add an underline to newAttributes and myText.
             newAttributes[NSAttributedStringKey.underlineStyle] = NSUnderlineStyle.styleSingle.rawValue
             newAttributes[NSAttributedStringKey.underlineColor] = newColor
@@ -392,12 +445,19 @@ class GraphicsViewController: UIViewController, UITextViewDelegate {
     
     // Changes the text color of the answers when the color button is pressed.
     @IBAction func colorButton(_ sender: Any) {
-        // The color button automatically sets the saved colors of the big button and the small button to newColor.
-        buttonsColor[0] = newColor
-        buttonsColor[3] = newColor
+        // Check if the button has been unpressed.
+        if buttonsPressed[5] && buttonsColor[5] == newColor {
+            // The color button has been unpressed.
+            buttonsPressed[5] = false
+            buttonsColor[5] = UIColor.black
+        } else {
+            // The color button has been pressed with the color newColor.
+            buttonsPressed[5] = true
+            buttonsColor[5] = newColor
+        }
         
         // Update the text color in newAttributes and myText.
-        newAttributes[NSAttributedStringKey.foregroundColor] = newColor
+        newAttributes[NSAttributedStringKey.foregroundColor] = buttonsColor[5]
         for range:NSRange in answerRanges {
             myText.addAttributes(newAttributes, range: range)
         }
