@@ -18,7 +18,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     var currentQuestions:[String] = [] // [question, question, question...]
     var currentDevices:[String] = [] // [device, device, device...]
     var currentAnswers:[[String]] = [] // [answers, answers, answers...]
-                                        // answers = answer, answer, answer...
+                                        // answers = [answer, answer, answer...]
 
     // Text
     @IBOutlet weak var textBox: UITextView!
@@ -44,6 +44,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var sectionTextError: UILabel!
     @IBOutlet weak var sectionSeparatorError: UILabel!
     @IBOutlet weak var sectionQuestionError: UILabel!
+    @IBOutlet weak var answerError: UILabel!
     
     // UserDefaults variables.
     var data:Data = Data()
@@ -75,6 +76,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionTextError.isHidden = true
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
+        answerError.isHidden = true
     }
 
     
@@ -192,8 +194,18 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     
     // When the add answer button is tapped, the answer is saved, and answersTable is updated.
     @IBAction func addAnswer(_ sender: Any) {
+        // Hide errors.
+        oopsErrors.isHidden = true
+        questionQuestionError.isHidden = true
+        questionDeviceError.isHidden = true
+        questionAnswerError.isHidden = true
+        sectionTextError.isHidden = true
+        sectionSeparatorError.isHidden = true
+        sectionQuestionError.isHidden = true
+        answerError.isHidden = true
+        
         // Check if new answer is a word.
-        if newAnswer.text != "" {
+        if checkAnswer() {
             // Save the answer.
             newAnswers.append(newAnswer.text!)
             
@@ -202,7 +214,70 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             
             // Update the answers table.
             answersTable.reloadData()
+        } else {
+            oopsErrors.isHidden = false
+            answerError.isHidden = false
         }
+    }
+    
+    func checkAnswer() -> Bool {
+        let answer:String = newAnswer.text!
+        let answerVariations:[String] = [answer, answer + ".", answer + ",", answer + "?", answer + "!", answer + "\"", answer + ".\"", answer + ",\"", answer + "?\"", answer + "!\""]
+        var textCopy:String = textBox.text
+        var textBeforeCopy:Int = 0
+        var isAnswer:Bool = false
+        
+        // Check each word
+        while !textCopy.isEmpty && !isAnswer {
+            // Haven't found word and there are more words to check.
+
+            // Find the next word.
+            let space:String = " "
+            if textCopy.contains(space) {
+                // For this case, there are multiple words.
+
+                // The default values of the first word separator are those of the first space
+                var nextRangeCopy:Range<String.Index> = textCopy.range(of: space)!
+                var nextEnd:Int = nextRangeCopy.upperBound.encodedOffset
+                
+                // Check if the words are spread out over multiple lines.
+                let newLine:String = "\n"
+                if textCopy.contains(newLine) {
+                    // Find range of the first new line in textCopy.
+                    let lineRangeCopy:Range<String.Index> = textCopy.range(of: newLine)!
+                    let lineEnd:Int = lineRangeCopy.upperBound.encodedOffset
+                    
+                    // Check if the first new line occurs before the first space.
+                    if lineEnd < nextEnd {
+                        nextRangeCopy = lineRangeCopy
+                        nextEnd = lineEnd
+                    }
+                }
+                
+                // Check if the next word is the attempted answer.
+                let word:String = String(textCopy.prefix(upTo: nextRangeCopy.lowerBound))
+                if answerVariations.contains(word) {
+                    isAnswer = true
+                }
+                
+                // Remove this word from textCopy.
+                textCopy.removeSubrange(textCopy.startIndex..<nextRangeCopy.upperBound)
+                textBeforeCopy += nextEnd
+            } else {
+                // For this case, there is only one word.
+                
+                // Check if the word is the attempted answer.
+                let word:String = textCopy
+                if answerVariations.contains(word) {
+                    isAnswer = true
+                }
+                
+                // Since there was only one word, there is nothing left in textCopy.
+                textCopy = ""
+            }
+        }
+        
+        return isAnswer
     }
     
     // When the add question button is tapped, the question, device, and answers are saved, and questionsTable is updated.
@@ -215,6 +290,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionTextError.isHidden = true
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
+        answerError.isHidden = true
         
         // Check if new question has all pieces
         if newQuestion.text != "" && deviceDrop.currentTitle != "Select a Literary Device" && newAnswers != [] {
@@ -358,13 +434,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionTextError.isHidden = true
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
+        answerError.isHidden = true
         
         if data.myBook.sections.count == 0 {
-//            // Clear new question
-//            newQuestion.text = ""
-//            deviceDrop.setTitle("Select a Literary Device", for: .normal)
-//            newAnswer.text = ""
-            
             // Segue to the NewBook scene.
             self.performSegue(withIdentifier: "NewBook", sender: self)
         } else {
@@ -401,6 +473,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionTextError.isHidden = true
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
+        answerError.isHidden = true
         
         // Check if new section has all pieces
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
@@ -448,6 +521,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionTextError.isHidden = true
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
+        answerError.isHidden = true
         
         // Check if new section has all pieces
         if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {

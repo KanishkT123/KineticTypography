@@ -33,6 +33,7 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
     var audioInvalidated: Bool = false
     let mic = AKMicrophone()
     var tracker: AKFrequencyTracker!
+    var allFrequencies: [Double] = []
     
     // Scrollbar timer
     var scrollTimer: Timer!
@@ -155,12 +156,13 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
             
             // Start audioTimer
             invalidated = false
-            audioTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateFrequency), userInfo: nil, repeats: true)
+            audioTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(updateFrequency), userInfo: nil, repeats: true)
         }
     }
     
     @objc func updateFrequency() {
         if tracker.amplitude > 0.1 {
+            allFrequencies.append(tracker.frequency)
             if tracker.frequency < data.minFrequency {
                 data.minFrequency = tracker.frequency
             }
@@ -183,6 +185,8 @@ class ReadingViewController: UIViewController, UITextViewDelegate, AVAudioRecord
         data.audioURL = (audioRecorder?.url)!
         print("Max: \(data.maxFrequency)")
         print("Min: \(data.minFrequency)")
+        print("All: \(allFrequencies)")
+        
         
         // Go to the VideoPlayer scene
         goToVideoPlayer()

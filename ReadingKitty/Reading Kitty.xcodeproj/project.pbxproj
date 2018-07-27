@@ -14,6 +14,7 @@
 		EB1ECDC220EC2DC500649CAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB1ECDC020EC2DC500649CAB /* Main.storyboard */; };
 		EB33125920EEE08400A73031 /* QuestionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB33125820EEE08400A73031 /* QuestionsTableViewCell.swift */; };
 		EB3EC2F7210A812A00F6FF5A /* AudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3EC2F6210A812A00F6FF5A /* AudioKit.framework */; };
+		EB3EC2FB210B8B7000F6FF5A /* EditSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3EC2FA210B8B7000F6FF5A /* EditSectionViewController.swift */; };
 		EB55EA1E20DD97FE00F28E69 /* GraphicsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */; };
 		EB65C3F620D31F2A00DCC64F /* NewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65C3F520D31F2A00DCC64F /* NewPasswordViewController.swift */; };
 		EB6F7AE220F96AD50040D37B /* EditBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */; };
@@ -60,6 +61,7 @@
 		EB1ECDC120EC2DC500649CAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EB33125820EEE08400A73031 /* QuestionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionsTableViewCell.swift; sourceTree = "<group>"; };
 		EB3EC2F6210A812A00F6FF5A /* AudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioKit.framework; path = Pods/AudioKit/iOS/AudioKit.framework; sourceTree = "<group>"; };
+		EB3EC2FA210B8B7000F6FF5A /* EditSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSectionViewController.swift; sourceTree = "<group>"; };
 		EB55EA1D20DD97FE00F28E69 /* GraphicsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsViewController.swift; sourceTree = "<group>"; };
 		EB65C3F520D31F2A00DCC64F /* NewPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordViewController.swift; sourceTree = "<group>"; };
 		EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBookViewController.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				EBE9EC7F20FD0A2000DE96C1 /* DevicesTableViewCell.swift */,
 				EB6F7AE320F96EC30040D37B /* SectionsTableViewCell.swift */,
 				EBE9EC8220FD218800DE96C1 /* EditHeaderViewController.swift */,
+				EB3EC2FA210B8B7000F6FF5A /* EditSectionViewController.swift */,
 			);
 			path = "Edit Book";
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				EB6F7AE420F96EC30040D37B /* SectionsTableViewCell.swift in Sources */,
 				EBAA0EB720D3143700552B40 /* SecurityQuestionViewController.swift in Sources */,
 				EBE9EC8020FD0A2000DE96C1 /* DevicesTableViewCell.swift in Sources */,
+				EB3EC2FB210B8B7000F6FF5A /* EditSectionViewController.swift in Sources */,
 				EBE769CF20CB2BE500A365C3 /* SavedVideosViewController.swift in Sources */,
 				EBCF2DCF20C59E7300862F7F /* AppDelegate.swift in Sources */,
 				EB55EA1E20DD97FE00F28E69 /* GraphicsViewController.swift in Sources */,

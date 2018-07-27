@@ -104,14 +104,14 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
         var textCopy:String = myText.string
         var textBeforeCopy:Int = 0
         while !textCopy.isEmpty {
-            // Find the first word.
+            // Find the next word.
             let space:String = " "
             if textCopy.contains(space) {
                 // For this case, there are multiple words.
                 
-                // The default values of the first word separator are those of the first space.
-                var firstRangeCopy:Range<String.Index> = textCopy.range(of: space)!
-                var firstEnd:Int = firstRangeCopy.upperBound.encodedOffset
+                // The default values of the next word separator are those of the first space.
+                var nextRangeCopy:Range<String.Index> = textCopy.range(of: space)!
+                var nextEnd:Int = nextRangeCopy.upperBound.encodedOffset
                 
                 // Check if the words are spread out over multiple lines.
                 let newLine:String = "\n"
@@ -121,19 +121,19 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
                     let lineEnd:Int = lineRangeCopy.upperBound.encodedOffset
                     
                     // Check if the first new line occurs before the first space.
-                    if lineEnd < firstEnd {
-                        firstRangeCopy = lineRangeCopy
-                        firstEnd = lineEnd
+                    if lineEnd < nextEnd {
+                        nextRangeCopy = lineRangeCopy
+                        nextEnd = lineEnd
                     }
                 }
                 
-                // Make the first word a link in myText.
-                let wordLength:Int = firstRangeCopy.lowerBound.encodedOffset
+                // Make the next word a link in myText.
+                let wordLength:Int = nextRangeCopy.lowerBound.encodedOffset
                 let rangeOriginal:NSRange = NSMakeRange(textBeforeCopy, wordLength)
                 myText.addAttribute(.link, value: "word", range: rangeOriginal)
                 
                 // Check if the word is an answer.
-                let word:String = String(textCopy.prefix(upTo: firstRangeCopy.lowerBound))
+                let word:String = String(textCopy.prefix(upTo: nextRangeCopy.lowerBound))
                 var isAnswer:Bool = false
                 for answer in myAnswers {
                     let answerVariations:[String] = [answer, answer + ".", answer + ",", answer + "?", answer + "!", answer + "\"", answer + ".\"", answer + ",\"", answer + "?\"", answer + "!\""]
@@ -151,8 +151,8 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
                 }
                 
                 // Remove this word from textCopy.
-                textCopy.removeSubrange(textCopy.startIndex..<firstRangeCopy.upperBound)
-                textBeforeCopy += firstEnd
+                textCopy.removeSubrange(textCopy.startIndex..<nextRangeCopy.upperBound)
+                textBeforeCopy += nextEnd
                 
             } else {
                 // For this case, there is only one word.
