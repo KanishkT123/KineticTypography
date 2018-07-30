@@ -15,20 +15,29 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var bookDetails: UILabel!
     
     // New book data
-    var currentQuestions:[String] = [] // [question, question, question...]
-    var currentDevices:[String] = [] // [device, device, device...]
-    var currentAnswers:[[String]] = [] // [answers, answers, answers...]
-                                        // answers = [answer, answer, answer...]
+    var currentQuestions:[String] = []
+    var currentDevices:[String] = []
+    var currentAnswers:[[String]] = []
 
     // Text
     @IBOutlet weak var textBox: UITextView!
-    @IBOutlet weak var separatorDrop: UIButton!
-    @IBOutlet var separatorButtons: [UIButton]!
+    
+    // Separators
+    @IBOutlet weak var newLineBackground: UIView!
+    @IBOutlet weak var spaceBackground: UIView!
+    @IBOutlet weak var noneBackground: UIView!
+    @IBOutlet weak var newLineLabel: UILabel!
+    @IBOutlet weak var spaceLabel: UILabel!
+    @IBOutlet weak var noneLabel: UILabel!
+    @IBOutlet weak var newLineExample: UILabel!
+    @IBOutlet weak var spaceExample: UILabel!
+    @IBOutlet weak var noneExample: UILabel!
     
     // New Question
     @IBOutlet weak var newQuestion: UITextField!
+    @IBOutlet weak var dropStack: UIStackView!
     @IBOutlet weak var deviceDrop: UIButton!
-    @IBOutlet var deviceButtons: [UIButton]!
+    var deviceButtons: [UIButton] = []
     @IBOutlet weak var newAnswer: UITextField!
     var newAnswers: [String] = []
     @IBOutlet weak var answersTable: UITableView!
@@ -51,6 +60,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
 
 
     /********** VIEW FUNCTIONS **********/
+    /*
+     This function is called when the view controller is about to appear.
+    */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -68,7 +80,23 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         bookTitleLabel.baselineAdjustment = .alignCenters
         bookDetails.text = "Section \(data.myBook.sections.count + 1)"
         
+        // Set the separators' backgrounds.
+        resetSeparators()
+        
+        // Set the separators' example text.
+        setSeparatorExamples()
+        
+        // Add all devices to deviceButtons
+        setDevices()
+        
         // Hide errors.
+        hideErrors()
+    }
+    
+    /*
+     This function hides all of the error messages.
+     */
+    func hideErrors() {
         oopsErrors.isHidden = true
         questionQuestionError.isHidden = true
         questionDeviceError.isHidden = true
@@ -77,62 +105,143 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
         answerError.isHidden = true
+    }
+    
+    /*
+     This function sets the separators' example text.
+    */
+    func setSeparatorExamples() {
+        // partOne represents the current section's text.
+        let partOne:NSAttributedString = NSAttributedString(string: "This represents the text from this section.", attributes: [NSAttributedStringKey.foregroundColor: UIColor.purple, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20)])
+        
+        // partTwo represents the next section's text.
+        let partTwo:NSMutableAttributedString = NSMutableAttributedString(string: "This represents the text from the next section.", attributes: [NSAttributedStringKey.foregroundColor: UIColor.brown, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20)])
+        
+        // Add text to the new line example.
+        var combination = NSMutableAttributedString()
+        combination.append(partOne)
+        combination.append(NSAttributedString(string: "\n"))
+        combination.append(partTwo)
+        newLineExample.attributedText = combination
+        
+        // Add text to the space example.
+        combination = NSMutableAttributedString()
+        combination.append(partOne)
+        combination.append(NSAttributedString(string: " "))
+        combination.append(partTwo)
+        spaceExample.attributedText = combination
+        
+        // Add text to the none example.
+        combination = NSMutableAttributedString()
+        combination.append(partOne)
+        combination.append(NSAttributedString(string: ""))
+        combination.append(partTwo)
+        noneExample.attributedText = combination
+    }
+    
+    /*
+     This function creates a button for each device.
+    */
+    func setDevices() {
+        // Clear previous buttons.
+        while deviceButtons.isNotEmpty {
+            let button:UIButton = deviceButtons.removeFirst()
+            dropStack.removeArrangedSubview(button)
+        }
+        
+        // Get all devices with no repetitions.
+        var devices:[String] = []
+        for level:[String] in data.allDevices {
+            for device:String in level {
+                if !devices.contains(device) {
+                    devices.append(device)
+                }
+            }
+        }
+        
+        // Create a button for each device.
+        for device:String in devices {
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 90))
+            button.backgroundColor = data.colors[4].getColorRegular(opacity: 1)
+            button.isHidden = true
+            button.setTitle(device, for: .normal)
+            button.setTitleColor(UIColor.black, for: .normal)
+            button.titleLabel?.font = button.titleLabel?.font.withSize(30.0)
+            button.addTarget(self, action: #selector(deviceTapped(_:)), for: .touchUpInside)
+            dropStack.addArrangedSubview(button)
+            deviceButtons.append(button)
+        }
     }
 
     
     /********** TEXT FUNCTIONS **********/
-    // When the select a separator button is selected, the drop down menu is shown.
-    @IBAction func separatorDrop(_ sender: Any) {
-        // Show or hide buttons
-        separatorButtons.forEach { (button) in
-            UIView.animate(withDuration: 0.3, animations: {
-                button.isHidden = !button.isHidden
-                self.view.layoutIfNeeded()
-            })
-        }
-    }
-    
-    enum Separators: String {
-        case newLine = "New Line"
-        case space = "Space"
-        case none = "None"
-    }
-    
-    // When a separator is selected, the select separator button's title is updated and the drop down menu is hidden.
-    @IBAction func separatorTapped(_ sender: UIButton) {
-        guard let title = sender.currentTitle, let separator = Separators(rawValue: title) else { return }
+    /*
+     This function makes the new line separator appear selected. It is called when the user taps the new line button.
+    */
+    @IBAction func newLineButton(_ sender: Any) {
+        // Make all backgrounds invisible.
+        resetSeparators()
         
-        switch separator {
-        case .newLine:
-            separatorDrop.setTitle("New Line", for: .normal)
-        case .space:
-            separatorDrop.setTitle("Space", for: .normal)
-        default:
-            separatorDrop.setTitle("None", for: .normal)
-        }
-        
-        // Hide buttons
-        separatorButtons.forEach { (button) in
-            UIView.animate(withDuration: 0.3, animations: {
-                button.isHidden = true
-                self.view.layoutIfNeeded()
-            })
-        }
+        // Make new line background visible.
+        let blue:Color = data.colors[4]
+        newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+        newLineLabel.textColor = blue.getColorDark(opacity: 1)
     }
     
+    /*
+     This function makes the space separator appear selected. It is called when the user taps the space button.
+     */
+    @IBAction func spaceButton(_ sender: Any) {
+        // Make all backgrounds invisible.
+        resetSeparators()
+        
+        // Make space background visible.
+        let blue:Color = data.colors[4]
+        spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+        spaceLabel.textColor = blue.getColorDark(opacity: 1)
+    }
+    
+    /*
+     This function makes the none separator appear selected. It is called when the user taps the none button.
+     */
+    @IBAction func noneButton(_ sender: Any) {
+        // Make all backgrounds invisible.
+        resetSeparators()
+        
+        // Make none background visible.
+        let blue:Color = data.colors[4]
+        noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+        noneLabel.textColor = blue.getColorDark(opacity: 1)
+    }
+    
+    /*
+     This function makes all of the separators appear unseleted.
+     */
+    func resetSeparators() {
+        newLineBackground.backgroundColor = UIColor.clear
+        spaceBackground.backgroundColor = UIColor.clear
+        noneBackground.backgroundColor = UIColor.clear
+        let blue:Color = data.colors[4]
+        newLineLabel.textColor = blue.getColorLight(opacity: 1)
+        spaceLabel.textColor = blue.getColorLight(opacity: 1)
+        noneLabel.textColor = blue.getColorLight(opacity: 1)
+    }
+
     
     /********** NEW QUESTION FUNCTIONS **********/
-    // When the user presses return, the text field goes inactive.
+    /*
+     This function makes the text field go inactive. It is called when the user taps return on the keyboard.
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Go inactive.
         textField.resignFirstResponder()
-        
         return false
     }
     
-    // When the select a device button is selected, the drop down menu is shown.
+    /*
+     This function makes the drop-down menu visible. It is called when the user taps on the devices button.
+     */
     @IBAction func deviceDrop(_ sender: Any) {
-        // Show or hide buttons
+        // Change the visibility of the buttons (visible to unvisible or vise versa).
         deviceButtons.forEach { (button) in
             UIView.animate(withDuration: 0.3, animations: {
                 button.isHidden = !button.isHidden
@@ -141,47 +250,53 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-    enum Devices: String {
-        case device1 = "Device 1"
-        case device2 = "Device 2"
-        case device3 = "Device 3"
-        case device4 = "Device 4"
-        case device5 = "Device 5"
-        case device6 = "Device 6"
-        case device7 = "Device 7"
-        case device8 = "Device 8"
-        case device9 = "Device 9"
-        case device10 = "Device 10"
-        case device11 = "Device 11"
-    }
+//    // Cases of devices.
+//    enum Devices: String {
+//        case device1 = "Device 1"
+//        case device2 = "Device 2"
+//        case device3 = "Device 3"
+//        case device4 = "Device 4"
+//        case device5 = "Device 5"
+//        case device6 = "Device 6"
+//        case device7 = "Device 7"
+//        case device8 = "Device 8"
+//        case device9 = "Device 9"
+//        case device10 = "Device 10"
+//        case device11 = "Device 11"
+//    }
     
+    /*
+     This function sets the selected device. It is called when the user taps on a devices.
+    */
     @IBAction func deviceTapped(_ sender: UIButton) {
-        guard let title = sender.currentTitle, let device = Devices(rawValue: title) else { return }
+        //guard let title = sender.currentTitle, let device = Devices(rawValue: title) else { return }
         
-        switch device {
-        case .device1:
-            deviceDrop.setTitle("Device 1", for: .normal)
-        case .device2:
-            deviceDrop.setTitle("Device 2", for: .normal)
-        case .device3:
-            deviceDrop.setTitle("Device 3", for: .normal)
-        case .device4:
-            deviceDrop.setTitle("Device 4", for: .normal)
-        case .device5:
-            deviceDrop.setTitle("Device 5", for: .normal)
-        case .device6:
-            deviceDrop.setTitle("Device 6", for: .normal)
-        case .device7:
-            deviceDrop.setTitle("Device 7", for: .normal)
-        case .device8:
-            deviceDrop.setTitle("Device 8", for: .normal)
-        case .device9:
-            deviceDrop.setTitle("Device 9", for: .normal)
-        case .device10:
-            deviceDrop.setTitle("Device 10", for: .normal)
-        default:
-            deviceDrop.setTitle("Device 11", for: .normal)
-        }
+//        switch device {
+//        case .device1:
+//            deviceDrop.setTitle("Device 1", for: .normal)
+//        case .device2:
+//            deviceDrop.setTitle("Device 2", for: .normal)
+//        case .device3:
+//            deviceDrop.setTitle("Device 3", for: .normal)
+//        case .device4:
+//            deviceDrop.setTitle("Device 4", for: .normal)
+//        case .device5:
+//            deviceDrop.setTitle("Device 5", for: .normal)
+//        case .device6:
+//            deviceDrop.setTitle("Device 6", for: .normal)
+//        case .device7:
+//            deviceDrop.setTitle("Device 7", for: .normal)
+//        case .device8:
+//            deviceDrop.setTitle("Device 8", for: .normal)
+//        case .device9:
+//            deviceDrop.setTitle("Device 9", for: .normal)
+//        case .device10:
+//            deviceDrop.setTitle("Device 10", for: .normal)
+//        default:
+//            deviceDrop.setTitle("Device 11", for: .normal)
+//        }
+        
+        deviceDrop.setTitle(sender.currentTitle, for: .normal)
         
         // Hide buttons
         deviceButtons.forEach { (button) in
@@ -192,20 +307,17 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-    // When the add answer button is tapped, the answer is saved, and answersTable is updated.
+    /*
+     This function saves the new answer and updates the answers table. It is called when the user taps the add answer button.
+    */
     @IBAction func addAnswer(_ sender: Any) {
         // Hide errors.
-        oopsErrors.isHidden = true
-        questionQuestionError.isHidden = true
-        questionDeviceError.isHidden = true
-        questionAnswerError.isHidden = true
-        sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
-        sectionQuestionError.isHidden = true
-        answerError.isHidden = true
+        hideErrors()
         
-        // Check if new answer is a word.
+        // Check if new answer exists in the section's text.
         if checkAnswer() {
+            // For this case, the new answer exists in the section's text.
+            
             // Save the answer.
             newAnswers.append(newAnswer.text!)
             
@@ -215,11 +327,17 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             // Update the answers table.
             answersTable.reloadData()
         } else {
+            // For this case, the new answer does not exist in the section's text.
+            
+            // Show corresponding errors.
             oopsErrors.isHidden = false
             answerError.isHidden = false
         }
     }
     
+    /*
+     This function checks if the answer exists in the section's text. It returns true if the answer exists and false if the answer does not exist.
+    */
     func checkAnswer() -> Bool {
         let answer:String = newAnswer.text!
         let answerVariations:[String] = [answer, answer + ".", answer + ",", answer + "?", answer + "!", answer + "\"", answer + ".\"", answer + ",\"", answer + "?\"", answer + "!\""]
@@ -229,40 +347,60 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         
         // Check each word
         while !textCopy.isEmpty && !isAnswer {
-            // Haven't found word and there are more words to check.
-
-            // Find the next word.
             let space:String = " "
+            let newLine:String = "\n"
             if textCopy.contains(space) {
-                // For this case, there are multiple words.
+                // For this case, there are multiple words remaining.
 
-                // The default values of the first word separator are those of the first space
-                var nextRangeCopy:Range<String.Index> = textCopy.range(of: space)!
-                var nextEnd:Int = nextRangeCopy.upperBound.encodedOffset
+                // This first word is either separated from the next word by a space or a new line. Assume that the first word is separated by a space.
+                var wordSeparator:Range<String.Index> = textCopy.range(of: space)!
                 
-                // Check if the words are spread out over multiple lines.
-                let newLine:String = "\n"
+                // The first word ends at the beginning of the first space.
+                var firstWordEnd:Int = wordSeparator.upperBound.encodedOffset
+                
+                // Check if there are multiple lines.
                 if textCopy.contains(newLine) {
-                    // Find range of the first new line in textCopy.
+                    // For this case, there are multiple lines.
+                    
+                    // The varaiable lineEnd stores the beginning of the first new line.
                     let lineRangeCopy:Range<String.Index> = textCopy.range(of: newLine)!
                     let lineEnd:Int = lineRangeCopy.upperBound.encodedOffset
                     
                     // Check if the first new line occurs before the first space.
-                    if lineEnd < nextEnd {
-                        nextRangeCopy = lineRangeCopy
-                        nextEnd = lineEnd
+                    if lineEnd < firstWordEnd {
+                        // For this case, the new line occurs before the space. This means that the first word is separated by a new line, not a space.
+                        wordSeparator = lineRangeCopy
+                        firstWordEnd = lineEnd
                     }
                 }
                 
-                // Check if the next word is the attempted answer.
-                let word:String = String(textCopy.prefix(upTo: nextRangeCopy.lowerBound))
+                // Check if the first word is the attempted answer.
+                let word:String = String(textCopy.prefix(upTo: wordSeparator.lowerBound))
                 if answerVariations.contains(word) {
                     isAnswer = true
                 }
                 
                 // Remove this word from textCopy.
-                textCopy.removeSubrange(textCopy.startIndex..<nextRangeCopy.upperBound)
-                textBeforeCopy += nextEnd
+                textCopy.removeSubrange(textCopy.startIndex..<wordSeparator.upperBound)
+                textBeforeCopy += firstWordEnd
+            } else if textCopy.contains(newLine){
+                // For this case, there are multiple lines, but no spaces. This means that there is only one word per line.
+                
+                // This first word is separated from the next word by a new line.
+                let wordSeparator:Range<String.Index> = textCopy.range(of: newLine)!
+                
+                // The first word ends at the beginning of the first new line.
+                let firstWordEnd:Int = wordSeparator.upperBound.encodedOffset
+                
+                // Check if the first word is the attempted answer.
+                let word:String = String(textCopy.prefix(upTo: wordSeparator.lowerBound))
+                if answerVariations.contains(word) {
+                    isAnswer = true
+                }
+                
+                // Remove this word from textCopy.
+                textCopy.removeSubrange(textCopy.startIndex..<wordSeparator.upperBound)
+                textBeforeCopy += firstWordEnd
             } else {
                 // For this case, there is only one word.
                 
@@ -280,20 +418,17 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         return isAnswer
     }
     
-    // When the add question button is tapped, the question, device, and answers are saved, and questionsTable is updated.
+    /*
+     This function saves the question, device, and answers, and updates the questionsTable. It is called when the user taps the add question button.
+     */
     @IBAction func addQuestion(_ sender: Any) {
-        // Hide errors
-        oopsErrors.isHidden = true
-        questionQuestionError.isHidden = true
-        questionDeviceError.isHidden = true
-        questionAnswerError.isHidden = true
-        sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
-        sectionQuestionError.isHidden = true
-        answerError.isHidden = true
+        // Hide errors.
+        hideErrors()
         
-        // Check if new question has all pieces
+        // Check if new question has all of the pieces.
         if newQuestion.text != "" && deviceDrop.currentTitle != "Select a Literary Device" && newAnswers != [] {
+            // For this case, the new question has all of its pieces.
+            
             // Save the question details.
             currentQuestions.append(newQuestion.text!)
             currentDevices.append(deviceDrop.currentTitle!)
@@ -308,6 +443,8 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             // Update the questions table.
             questionsTable.reloadData()
         } else {
+            // For this case, the new question does not have all of its pieces.
+            
             oopsErrors.isHidden = false
             if newQuestion.text == "" {
                 questionQuestionError.isHidden = false
@@ -323,7 +460,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     
     
     /********** ALL QUESTIONS FUNCTIONS **********/
-    // Sets the number of rows to the number of questions.
+    /*
+     This function sets the number of rows to the number of questions.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == answersTable {
             return newAnswers.count
@@ -332,9 +471,13 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-    // Configures each cell by row
+    /*
+     This function configures each cell by row.
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == answersTable {
+            // For this case, the table is the answersTable.
+            
             // Access the current row.
             let Cell:AnswersTableViewCell = answersTable.dequeueReusableCell(withIdentifier: "Answer", for: indexPath) as! AnswersTableViewCell
             Cell.delegate = self
@@ -354,6 +497,8 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             
             return Cell
         } else {
+            // For this case, the table is the questionsTable.
+            
             // Access the current row.
             let Cell:QuestionsTableViewCell = questionsTable.dequeueReusableCell(withIdentifier: "Question", for: indexPath) as! QuestionsTableViewCell
             Cell.delegate = self
@@ -396,7 +541,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         
     }
     
-    // When the user taps the delete button in the answersTable, the answer gets deleted and the table gets reloaded.
+    /*
+     This function deletes the answer and reloads the table. It gets called when the user taps on the delete answer button.
+     */
     func deleteButtonTapped(_ sender: AnswersTableViewCell) {
         // Get the question's index.
         guard let tappedIndexPath = answersTable.indexPath(for: sender) else { return }
@@ -408,7 +555,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         answersTable.reloadData()
     }
     
-    // When the user taps the delete button in the questionsTable, the question gets deleted and the table gets reloaded.
+    /*
+     This function deletes the question and reloads the table. It gets called when the user taps on the delete question button.
+     */
     func deleteButtonTapped(_ sender: QuestionsTableViewCell) {
         // Get the question's index.
         guard let tappedIndexPath = questionsTable.indexPath(for: sender) else { return }
@@ -424,17 +573,12 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
 
     
     /********** BUTTONS FUNCTIONS **********/
-    // When the delete section button is tapped, the previous section is deleted newBook, and the screen matches the previous section's data.
+    /*
+     This function deletes the previous section from newBook and updates the view controller to match this previous section. It gets called when the user taps on the delete section button.
+     */
     @IBAction func deleteSectionButton(_ sender: Any) {
         // Hide errors
-        oopsErrors.isHidden = true
-        questionQuestionError.isHidden = true
-        questionDeviceError.isHidden = true
-        questionAnswerError.isHidden = true
-        sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
-        sectionQuestionError.isHidden = true
-        answerError.isHidden = true
+        hideErrors()
         
         if data.myBook.sections.count == 0 {
             // Segue to the NewBook scene.
@@ -448,7 +592,40 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             
             // Update text to previous section.
             textBox.text = previousSection.text.string
-            separatorDrop.setTitle(previousSection.separator, for: .normal)
+            if previousSection.separator == "New Line" {
+                // Make new line background visible.
+                let blue:Color = data.colors[4]
+                newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+                newLineLabel.textColor = blue.getColorDark(opacity: 1)
+                
+                // Make other backgrounds invisible.
+                spaceBackground.backgroundColor = UIColor.clear
+                noneBackground.backgroundColor = UIColor.clear
+                spaceLabel.textColor = blue.getColorLight(opacity: 1)
+                noneLabel.textColor = blue.getColorLight(opacity: 1)
+            } else if previousSection.separator == "Space" {
+                // Make space background visible.
+                let blue:Color = data.colors[4]
+                spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+                spaceLabel.textColor = blue.getColorDark(opacity: 1)
+                
+                // Make other backgrounds invisible.
+                newLineBackground.backgroundColor = UIColor.clear
+                noneBackground.backgroundColor = UIColor.clear
+                newLineLabel.textColor = blue.getColorLight(opacity: 1)
+                noneLabel.textColor = blue.getColorLight(opacity: 1)
+            } else {
+                // Make none background visible.
+                let blue:Color = data.colors[4]
+                noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+                noneLabel.textColor = blue.getColorDark(opacity: 1)
+                
+                // Make other backgrounds invisible.
+                newLineBackground.backgroundColor = UIColor.clear
+                spaceBackground.backgroundColor = UIColor.clear
+                newLineLabel.textColor = blue.getColorLight(opacity: 1)
+                spaceLabel.textColor = blue.getColorLight(opacity: 1)
+            }
             
             // Update all questions to previous section.
             currentQuestions = previousSection.questions
@@ -463,32 +640,38 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-    // When the new section button is tapped, the section is saved, everything is cleared, and bookDetails is updated.
+    /*
+     This function saves the section, clears the scene, and updates bookDetails. It gets called when the user taps on the new section button.
+     */
     @IBAction func newSectionButton(_ sender: Any) {
         // Hide errors
-        oopsErrors.isHidden = true
-        questionQuestionError.isHidden = true
-        questionDeviceError.isHidden = true
-        questionAnswerError.isHidden = true
-        sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
-        sectionQuestionError.isHidden = true
-        answerError.isHidden = true
+        hideErrors()
         
         // Check if new section has all pieces
-        if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
+        var separatorSelected = true
+        if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
+            separatorSelected = false
+        }
+        if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
+            var separator:String = ""
+            if newLineBackground.backgroundColor != UIColor.clear {
+                separator = "New Line"
+            } else if spaceBackground.backgroundColor != UIColor.clear {
+                separator = "Space"
+            } else {
+                separator = "None"
+            }
             // Save newSection to newBook.
-            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
             
             // Clear everything.
-            //currentSection = []
             currentQuestions = []
             currentDevices = []
             currentAnswers = []
             newAnswers = []
             textBox.text = ""
-            separatorDrop.setTitle("Select a Separator", for: .normal)
+            resetSeparators()
             newQuestion.text = ""
             deviceDrop.setTitle("Select a Literary Device", for: .normal)
             newAnswer.text = ""
@@ -502,7 +685,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             if textBox.text == "" {
                 sectionTextError.isHidden = false
             }
-            if separatorDrop.currentTitle == "Select a Separator" {
+            if !separatorSelected {
                 sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
@@ -511,22 +694,29 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-    // When the done button is tapped, the section is saved and the app segues to the NewBookLevel scene.
+    /*
+     This function saves the section and segues to the NewBookLevel scene. It gets called when the user taps on the done button.
+     */
     @IBAction func doneButton(_ sender: Any) {
         // Hide errors
-        oopsErrors.isHidden = true
-        questionQuestionError.isHidden = true
-        questionDeviceError.isHidden = true
-        questionAnswerError.isHidden = true
-        sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
-        sectionQuestionError.isHidden = true
-        answerError.isHidden = true
+        hideErrors()
         
         // Check if new section has all pieces
-        if textBox.text != "" && separatorDrop.currentTitle != "Select a Separator" && currentQuestions.count != 0 {
+        var separatorSelected = true
+        if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
+            separatorSelected = false
+        }
+        if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
+            var separator:String = ""
+            if newLineBackground.backgroundColor != UIColor.clear {
+                separator = "New Line"
+            } else if spaceBackground.backgroundColor != UIColor.clear {
+                separator = "Space"
+            } else {
+                separator = "None"
+            }
             // Save newSection to newBook.
-            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorDrop.currentTitle!, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
             
             // Clear everything.
@@ -535,7 +725,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             currentAnswers = []
             newAnswers = []
             textBox.text = ""
-            separatorDrop.setTitle("Select a Separator", for: .normal)
+            resetSeparators()
             newQuestion.text = ""
             deviceDrop.setTitle("Select a Literary Device", for: .normal)
             newAnswer.text = ""
@@ -552,7 +742,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             if textBox.text == "" {
                 sectionTextError.isHidden = false
             }
-            if separatorDrop.currentTitle == "Select a Separator" {
+            if !separatorSelected {
                 sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
