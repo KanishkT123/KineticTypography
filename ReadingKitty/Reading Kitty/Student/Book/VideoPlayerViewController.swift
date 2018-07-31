@@ -99,12 +99,18 @@ class VideoPlayerViewController: UIViewController {
         audioURL = data.audioURL
         maxFrequency = data.maxFrequency
         minFrequency = data.minFrequency
+        let frequencyRange = maxFrequency - minFrequency
         
         // import video into data set
         
         // get file name, feedback, and url
         videoFileName = "Emperor's New Clothes"
-        feedback = "Good job."
+        
+        if frequencyRange < 50 {
+            feedback = "Struggling reader."
+        } else {
+            feedback = "Strong reader."
+        }
         
         makeNewVideo = false
     }

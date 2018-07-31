@@ -250,52 +250,11 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         }
     }
     
-//    // Cases of devices.
-//    enum Devices: String {
-//        case device1 = "Device 1"
-//        case device2 = "Device 2"
-//        case device3 = "Device 3"
-//        case device4 = "Device 4"
-//        case device5 = "Device 5"
-//        case device6 = "Device 6"
-//        case device7 = "Device 7"
-//        case device8 = "Device 8"
-//        case device9 = "Device 9"
-//        case device10 = "Device 10"
-//        case device11 = "Device 11"
-//    }
-    
     /*
      This function sets the selected device. It is called when the user taps on a devices.
     */
     @IBAction func deviceTapped(_ sender: UIButton) {
-        //guard let title = sender.currentTitle, let device = Devices(rawValue: title) else { return }
-        
-//        switch device {
-//        case .device1:
-//            deviceDrop.setTitle("Device 1", for: .normal)
-//        case .device2:
-//            deviceDrop.setTitle("Device 2", for: .normal)
-//        case .device3:
-//            deviceDrop.setTitle("Device 3", for: .normal)
-//        case .device4:
-//            deviceDrop.setTitle("Device 4", for: .normal)
-//        case .device5:
-//            deviceDrop.setTitle("Device 5", for: .normal)
-//        case .device6:
-//            deviceDrop.setTitle("Device 6", for: .normal)
-//        case .device7:
-//            deviceDrop.setTitle("Device 7", for: .normal)
-//        case .device8:
-//            deviceDrop.setTitle("Device 8", for: .normal)
-//        case .device9:
-//            deviceDrop.setTitle("Device 9", for: .normal)
-//        case .device10:
-//            deviceDrop.setTitle("Device 10", for: .normal)
-//        default:
-//            deviceDrop.setTitle("Device 11", for: .normal)
-//        }
-        
+        // Update the selected device.
         deviceDrop.setTitle(sender.currentTitle, for: .normal)
         
         // Hide buttons
@@ -592,39 +551,24 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             
             // Update text to previous section.
             textBox.text = previousSection.text.string
+            
+            // Update separator to previous section.
+            resetSeparators()
             if previousSection.separator == "New Line" {
                 // Make new line background visible.
                 let blue:Color = data.colors[4]
                 newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 newLineLabel.textColor = blue.getColorDark(opacity: 1)
-                
-                // Make other backgrounds invisible.
-                spaceBackground.backgroundColor = UIColor.clear
-                noneBackground.backgroundColor = UIColor.clear
-                spaceLabel.textColor = blue.getColorLight(opacity: 1)
-                noneLabel.textColor = blue.getColorLight(opacity: 1)
             } else if previousSection.separator == "Space" {
                 // Make space background visible.
                 let blue:Color = data.colors[4]
                 spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 spaceLabel.textColor = blue.getColorDark(opacity: 1)
-                
-                // Make other backgrounds invisible.
-                newLineBackground.backgroundColor = UIColor.clear
-                noneBackground.backgroundColor = UIColor.clear
-                newLineLabel.textColor = blue.getColorLight(opacity: 1)
-                noneLabel.textColor = blue.getColorLight(opacity: 1)
             } else {
                 // Make none background visible.
                 let blue:Color = data.colors[4]
                 noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 noneLabel.textColor = blue.getColorDark(opacity: 1)
-                
-                // Make other backgrounds invisible.
-                newLineBackground.backgroundColor = UIColor.clear
-                spaceBackground.backgroundColor = UIColor.clear
-                newLineLabel.textColor = blue.getColorLight(opacity: 1)
-                spaceLabel.textColor = blue.getColorLight(opacity: 1)
             }
             
             // Update all questions to previous section.
@@ -701,12 +645,13 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         // Hide errors
         hideErrors()
         
-        // Check if new section has all pieces
+        // Check if new section has all its pieces
         var separatorSelected = true
         if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
             separatorSelected = false
         }
         if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
+            // Get the separator.
             var separator:String = ""
             if newLineBackground.backgroundColor != UIColor.clear {
                 separator = "New Line"
@@ -715,6 +660,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             } else {
                 separator = "None"
             }
+            
             // Save newSection to newBook.
             let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
