@@ -18,7 +18,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     var currentQuestions:[String] = []
     var currentDevices:[String] = []
     var currentAnswers:[[String]] = []
-    var mySection:Int = 0
 
     // Text
     @IBOutlet weak var textBox: UITextView!
@@ -33,6 +32,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var newLineExample: UILabel!
     @IBOutlet weak var spaceExample: UILabel!
     @IBOutlet weak var noneExample: UILabel!
+    var separatorSelected:String = ""
 
     // New Question
     @IBOutlet weak var newQuestion: UITextField!
@@ -56,7 +56,14 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var sectionQuestionError: UILabel!
     @IBOutlet weak var answerError: UILabel!
     
+    // Parsing variables.
+//    var xmlText:String = ""
+//    var tempText:String = ""
+//    var parsingSection:Int = 0
+    var updatingSection:Bool = true
+    
     // UserDefaults variables.
+    var parser:myParser = myParser()
     var data:Data = Data()
     var library:Library = Library()
     
@@ -70,6 +77,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
+        parser.data = data
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
@@ -84,7 +92,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         // Set header.
         bookTitle.text = data.myBook.file
         bookTitle.baselineAdjustment = .alignCenters
-        bookSection.text = "Section \(mySection + 1)"
+        bookSection.text = "Section \(data.mySectionNum + 1)"
         
         // Set the separators' backgrounds.
         resetSeparators()
@@ -184,7 +192,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     
     func updateScene() {
         // Get section
-        let section:BookSection = data.myBook.sections[mySection]
+        let section:BookSection = data.myBook.sections[data.mySectionNum]
         
         // Update text
         textBox.text = section.text.string
@@ -196,16 +204,19 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             let blue:Color = data.colors[4]
             newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
             newLineLabel.textColor = blue.getColorDark(opacity: 1)
+            separatorSelected = "New Line"
         } else if section.separator == "Space" {
             // Make space background visible.
             let blue:Color = data.colors[4]
             spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
             spaceLabel.textColor = blue.getColorDark(opacity: 1)
+            separatorSelected = "Space"
         } else {
             // Make none background visible.
             let blue:Color = data.colors[4]
             noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
             noneLabel.textColor = blue.getColorDark(opacity: 1)
+            separatorSelected = "None"
         }
         
         // Update all questions
@@ -233,6 +244,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         let blue:Color = data.colors[4]
         newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         newLineLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "New Line"
     }
     
     /*
@@ -246,6 +258,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         let blue:Color = data.colors[4]
         spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         spaceLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "Space"
     }
     
     /*
@@ -259,6 +272,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         let blue:Color = data.colors[4]
         noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         noneLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "None"
     }
     
     /*
@@ -272,6 +286,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         newLineLabel.textColor = blue.getColorLight(opacity: 1)
         spaceLabel.textColor = blue.getColorLight(opacity: 1)
         noneLabel.textColor = blue.getColorLight(opacity: 1)
+        separatorSelected = ""
     }
     
     
@@ -577,45 +592,160 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         questionsTable.reloadData()
     }
     
+    
+    /********** PARSING FUNCTIONS **********/
+//    /*
+//     This function parses the book.
+//    */
+//    func startParse() {
+//        // Access the book file.
+//        let fileName = data.myBook.file
+//        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
+//
+//        // Parse the book.
+//        let parser: XMLParser = XMLParser(contentsOf: url)!
+//        parser.delegate = self
+//        parser.parse()
+//    }
+    
+//    /*
+//     This function either adds the start tag or updates the section. It is called when the parser reads a start tag.
+//    */
+//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+//        if parsingSection == data.mySectionNum {
+//            // This is the updated section. Delete the old section by not adding it to xmlText, and add the updated section.
+//            if elementName == "section" {
+//                newSection()
+//            }
+//
+//        } else {
+//            // This is not the updated section. Keep the current section.
+//            xmlText.append("<\(elementName)")
+//        }
+//    }
+//
+//    /*
+//     This function saves the characters into tempText. It is called when the parser reads a character.
+//    */
+//    func parser(_ parser: XMLParser, foundCharacters string: String) {
+//        tempText.append(string)
+//    }
+
+//    /*
+//     This function ... It is called every time the parser reads an end tag.
+//    */
+//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+//        if parsingSection == data.mySectionNum {
+//            // This is the updated section. Delete the old section by not adding it to xmlText.
+//        } else {
+//            // This is not the updated section. Keep the current section.
+//            xmlText.append(tempText)
+//            xmlText.append("</\(elementName)")
+//        }
+//
+//        if elementName == "section" {
+//            // This is the end of a section, so the next section will now be parsed.
+//            parsingSection += 1
+//        }
+//
+//        // Reset the text.
+//        tempText = ""
+//    }
+//
+//    /*
+//     This function ...
+//    */
+//    func newSection() {
+//        // Start the section
+//        xmlText.append("<section>")
+//
+//        // Add the text
+//        xmlText.append("<text>")
+//        xmlText.append(textBox.text)
+//        xmlText.append("</text>")
+//
+//        // Add the separator
+//        xmlText.append("<separator>")
+//        xmlText.append(separatorSelected)
+//        xmlText.append("</separator>")
+//
+//        // Add each question, device, and answers
+//        for questionInt:Int in 0..<currentQuestions.count {
+//            // Add the question
+//            xmlText.append("<question>")
+//            xmlText.append(currentQuestions[questionInt])
+//            xmlText.append("</question>")
+//
+//            // Add the device
+//            xmlText.append("<device>")
+//            xmlText.append(currentDevices[questionInt])
+//            xmlText.append("</device>")
+//
+//            // Add the answers
+//            print(currentAnswers)
+//            xmlText.append("<answer>")
+//            for answer:String in currentAnswers[questionInt] {
+//                xmlText.append(answer + ", ")
+//            }
+//            // Remove last comma and space.
+//            xmlText.removeLast()
+//            xmlText.removeLast()
+//            xmlText.append("</answer>")
+//        }
+//
+//        // Close the section
+//        xmlText.append("</section>")
+//    }
+    
+
     /********** BUTTONS FUNCTIONS **********/
     /*
      This function deletes the section from newBook and segues to the EditBook scene. It gets called when the user taps on the delete section button.
      */
-    func deleteSection() {
+    @IBAction func deleteSection(_ sender: Any) {
+        // The section is not going to be updated.
+        updatingSection = false
         
+        // Update the xml file.
+        updateXML()
+        
+        // Update myBook. Library doesn't store sections.
+        data.myBook.sections.remove(at: data.mySectionNum)
+        
+        // Clear everything.
+        currentQuestions = []
+        currentDevices = []
+        currentAnswers = []
+        newAnswers = []
+        textBox.text = ""
+        resetSeparators()
+        newQuestion.text = ""
+        deviceDrop.setTitle("Select a Literary Device", for: .normal)
+        newAnswer.text = ""
+        answersTable.reloadData()
+        questionsTable.reloadData()
+        
+        // Go to the EditBook scene.
+        self.performSegue(withIdentifier: "EditBook", sender: self)
     }
-    
     
     /*
      This function saves the section and segues to the EditBook scene. It gets called when the user taps on the save button.
      */
-    func saveButton() {
+    @IBAction func saveButton(_ sender: Any) {
         // Hide errors.
         hideErrors()
         
         // Check if the section has all its pieces.
-        var separatorSelected:Bool = true
-        if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
-            separatorSelected = false
-        }
-        if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
-            // Get the separator.
-            var separator:String = ""
-            if newLineBackground.backgroundColor != UIColor.clear {
-                separator = "New Line"
-            } else if spaceBackground.backgroundColor != UIColor.clear {
-                separator = "Space"
-            } else {
-                separator = "None"
-            }
+        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
+            // The section is going to be updated.
+            updatingSection = true
             
             // Update the xml file.
             updateXML()
             
-            // Update myBook and the library
-            data.myBook.sections[mySection] = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
-            
-            UserDefaults.standard.set(library.toDictionary(), forKey: "library")
+            // Update myBook. Library doesn't store sections.
+            data.myBook.sections[data.mySectionNum] = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             
             
             // Clear everything.
@@ -631,21 +761,47 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             answersTable.reloadData()
             questionsTable.reloadData()
             
-            // Segue
+            // Go to the EditBook scene.
+            self.performSegue(withIdentifier: "EditBook", sender: self)
+        } else {
+            oopsErrors.isHidden = false
+            if textBox.text == "" {
+                sectionTextError.isHidden = false
+            }
+            if separatorSelected == "" {
+                sectionSeparatorError.isHidden = false
+            }
+            if currentQuestions.count == 0 {
+                sectionQuestionError.isHidden = false
+            }
         }
     }
     
     func updateXML() {
-        // parse
+        // Create the string that will make up the xml file.
+        xmlText = ""
         
-        // update while parsing
+        // Parse the file and update the current section.
+        startParse()
         
-        // write?
+        // Create xml file from string.
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        let filename = path?.appendingPathComponent(data.myBook.file + ".xml")
+        do {
+            try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+            print("error in making xml file")
+        }
     }
-  
-    
-   
     
     
-
+    /********** SEGUE FUNCTIONS **********/
+    // Passing data
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Update the data in the EditBook scene.
+        if segue.destination is EditBookViewController {
+            let Destination = segue.destination as? EditBookViewController
+            Destination?.data = data
+        }
+    }
 }

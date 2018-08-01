@@ -136,8 +136,8 @@ class QuestionViewController: UIViewController, UITextViewDelegate {
                 let word:String = String(textCopy.prefix(upTo: nextRangeCopy.lowerBound))
                 var isAnswer:Bool = false
                 for answer in myAnswers {
-                    let answerVariations:[String] = [answer, answer + ".", answer + ",", answer + "?", answer + "!", answer + "\"", answer + ".\"", answer + ",\"", answer + "?\"", answer + "!\""]
-                    if answerVariations.contains(word) {
+                    let variations:[String] = answerVariations(answer: answer)
+                    if variations.contains(word) {
                         isAnswer = true
                     }
                 }

@@ -334,7 +334,12 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
                 
                 // Add the answers
                 xmlText.append("<answer>")
-                xmlText.append(section.answers[question][0])
+                for answer:String in section.answers[question] {
+                    xmlText.append(answer + ", ")
+                }
+                // Remove last comma and space.
+                xmlText.removeLast()
+                xmlText.removeLast()
                 xmlText.append("</answer>")
             }
             

@@ -97,8 +97,12 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func editButtonTapped(_ sender: SectionsTableViewCell) {
-        print("edit section button tapped")
-        // pass section
+        // Get the book's index.
+        guard let tappedIndexPath = sectionsTable.indexPath(for: sender) else { return }
+        
+        data.mySectionNum = tappedIndexPath.row
+        
+        self.performSegue(withIdentifier: "EditSection", sender: self)
     }
     
     
@@ -136,6 +140,12 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         // Update the data in the EditHeader scene.
         if segue.destination is EditHeaderViewController {
             let Destination = segue.destination as? EditHeaderViewController
+            Destination?.data = data
+        }
+        
+        // Update the data in the EditSection scene.
+        if segue.destination is EditSectionViewController {
+            let Destination = segue.destination as? EditSectionViewController
             Destination?.data = data
         }
     }

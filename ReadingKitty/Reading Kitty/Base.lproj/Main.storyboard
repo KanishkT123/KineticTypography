@@ -3031,7 +3031,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="90" id="Lyt-hi-Afq"/>
                                                                 </constraints>
-                                                                <nil key="textColor"/>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
@@ -3134,9 +3134,9 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="90" id="arg-9z-OGB"/>
                                                                 </constraints>
-                                                                <nil key="textColor"/>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                                                <textInputTraits key="textInputTraits"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textField>
                                                         </subviews>
                                                         <constraints>
@@ -3234,6 +3234,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="200" id="aOn-p8-Q1A"/>
                                                                 </constraints>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textView>
@@ -4666,6 +4667,7 @@
                         <outlet property="sectionsTable" destination="B46-cp-v6e" id="tVu-vH-18U"/>
                         <segue destination="14W-Go-uY1" kind="custom" identifier="LevelDetails" customClass="BackwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="5vd-ZD-GHF"/>
                         <segue destination="YR7-Bu-r9h" kind="custom" identifier="EditHeader" customClass="ForwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="KRb-4b-iuq"/>
+                        <segue destination="HTo-QT-EQd" kind="custom" identifier="EditSection" customClass="ForwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="jK7-l0-56R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y4O-kZ-Fe9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5682,7 +5684,7 @@
                                                 <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="rGy-Vg-Rj4" userLabel="Buttons Stack">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="rGy-Vg-Rj4" userLabel="Buttons Stack">
                                                 <rect key="frame" x="10" y="2282" width="924" height="90"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ei-Fm-d9x">
@@ -5696,28 +5698,25 @@
                                                         <state key="normal" title="Delete Section">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="deleteSection:" destination="HTo-QT-EQd" eventType="touchUpInside" id="KdP-Pk-MQ2"/>
+                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fVe-QB-FTZ">
-                                                        <rect key="frame" x="322" y="0.0" width="280" height="90"/>
-                                                        <color key="backgroundColor" red="0.34509803919999998" green="0.81176470590000005" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                                        <state key="normal" title="New Section">
-                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eaj-sB-hKz">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fVe-QB-FTZ" userLabel="Save Section">
                                                         <rect key="frame" x="644" y="0.0" width="280" height="90"/>
                                                         <color key="backgroundColor" red="0.34509803919999998" green="0.81176470590000005" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                                        <state key="normal" title="Done">
+                                                        <state key="normal" title="Save Section">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="saveButton:" destination="HTo-QT-EQd" eventType="touchUpInside" id="KL0-99-969"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="fVe-QB-FTZ" firstAttribute="width" secondItem="4ei-Fm-d9x" secondAttribute="width" id="HTP-XK-d2q"/>
                                                     <constraint firstAttribute="height" constant="90" id="ao1-ew-Snh"/>
-                                                    <constraint firstItem="Eaj-sB-hKz" firstAttribute="width" secondItem="4ei-Fm-d9x" secondAttribute="width" id="drO-Gp-msV"/>
                                                 </constraints>
                                             </stackView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" indicatorStyle="white" bouncesZoom="NO" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="100" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iXB-tf-3fG" userLabel="Current Questions">
@@ -5804,6 +5803,9 @@
                                                 <state key="normal" title="Add Question">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="addQuestion:" destination="HTo-QT-EQd" eventType="touchUpInside" id="yAE-0N-18l"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="34I-O2-l3m" userLabel="Answers Stack">
                                                 <rect key="frame" x="10" y="1226" width="924" height="373"/>
@@ -5826,7 +5828,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="90" id="Xyn-Vf-fVw"/>
                                                                 </constraints>
-                                                                <nil key="textColor"/>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
@@ -5842,6 +5844,9 @@
                                                                     <constraint firstAttribute="width" secondItem="Jy7-8a-dNP" secondAttribute="height" multiplier="1:1" id="Mro-G7-OYE"/>
                                                                     <constraint firstAttribute="height" constant="90" id="tuA-8C-cHo"/>
                                                                 </constraints>
+                                                                <connections>
+                                                                    <action selector="addAnswer:" destination="HTo-QT-EQd" eventType="touchUpInside" id="ojn-G8-1T9"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -5926,9 +5931,9 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="90" id="ovh-Rz-nDR"/>
                                                                 </constraints>
-                                                                <nil key="textColor"/>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                                                <textInputTraits key="textInputTraits"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textField>
                                                         </subviews>
                                                         <constraints>
@@ -5960,6 +5965,9 @@
                                                                         <state key="normal" title="Select a Literary Device">
                                                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </state>
+                                                                        <connections>
+                                                                            <action selector="deviceDrop:" destination="HTo-QT-EQd" eventType="touchUpInside" id="asU-t5-Buq"/>
+                                                                        </connections>
                                                                     </button>
                                                                 </subviews>
                                                             </stackView>
@@ -6023,6 +6031,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="200" id="4hK-1o-yOq"/>
                                                                 </constraints>
+                                                                <color key="textColor" red="0.28235294119999998" green="0.64705882349999999" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textView>
@@ -6055,6 +6064,9 @@
                                                                                 <state key="normal">
                                                                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="newLineButton:" destination="HTo-QT-EQd" eventType="touchUpInside" id="W60-4g-Dwz"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Line" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RD-ct-TOP">
                                                                                 <rect key="frame" x="10" y="10" width="281.5" height="40"/>
@@ -6100,6 +6112,9 @@
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="whL-e4-14U">
                                                                                 <rect key="frame" x="-0.5" y="50" width="301" height="120"/>
                                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <connections>
+                                                                                    <action selector="spaceButton:" destination="HTo-QT-EQd" eventType="touchUpInside" id="fLa-Bj-1wB"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Space" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Krj-Pn-cZ0">
                                                                                 <rect key="frame" x="10" y="10" width="281" height="40"/>
@@ -6148,6 +6163,9 @@
                                                                                 <state key="normal">
                                                                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 </state>
+                                                                                <connections>
+                                                                                    <action selector="noneButton:" destination="HTo-QT-EQd" eventType="touchUpInside" id="jFI-Cp-2oZ"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7f-rB-j59">
                                                                                 <rect key="frame" x="10" y="10" width="281.5" height="40"/>
@@ -6347,6 +6365,7 @@
                         <outlet property="spaceExample" destination="nfA-H3-cjz" id="gmG-bt-UIC"/>
                         <outlet property="spaceLabel" destination="Krj-Pn-cZ0" id="plK-TL-hII"/>
                         <outlet property="textBox" destination="ruA-wR-DfZ" id="Rvt-Ee-XuO"/>
+                        <segue destination="4bU-TF-mGK" kind="custom" identifier="EditBook" customClass="BackwardSegue" customModule="Reading_Kitty" customModuleProvider="target" id="6j4-uY-Vxe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hcZ-0Z-pda" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6379,14 +6398,14 @@
         <image name="Yellow Button" width="78" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DHr-S2-wU6"/>
+        <segue reference="6j4-uY-Vxe"/>
         <segue reference="JxI-DT-kt2"/>
         <segue reference="Nci-7N-Ts5"/>
         <segue reference="HFW-aZ-49Y"/>
         <segue reference="WSx-Ce-HMt"/>
         <segue reference="SDC-Yg-IEt"/>
         <segue reference="Vyf-yH-1UE"/>
-        <segue reference="5ct-Oe-dac"/>
+        <segue reference="BbB-50-YGx"/>
         <segue reference="hvd-my-FfR"/>
         <segue reference="5vd-ZD-GHF"/>
         <segue reference="fgr-Na-zO8"/>

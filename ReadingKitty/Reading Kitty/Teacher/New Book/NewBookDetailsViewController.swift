@@ -32,6 +32,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var newLineExample: UILabel!
     @IBOutlet weak var spaceExample: UILabel!
     @IBOutlet weak var noneExample: UILabel!
+    var separatorSelected:String = ""
     
     // New Question
     @IBOutlet weak var newQuestion: UITextField!
@@ -186,6 +187,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         let blue:Color = data.colors[4]
         newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         newLineLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "New Line"
     }
     
     /*
@@ -199,6 +201,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         let blue:Color = data.colors[4]
         spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         spaceLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "Space"
     }
     
     /*
@@ -212,6 +215,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         let blue:Color = data.colors[4]
         noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
         noneLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "None"
     }
     
     /*
@@ -225,6 +229,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         newLineLabel.textColor = blue.getColorLight(opacity: 1)
         spaceLabel.textColor = blue.getColorLight(opacity: 1)
         noneLabel.textColor = blue.getColorLight(opacity: 1)
+        separatorSelected = ""
     }
 
     
@@ -559,16 +564,19 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
                 let blue:Color = data.colors[4]
                 newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 newLineLabel.textColor = blue.getColorDark(opacity: 1)
+                separatorSelected = "New Line"
             } else if previousSection.separator == "Space" {
                 // Make space background visible.
                 let blue:Color = data.colors[4]
                 spaceBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 spaceLabel.textColor = blue.getColorDark(opacity: 1)
+                separatorSelected = "Space"
             } else {
                 // Make none background visible.
                 let blue:Color = data.colors[4]
                 noneBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
                 noneLabel.textColor = blue.getColorDark(opacity: 1)
+                separatorSelected = "None"
             }
             
             // Update all questions to previous section.
@@ -592,21 +600,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         hideErrors()
         
         // Check if new section has all pieces
-        var separatorSelected = true
-        if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
-            separatorSelected = false
-        }
-        if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
-            var separator:String = ""
-            if newLineBackground.backgroundColor != UIColor.clear {
-                separator = "New Line"
-            } else if spaceBackground.backgroundColor != UIColor.clear {
-                separator = "Space"
-            } else {
-                separator = "None"
-            }
+        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
             // Save newSection to newBook.
-            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
             
             // Clear everything.
@@ -629,7 +625,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             if textBox.text == "" {
                 sectionTextError.isHidden = false
             }
-            if !separatorSelected {
+            if separatorSelected == "" {
                 sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
@@ -646,23 +642,9 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         hideErrors()
         
         // Check if new section has all its pieces
-        var separatorSelected = true
-        if newLineBackground.backgroundColor == UIColor.clear && spaceBackground.backgroundColor == UIColor.clear && noneBackground.backgroundColor == UIColor.clear {
-            separatorSelected = false
-        }
-        if textBox.text != "" && separatorSelected && currentQuestions.count != 0 {
-            // Get the separator.
-            var separator:String = ""
-            if newLineBackground.backgroundColor != UIColor.clear {
-                separator = "New Line"
-            } else if spaceBackground.backgroundColor != UIColor.clear {
-                separator = "Space"
-            } else {
-                separator = "None"
-            }
-            
+        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
             // Save newSection to newBook.
-            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separator, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
             
             // Clear everything.
@@ -688,7 +670,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             if textBox.text == "" {
                 sectionTextError.isHidden = false
             }
-            if !separatorSelected {
+            if separatorSelected == "" {
                 sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {

@@ -8,11 +8,12 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, XMLParserDelegate {
+class LoginViewController: UIViewController {
     /********** LOCAL VARIABLES **********/
     // Text gathered as a result of parsing an xml file.
-    var xmlText:String = ""
+    //var xmlText:String = ""
     
+    let parser:myParser = myParser()
     let data = Data()
     
     
@@ -41,13 +42,7 @@ class LoginViewController: UIViewController, XMLParserDelegate {
             // Copy the default books from the Bundle to the documentsDirectory.
             var library:Library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
             for book:Book in data.defaultBooks {
-                // Get the book's xml text from the Bundle.
-                let bundleURL:URL = URL(fileURLWithPath: Bundle.main.path(forResource: book.file, ofType: "xml")!)
-                let parser:XMLParser = XMLParser(contentsOf: bundleURL)!
-                parser.delegate = self
-                parser.parse()
-                let bundleText:String = xmlText
-                xmlText = ""
+                let bundleText:String = parser.transferFromBundle(fileName: book.file)
                 
                 // Make new xml file in the documentsDirectory.
                 let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -98,29 +93,29 @@ class LoginViewController: UIViewController, XMLParserDelegate {
     
     
     /********** PARSING FUNCTIONS **********/
-    /*
-     This function saves the start tag to xmlText.
-     It is called every time the parser reads a start tag.
-    */
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        xmlText += "<\(elementName)>"
-    }
-    
-    /*
-     This function saves the character to xmlText.
-     It is called every time the parser reads a character.
-    */
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        xmlText += string
-    }
-    
-    /*
-     This function saves the end tag to xmlText.
-     It is called every time the parser reads an end tag.
-    */
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        xmlText += "</\(elementName)>"
-    }
+//    /*
+//     This function saves the start tag to xmlText.
+//     It is called every time the parser reads a start tag.
+//    */
+//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+//        xmlText += "<\(elementName)>"
+//    }
+//
+//    /*
+//     This function saves the character to xmlText.
+//     It is called every time the parser reads a character.
+//    */
+//    func parser(_ parser: XMLParser, foundCharacters string: String) {
+//        xmlText += string
+//    }
+//
+//    /*
+//     This function saves the end tag to xmlText.
+//     It is called every time the parser reads an end tag.
+//    */
+//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+//        xmlText += "</\(elementName)>"
+//    }
     
     
     /********** SEGUE FUNCTIONS **********/
