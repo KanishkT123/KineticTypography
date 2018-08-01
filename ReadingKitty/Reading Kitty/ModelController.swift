@@ -278,216 +278,348 @@ struct Data {
 }
 
 class myParser: UIViewController, XMLParserDelegate {
-    var section:Bool = false
     
-    var data:Data = Data()
+    // Parsing variables.
+    var xmlText:String = ""
     
-    // Parser temporary variables
-    // For student books and level details
-    var tempCharacters: String = ""
+    // Modifying variables.
+    var deleteSection:Bool = false
+    var newSection:Bool = false
+    var updateSection:Bool = false
+    var parsingSection:Int = 0
+    
+    // New section variables.
+    var newText:String = ""
+    var newSeparator:String = ""
+    var newQuestions:[String] = []
+    var newDevices:[String] = []
+    var newAnswers:[[String]] = []
+
+    // Sectioning variables.
+    var sectioning:Bool = false
     var tempText: String = ""
     var tempQuestions: [String] = []
     var tempDevices: [String] = []
     var tempAnswers: [[String]] = []
     var tempSeparator:String = ""
     
-    // For login
-    var xmlText:String = ""
+    // Keeping track of data.
+    var data:Data = Data()
     
-    // For edit section
-    var parsingSection:Int = 0
-    var updatingSection:Bool = false
-    var deletingSection:Bool = false
+    /*
+     This function saves an xml string to an xml file in the documents directory. It is called in the following view controllers: Login, EditSection, NewBookLevel.
+     */
+    func saveXML(fileName:String, xmlString:String) {
+        let url:URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let xmlFile:URL = url.appendingPathComponent(fileName + ".xml")
+        do {
+            try xmlString.write(to: xmlFile, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+            print("error in making xml file")
+        }
+    }
+    
+    /*
+     This function turns BookSections into a string in xml format. It is called in the following view controllers: NewBookLevel.
+     */
+    func newBook(fileName:String, sections:[BookSection]) -> String {
+        // Create the beginning of the xml file.
+        var xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+        xmlText.append("<article>")
+        
+        // Add each section to xmlTetx.
+        for section:BookSection in sections {
+            // Save the new section data.
+            newText = section.text.string
+            newSeparator = section.separator
+            newQuestions = section.questions
+            newDevices = section.devices
+            newAnswers = section.answers
+            
+            // Add the new section.
+            addSection()
+        }
+        
+        // End xmlText.
+        xmlText.append("</article>")
+        
+        return xmlText
+    }
+    
+    
+    /*
+     This function extracts all of the text, including element tags, in an xml file. It is called in the following view controllers: Login.
+     */
+    func extractText(fileName:String, fromBundle:Bool) -> String {
+        // The text is just being extracted.
+        sectioning = false
+        deleteSection = false
+        newSection = false
+        
+        
+        // Parse the book.
+        startParse(fileName: fileName, bundle: fromBundle)
+        
+        return xmlText
+    }
+    
+    /*
+     This function sections the text in the xml file into BookSections. It is called in the following view controllers: StudentBooks and LevelDetails.
+     */
+    func sectionText(fileName:String) {
+        // The text is being sectioned into BookSections.
+        sectioning = true
+        deleteSection = false
+        newSection = false
+        
+        // Parse the book.
+        data.myBook.sections = []
+        startParse(fileName: fileName, bundle: false)
+    }
+    
+    /*
+     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     */
+    func deleteSection(fileName:String) -> String {
+        // The text is being modified.
+        sectioning = false
+        deleteSection = true
+        newSection = false
+        
+        // Parse the book.
+        startParse(fileName: fileName, bundle: false)
+        
+        return xmlText
+    }
+    
+    /*
+     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     */
+    func newSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) -> String {
+        // The text is being modified.
+        sectioning = false
+        deleteSection = false
+        newSection = true
+        updateSection = false
+        
+        // Save the new section data.
+        newText = text
+        newSeparator = separator
+        newQuestions = questions
+        newDevices = devices
+        newAnswers = answers
+        
+        // Parse the book.
+        startParse(fileName: fileName, bundle: false)
+        
+        return xmlText
+    }
+    
+    /*
+     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     */
+    func updateSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) -> String {
+        // The text is being modified.
+        sectioning = false
+        deleteSection = false
+        newSection = true
+        updateSection = true
+        
+        // Save the new section data.
+        newText = text
+        newSeparator = separator
+        newQuestions = questions
+        newDevices = devices
+        newAnswers = answers
+        
+        // Parse the book.
+        startParse(fileName: fileName, bundle: false)
+        
+        return xmlText
+    }
+    
     
     
     /*
      This function parses the book.
     */
-    func startParse(fileName:String, updateSection:Bool, deleteSection:Bool) {
+    func startParse(fileName:String, bundle:Bool) {
         // Access the book file.
-        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
+        var url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
+        xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
         
-        updatingSection = updateSection
-        deletingSection = deleteSection
-        if updatingSection || deletingSection {
-            section = false
-        } else {
-            section = true
+        // Check if the book is in the bundle.
+        if bundle {
+            url = URL(fileURLWithPath: Bundle.main.path(forResource: fileName, ofType: "xml")!)
         }
         
-        // Parse the book.
+        // Check if the book is being sectioned.
+        if sectioning {
+            xmlText = ""
+        }
+        
         let parser: XMLParser = XMLParser(contentsOf: url)!
         parser.delegate = self
         parser.parse()
     }
     
-    func transferFromBundle(fileName:String) -> String {
-        section = false
-        xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-        
-        // Access the book file from the Bundle.
-        let bundleURL:URL = URL(fileURLWithPath: Bundle.main.path(forResource: fileName, ofType: "xml")!)
-        
-        // Parse the book.
-        let parser:XMLParser = XMLParser(contentsOf: bundleURL)!
-        parser.delegate = self
-        parser.parse()
-        
-        return xmlText
-    }
     
-    // Every time the parser reads a start tag, reset tempCharacters.
+    /*
+     This function is called when the parser reads a start tag.
+    */
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        if section {
-            // For student books and level details
-            tempCharacters = ""
-        } else if parsingSection == data.mySectionNum {
-            if updatingSection {
-                // For this case, this section is being updated.
-                if elementName == "section" {
-                    // Add the updated section rather than the old section.
-                    newSection()
-                }
-            } else if deletingSection {
-                // For this case, this section is being deleted.
+        if sectioning {
+            // For this case, the text is being sectioned. Reset xmlText to keep track of this element tag's text.
+            xmlText = ""
+        } else if deleteSection && parsingSection == data.mySectionNum {
+            // For this case, this section is being deleted.
+        } else if newSection && parsingSection == data.mySectionNum {
+            // For this case, a new section is being added.
+            //addSection()
+            
+            if updateSection {
+                // For this case, the section is being deleted because it has been replaced.
+                deleteSection = true
+                newSection = false
+            } else {
+                // For this case, this section is also being extracted.
+                xmlText.append("<\(elementName)>")
             }
         } else {
+            // For this case, this section is being extracted.
             xmlText.append("<\(elementName)>")
         }
     }
     
-    // Every time the parser reads a character, save the character to tempCharacters.
+    /*
+     This function is called when the parser reads a character.
+    */
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        tempCharacters.append(string)
+        xmlText.append(string)
     }
     
-    // Every time the parser reads an end tag, modify and add tempCharacters to its correct location.
+    /*
+     This function is called when the parser reads an end tag.
+    */
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        if section {
-            // For student books and level details
+        if sectioning {
+            // For this case, the text is being sectioned.
             if elementName == "text" {
-                // tempCharacters doesn't need to be modified because tempText is a string.
-                // Add tempCharacters to tempText.
-                tempText = tempCharacters
+                // For this case, xmlText had been collecting the section's text.
+                tempText = xmlText
             }
             
             if elementName == "question" {
-                // tempCharacters doesn't need to be modified because each string in tempQuestions represents an entire question.
-                // Add tempCharacters to tempQuestions.
-                tempQuestions.append(tempCharacters)
+                // For this case, xmlText had been collecting a question.
+                tempQuestions.append(xmlText)
             }
             
             if elementName == "device" {
-                // tempCharacters doesn't need to be modified because each string in tempDevices represents an entire device.
-                // Add tempCharacters to tempDevices.
-                tempDevices.append(tempCharacters)
+                // For this case, xmlText had been collecting a device.
+                tempDevices.append(xmlText)
             }
             
             if elementName == "answer" {
-                // Modify tempCharacters from String to [String], where each string in the array is an answer.
-                var charsCopy:String = tempCharacters
-                var answerArray:[String] = []
+                // For this case, xmlText had been collecting an answer. xml files store answers as a String in "answer, answer, ..." form. BookSections store answers as a [String] in ["answer", "answer", ...] form.
+                
+                // Create answersArray (how BookSections store answers) from answersString (how xml files store answers).
+                var answersString:String = xmlText
+                var answersArray:[String] = []
                 var answer:String = ""
-                while !charsCopy.isEmpty {
-                    // Get words from charsCopy.
-                    if charsCopy.contains(", ") {
-                        let separator = charsCopy.range(of: ", ")!
-                        answer = String(charsCopy.prefix(upTo: separator.lowerBound))
-                        charsCopy.removeSubrange(charsCopy.startIndex..<separator.upperBound)
+                while !answersString.isEmpty {
+                    if answersString.contains(", ") {
+                        // For this case, there are multiple answers left in answersString. Save the first answer and remove it from answersString.
+                        let separator = answersString.range(of: ", ")!
+                        answer = String(answersString.prefix(upTo: separator.lowerBound))
+                        answersString.removeSubrange(answersString.startIndex..<separator.upperBound)
                     } else {
-                        answer = String(charsCopy.prefix(upTo: charsCopy.endIndex))
-                        charsCopy.removeSubrange(charsCopy.startIndex..<charsCopy.endIndex)
+                        // For this case, there is one answer left in answersString. Save this answer and remove it from answersString.
+                        answer = String(answersString.prefix(upTo: answersString.endIndex))
+                        answersString.removeSubrange(answersString.startIndex..<answersString.endIndex)
                     }
-                    answerArray.append(answer)
+                    
+                    // Add the saved answer to answersArray.
+                    answersArray.append(answer)
                 }
                 
-                // Add modified tempCharacters to tempAnswers.
-                tempAnswers.append(answerArray)
+                // Add answersArray (the answers for this question) to tempAnswers (the answers for this section).
+                tempAnswers.append(answersArray)
             }
             
             if elementName == "separator" {
-                if tempCharacters == "new line"{
+                // For this case, xmlText had been collecting a separator.
+                if xmlText == "New Line"{
                     tempSeparator = "\n"
-                } else if tempCharacters == "space" {
+                } else if xmlText == "Space" {
                     tempSeparator = " "
-                } else if tempCharacters == "none" {
+                } else if xmlText == "None" {
                     tempSeparator = ""
                 }
             }
             
             if elementName == "section" {
-                // Modify tempText from String to NSMutableAttributedString.
-                let standardAttributes = data.standardAttributes
-                let attributedText = NSMutableAttributedString(string: tempText, attributes: standardAttributes)
+                // For this case, an entire section has been collected. This section needs to be created into a BookSection and added to myBook.
                 
-                // Add spacing between paragraphs.
+                // A BookSection needs an attributedString representing its text.
+                let attributedString = NSMutableAttributedString(string: tempText, attributes: data.standardAttributes)
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineSpacing = 5
                 paragraphStyle.paragraphSpacing = 20
-                attributedText.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedText.length))
+                attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedString.length))
                 
-                // Make a new BookSection with the collected information.
-                let newBookSection:BookSection = BookSection(text: attributedText, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
+                // Create the new BookSection and add it to myBook.
+                let newBookSection:BookSection = BookSection(text: attributedString, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
                 data.myBook.sections.append(newBookSection)
                 
-                // Reset all temporary variables. tempCharacters doesn't need to be reset because it is reset at every start tag.
+                // Reset the temporary variables.
                 tempText = ""
-                tempQuestions = []
-                tempAnswers = []
                 tempSeparator = ""
+                tempQuestions = []
+                tempDevices = []
+                tempAnswers = []
             }
-        } else if parsingSection == data.mySectionNum {
-            if updatingSection {
-                // For this case, this section is being updated.
-                if elementName == "section" {
-                    // Add the updated section rather than the old section.
-                    newSection()
-                }
-            } else if deletingSection {
-                // For this case, this section is being deleted.
-            }
+        } else if deleteSection && parsingSection == data.mySectionNum {
+            // For this case, this section is being deleted.
+            parsingSection += 1
         } else {
-            xmlText.append(tempCharacters)
+            // For this case, this section is being extracted.
+            xmlText.append(xmlText)
             xmlText.append("</\(elementName)>")
-            tempCharacters = ""
-        }
-        
-        if elementName == "section" {
-            // This is the end of a section, so the next section will now be parsed.
+            xmlText = ""
             parsingSection += 1
         }
     }
     
-    func newSection() {
-        // Start the section
+    
+    func addSection() {
+        // Start the section.
         xmlText.append("<section>")
         
-        // Add the text
+        // Add the text.
         xmlText.append("<text>")
-        xmlText.append(textBox.text)
+        xmlText.append(newText)
         xmlText.append("</text>")
         
         // Add the separator
         xmlText.append("<separator>")
-        xmlText.append(separatorSelected)
+        xmlText.append(newSeparator)
         xmlText.append("</separator>")
         
         // Add each question, device, and answers
-        for questionInt:Int in 0..<currentQuestions.count {
+        for questionInt:Int in 0..<newQuestions.count {
             // Add the question
             xmlText.append("<question>")
-            xmlText.append(currentQuestions[questionInt])
+            xmlText.append(newQuestions[questionInt])
             xmlText.append("</question>")
             
             // Add the device
             xmlText.append("<device>")
-            xmlText.append(currentDevices[questionInt])
+            xmlText.append(newDevices[questionInt])
             xmlText.append("</device>")
             
             // Add the answers
-            print(currentAnswers)
             xmlText.append("<answer>")
-            for answer:String in currentAnswers[questionInt] {
+            for answer:String in newAnswers[questionInt] {
                 xmlText.append(answer + ", ")
             }
             // Remove last comma and space.
@@ -499,8 +631,6 @@ class myParser: UIViewController, XMLParserDelegate {
         // Close the section
         xmlText.append("</section>")
     }
-    
-    
 }
 
 extension UIViewController {

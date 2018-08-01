@@ -191,7 +191,7 @@ class StudentBooksViewController: UIViewController, UITableViewDelegate, UITable
         data.myBook = levelBooks[indexPath.row]
         
         // Parse the selected book.
-        parser.startParse(fileName: data.myBook.file, updateSection: false, deleteSection: false)
+        parser.sectionText(fileName: data.myBook.file)
         
         // Go to the Question scene.
         self.performSegue(withIdentifier: "Question", sender: self)

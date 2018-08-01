@@ -217,7 +217,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         data.myBook = library.books[data.myBookInt]
         
         // Parse the selected book.
-        parser.startParse(fileName: data.myBook.file, updateSection: false, deleteSection: false)
+        parser.sectionText(fileName: data.myBook.file)
         
         // Go to the EditBook scene.
         self.performSegue(withIdentifier: "EditBook", sender: self)

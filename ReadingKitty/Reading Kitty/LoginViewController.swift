@@ -42,16 +42,9 @@ class LoginViewController: UIViewController {
             // Copy the default books from the Bundle to the documentsDirectory.
             var library:Library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
             for book:Book in data.defaultBooks {
-                let bundleText:String = parser.transferFromBundle(fileName: book.file)
-                
                 // Make new xml file in the documentsDirectory.
-                let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-                let filename = path?.appendingPathComponent(book.file + ".xml")
-                do {
-                    try bundleText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
-                } catch {
-                    print("error in copying bundle to documents directory")
-                }
+                let bundleText:String = parser.extractText(fileName: book.file, fromBundle: true)
+                parser.saveXML(fileName: book.file, xmlString: bundleText)
                 
                 // Add book to library.
                 library.books.append(book)

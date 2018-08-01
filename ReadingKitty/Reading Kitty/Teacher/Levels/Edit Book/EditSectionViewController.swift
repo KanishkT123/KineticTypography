@@ -56,12 +56,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var sectionQuestionError: UILabel!
     @IBOutlet weak var answerError: UILabel!
     
-    // Parsing variables.
-//    var xmlText:String = ""
-//    var tempText:String = ""
-//    var parsingSection:Int = 0
-    var updatingSection:Bool = true
-    
     // UserDefaults variables.
     var parser:myParser = myParser()
     var data:Data = Data()
@@ -664,6 +658,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
 //        xmlText.append(textBox.text)
 //        xmlText.append("</text>")
 //
+//
 //        // Add the separator
 //        xmlText.append("<separator>")
 //        xmlText.append(separatorSelected)
@@ -675,6 +670,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
 //            xmlText.append("<question>")
 //            xmlText.append(currentQuestions[questionInt])
 //            xmlText.append("</question>")
+//
 //
 //            // Add the device
 //            xmlText.append("<device>")
@@ -697,17 +693,16 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
 //        xmlText.append("</section>")
 //    }
     
+    
 
     /********** BUTTONS FUNCTIONS **********/
     /*
      This function deletes the section from newBook and segues to the EditBook scene. It gets called when the user taps on the delete section button.
      */
     @IBAction func deleteSection(_ sender: Any) {
-        // The section is not going to be updated.
-        updatingSection = false
-        
         // Update the xml file.
-        updateXML()
+        let xmlString:String = parser.deleteSection(fileName: data.myBook.file)
+        parser.saveXML(fileName: data.myBook.file, xmlString: xmlString)
         
         // Update myBook. Library doesn't store sections.
         data.myBook.sections.remove(at: data.mySectionNum)
@@ -738,11 +733,10 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         
         // Check if the section has all its pieces.
         if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
-            // The section is going to be updated.
-            updatingSection = true
             
             // Update the xml file.
-            updateXML()
+            let xmlString:String = parser.newSection(fileName: data.myBook.file, updateOld: true, text: textBox.text, separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+            parser.saveXML(fileName: data.myBook.file, xmlString: xmlString)
             
             // Update myBook. Library doesn't store sections.
             data.myBook.sections[data.mySectionNum] = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
@@ -774,23 +768,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             if currentQuestions.count == 0 {
                 sectionQuestionError.isHidden = false
             }
-        }
-    }
-    
-    func updateXML() {
-        // Create the string that will make up the xml file.
-        xmlText = ""
-        
-        // Parse the file and update the current section.
-        startParse()
-        
-        // Create xml file from string.
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let filename = path?.appendingPathComponent(data.myBook.file + ".xml")
-        do {
-            try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
-        } catch {
-            print("error in making xml file")
         }
     }
     
