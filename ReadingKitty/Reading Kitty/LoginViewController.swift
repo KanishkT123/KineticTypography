@@ -43,8 +43,7 @@ class LoginViewController: UIViewController {
             var library:Library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
             for book:Book in data.defaultBooks {
                 // Make new xml file in the documentsDirectory.
-                let bundleText:String = parser.extractText(fileName: book.file, fromBundle: true)
-                parser.saveXML(fileName: book.file, xmlString: bundleText)
+                parser.bundleToDocuments(fileName: book.file)
                 
                 // Add book to library.
                 library.books.append(book)

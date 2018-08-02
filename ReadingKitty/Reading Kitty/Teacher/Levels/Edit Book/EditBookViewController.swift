@@ -21,6 +21,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
     // Book info
     var bookDevices:[String] = []
     
+    var parser:myParser = myParser()
     var data:Data = Data()
     var library:Library = Library()
     
@@ -31,6 +32,7 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillAppear(animated)
         
         // Get UserDefaults values.
+        parser.data = data
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
@@ -38,6 +40,11 @@ class EditBookViewController: UIViewController, UITableViewDelegate, UITableView
         devicesTable.dataSource = self
         sectionsTable.delegate = self
         sectionsTable.dataSource = self
+        
+        print("Before sectioning")
+        // Parse the book.
+        data.myBook.sections = parser.sectionBook(fileName: data.myBook.file)
+        print("After sectioning")
         
         // Set header.
         bookTitle.text = data.myBook.file

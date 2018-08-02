@@ -52,7 +52,6 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     @IBOutlet weak var questionDeviceError: UILabel!
     @IBOutlet weak var questionAnswerError: UILabel!
     @IBOutlet weak var sectionTextError: UILabel!
-    @IBOutlet weak var sectionSeparatorError: UILabel!
     @IBOutlet weak var sectionQuestionError: UILabel!
     @IBOutlet weak var answerError: UILabel!
     
@@ -82,7 +81,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         bookDetails.text = "Section \(data.myBook.sections.count + 1)"
         
         // Set the separators' backgrounds.
-        resetSeparators()
+        defaultSeparators()
         
         // Set the separators' example text.
         setSeparatorExamples()
@@ -103,7 +102,6 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         questionDeviceError.isHidden = true
         questionAnswerError.isHidden = true
         sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
         answerError.isHidden = true
     }
@@ -181,7 +179,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     */
     @IBAction func newLineButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make new line background visible.
         let blue:Color = data.colors[4]
@@ -195,7 +193,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
      */
     @IBAction func spaceButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make space background visible.
         let blue:Color = data.colors[4]
@@ -209,7 +207,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
      */
     @IBAction func noneButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make none background visible.
         let blue:Color = data.colors[4]
@@ -219,9 +217,23 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     }
     
     /*
+     This function makes the default separator appear selected.
+     */
+    func defaultSeparators() {
+        // Make all backgrounds invisible.
+        clearSeparators()
+        
+        // Make default separator (new line) visible.
+        let blue:Color = data.colors[4]
+        newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+        newLineLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "New Line"
+    }
+    
+    /*
      This function makes all of the separators appear unseleted.
      */
-    func resetSeparators() {
+    func clearSeparators() {
         newLineBackground.backgroundColor = UIColor.clear
         spaceBackground.backgroundColor = UIColor.clear
         noneBackground.backgroundColor = UIColor.clear
@@ -447,17 +459,18 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             Cell.delegate = self
             
             // Create answer label.
-            Cell.answer.frame = CGRect(x: 10, y: 0, width: 850, height: 60)
+            Cell.answer.frame = CGRect(x: 10, y: 0, width: 835, height: 60)
             Cell.answer.backgroundColor = UIColor.clear
             Cell.answer.text = newAnswers[indexPath.row]
             Cell.answer.textColor = textBox.backgroundColor
             Cell.answer.font = Cell.answer.font.withSize(30.0)
             
             // Create delete button.
-            Cell.deleteButton.frame = CGRect(x: 850, y: 0, width: 80, height: 60)
-            Cell.deleteButton.backgroundColor = UIColor.clear
+            Cell.deleteButton.frame = CGRect(x: 835, y: 5, width: 90, height: 50)
+            let blue:Color = data.colors[4]
+            Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
-            Cell.deleteButton.setTitleColor(UIColor.black, for: .normal)
+            Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
             
             return Cell
         } else {
@@ -468,21 +481,21 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             Cell.delegate = self
             
             // Create question label.
-            Cell.question.frame = CGRect(x: 10, y: 0, width: 850, height: 45)
+            Cell.question.frame = CGRect(x: 10, y: 0, width: 835, height: 45)
             Cell.question.backgroundColor = UIColor.clear
             Cell.question.text = currentQuestions[indexPath.row]
             Cell.question.textColor = textBox.backgroundColor
-            Cell.question.font = Cell.device.font.withSize(30.0)
+            Cell.question.font = Cell.question.font.withSize(30.0)
             
             // Create device label.
-            Cell.device.frame = CGRect(x: 50, y: 45, width: 850, height: 25)
+            Cell.device.frame = CGRect(x: 50, y: 45, width: 835, height: 25)
             Cell.device.backgroundColor = UIColor.clear
             Cell.device.text = currentDevices[indexPath.row]
             Cell.device.textColor = textBox.backgroundColor
             Cell.device.font = Cell.device.font.withSize(20.0)
             
             // Create answers label.
-            Cell.answers.frame = CGRect(x: 50, y: 70, width: 850, height: 25)
+            Cell.answers.frame = CGRect(x: 50, y: 70, width: 835, height: 25)
             Cell.answers.backgroundColor = UIColor.clear
             Cell.answers.textColor = textBox.backgroundColor
             Cell.answers.font = Cell.answers.font.withSize(20.0)
@@ -495,10 +508,11 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             Cell.answers.text?.removeLast()
             
             // Create delete button.
-            Cell.deleteButton.frame = CGRect(x: 850, y: 0, width: 80, height: 100)
-            Cell.deleteButton.backgroundColor = UIColor.clear
+            Cell.deleteButton.frame = CGRect(x: 835, y: 25, width: 90, height: 50)
+            let blue:Color = data.colors[4]
+            Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
-            Cell.deleteButton.setTitleColor(UIColor.black, for: .normal)
+            Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
             
             return Cell
         }
@@ -558,7 +572,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             textBox.text = previousSection.text.string
             
             // Update separator to previous section.
-            resetSeparators()
+            clearSeparators()
             if previousSection.separator == "New Line" {
                 // Make new line background visible.
                 let blue:Color = data.colors[4]
@@ -600,7 +614,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         hideErrors()
         
         // Check if new section has all pieces
-        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
+        if textBox.text != "" && currentQuestions.count != 0 {
             // Save newSection to newBook.
             let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
@@ -611,7 +625,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             currentAnswers = []
             newAnswers = []
             textBox.text = ""
-            resetSeparators()
+            defaultSeparators()
             newQuestion.text = ""
             deviceDrop.setTitle("Select a Literary Device", for: .normal)
             newAnswer.text = ""
@@ -620,13 +634,16 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             
             // Update bookDetails.
             bookDetails.text = "Section \(data.myBook.sections.count + 1)"
+            
+            // Set default
+            let blue:Color = data.colors[4]
+            newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+            newLineLabel.textColor = blue.getColorDark(opacity: 1)
+            separatorSelected = "New Line"
         } else {
             oopsErrors.isHidden = false
             if textBox.text == "" {
                 sectionTextError.isHidden = false
-            }
-            if separatorSelected == "" {
-                sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
                 sectionQuestionError.isHidden = false
@@ -642,7 +659,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
         hideErrors()
         
         // Check if new section has all its pieces
-        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
+        if textBox.text != "" && currentQuestions.count != 0 {
             // Save newSection to newBook.
             let newBookSection:BookSection = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
             data.myBook.sections.append(newBookSection)
@@ -653,7 +670,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             currentAnswers = []
             newAnswers = []
             textBox.text = ""
-            resetSeparators()
+            defaultSeparators()
             newQuestion.text = ""
             deviceDrop.setTitle("Select a Literary Device", for: .normal)
             newAnswer.text = ""
@@ -669,9 +686,6 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             oopsErrors.isHidden = false
             if textBox.text == "" {
                 sectionTextError.isHidden = false
-            }
-            if separatorSelected == "" {
-                sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
                 sectionQuestionError.isHidden = false

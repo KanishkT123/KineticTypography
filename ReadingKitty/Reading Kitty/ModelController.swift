@@ -280,51 +280,40 @@ struct Data {
 class myParser: UIViewController, XMLParserDelegate {
     
     // Parsing variables.
-    var xmlText:String = ""
+    private var xmlText:String = ""
+    private var currentSection:Int = 0
     
-    // Modifying variables.
-    var deleteSection:Bool = false
-    var newSection:Bool = false
-    var updateSection:Bool = false
-    var parsingSection:Int = 0
+    // Parsing categories.
+    private var sectioning:Bool = false
+    private var deleteSection:Bool = false
+    private var insertSection:Bool = false
+    private var updateSection:Bool = false
     
     // New section variables.
-    var newText:String = ""
-    var newSeparator:String = ""
-    var newQuestions:[String] = []
-    var newDevices:[String] = []
-    var newAnswers:[[String]] = []
+    private var newText:String = ""
+    private var newSeparator:String = ""
+    private var newQuestions:[String] = []
+    private var newDevices:[String] = []
+    private var newAnswers:[[String]] = []
 
     // Sectioning variables.
-    var sectioning:Bool = false
-    var tempText: String = ""
-    var tempQuestions: [String] = []
-    var tempDevices: [String] = []
-    var tempAnswers: [[String]] = []
-    var tempSeparator:String = ""
+    private var tempText: String = ""
+    private var tempQuestions: [String] = []
+    private var tempDevices: [String] = []
+    private var tempAnswers: [[String]] = []
+    private var tempSeparator:String = ""
     
     // Keeping track of data.
     var data:Data = Data()
     
-    /*
-     This function saves an xml string to an xml file in the documents directory. It is called in the following view controllers: Login, EditSection, NewBookLevel.
-     */
-    func saveXML(fileName:String, xmlString:String) {
-        let url:URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let xmlFile:URL = url.appendingPathComponent(fileName + ".xml")
-        do {
-            try xmlString.write(to: xmlFile, atomically: true, encoding: String.Encoding.utf8)
-        } catch {
-            print("error in making xml file")
-        }
-    }
+    
     
     /*
-     This function turns BookSections into a string in xml format. It is called in the following view controllers: NewBookLevel.
+     This function creates an xml file of a book from provided BookSections. It is called in the following view controllers: NewBookLevel.
      */
-    func newBook(fileName:String, sections:[BookSection]) -> String {
+    func newBook(fileName:String, sections:[BookSection]) {
         // Create the beginning of the xml file.
-        var xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+        xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
         xmlText.append("<article>")
         
         // Add each section to xmlTetx.
@@ -343,63 +332,69 @@ class myParser: UIViewController, XMLParserDelegate {
         // End xmlText.
         xmlText.append("</article>")
         
-        return xmlText
+        // Save xmlText to the documents directory.
+        saveXML(fileName: fileName, xmlString: xmlText)
     }
     
     
     /*
-     This function extracts all of the text, including element tags, in an xml file. It is called in the following view controllers: Login.
+     This function moves an xml file from the bundle to the documents directory. It is called in the following view controllers: Login.
      */
-    func extractText(fileName:String, fromBundle:Bool) -> String {
+    func bundleToDocuments(fileName:String) {
         // The text is just being extracted.
         sectioning = false
         deleteSection = false
-        newSection = false
-        
+        insertSection = false
+        updateSection = false
         
         // Parse the book.
-        startParse(fileName: fileName, bundle: fromBundle)
+        startParse(fileName: fileName, bundle: true)
         
-        return xmlText
+        // Save xmlText to the documents directory.
+        saveXML(fileName: fileName, xmlString: xmlText)
     }
     
     /*
-     This function sections the text in the xml file into BookSections. It is called in the following view controllers: StudentBooks and LevelDetails.
+     This function sections an xml file into BookSections in data.myBook. It is called in the following view controllers: StudentBooks and LevelDetails.
      */
-    func sectionText(fileName:String) {
-        // The text is being sectioned into BookSections.
+    func sectionBook(fileName:String) -> [BookSection] {
+        // The book is being sectioned into BookSections.
         sectioning = true
         deleteSection = false
-        newSection = false
+        insertSection = false
+        updateSection = false
         
         // Parse the book.
         data.myBook.sections = []
         startParse(fileName: fileName, bundle: false)
+        return data.myBook.sections
     }
     
     /*
-     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     This function deletes the section at data.mySectionNum. It is called in the following view controllers: EditSection.
      */
-    func deleteSection(fileName:String) -> String {
-        // The text is being modified.
+    func deleteSection(fileName:String) {
+        // A section is being deleted.
         sectioning = false
         deleteSection = true
-        newSection = false
+        insertSection = false
+        updateSection = false
         
         // Parse the book.
         startParse(fileName: fileName, bundle: false)
         
-        return xmlText
+        // Save xmlText to the documents directory.
+        saveXML(fileName: fileName, xmlString: xmlText)
     }
     
     /*
-     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     This function inserts a section at data.mySectionNum. It is called in the following view controllers: .
      */
-    func newSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) -> String {
-        // The text is being modified.
+    func insertSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) {
+        // A section is being inserted.
         sectioning = false
         deleteSection = false
-        newSection = true
+        insertSection = true
         updateSection = false
         
         // Save the new section data.
@@ -412,17 +407,18 @@ class myParser: UIViewController, XMLParserDelegate {
         // Parse the book.
         startParse(fileName: fileName, bundle: false)
         
-        return xmlText
+        // Save xmlText to the documents directory.
+        saveXML(fileName: fileName, xmlString: xmlText)
     }
     
     /*
-     This function extract all of the text, including element tags, out of the xml file. It is called in the following view controllers: EditSection.
+     This function updates the section at data.mySectionNum. It is called in the following view controllers: EditSection.
      */
-    func updateSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) -> String {
-        // The text is being modified.
+    func updateSection(fileName:String, text:String, separator:String, questions:[String], devices:[String], answers:[[String]]) {
+        // A section is being updated.
         sectioning = false
         deleteSection = false
-        newSection = true
+        insertSection = false
         updateSection = true
         
         // Save the new section data.
@@ -431,19 +427,43 @@ class myParser: UIViewController, XMLParserDelegate {
         newQuestions = questions
         newDevices = devices
         newAnswers = answers
+//        print("text:")
+//        print(newText)
+//        print("separator:")
+//        print(newSeparator)
+//        print("questions:")
+//        print(newQuestions)
+//        print("devices:")
+//        print(newDevices)
+//        print("answers:")
+//        print(newAnswers)
         
         // Parse the book.
         startParse(fileName: fileName, bundle: false)
         
-        return xmlText
+        // Save xmlText to the documents directory.
+        saveXML(fileName: fileName, xmlString: xmlText)
     }
     
-    
+    /*
+     This function saves an xml string to an xml file in the documents directory. It is called in the following functions: newBook(), bundleToDocuments(), deleteSection(), insertSection, updateSection().
+     */
+    private func saveXML(fileName:String, xmlString:String) {
+        let url:URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let xmlURL:URL = url.appendingPathComponent(fileName + ".xml")
+        do {
+            try xmlString.write(to: xmlURL, atomically: true, encoding: String.Encoding.utf8)
+            print("Saving xml:")
+            print(xmlString)
+        } catch {
+            print("error in making xml file")
+        }
+    }
     
     /*
      This function parses the book.
     */
-    func startParse(fileName:String, bundle:Bool) {
+    private func startParse(fileName:String, bundle:Bool) {
         // Access the book file.
         var url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
         xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
@@ -471,20 +491,20 @@ class myParser: UIViewController, XMLParserDelegate {
         if sectioning {
             // For this case, the text is being sectioned. Reset xmlText to keep track of this element tag's text.
             xmlText = ""
-        } else if deleteSection && parsingSection == data.mySectionNum {
+        } else if deleteSection && currentSection == data.mySectionNum {
             // For this case, this section is being deleted.
-        } else if newSection && parsingSection == data.mySectionNum {
+        } else if insertSection && currentSection == data.mySectionNum {
             // For this case, a new section is being added.
-            //addSection()
+            addSection()
             
-            if updateSection {
-                // For this case, the section is being deleted because it has been replaced.
-                deleteSection = true
-                newSection = false
-            } else {
-                // For this case, this section is also being extracted.
-                xmlText.append("<\(elementName)>")
-            }
+            // This section is also being extracted.
+            xmlText.append("<\(elementName)>")
+        } else if updateSection && currentSection == data.mySectionNum {
+            // For this case, a new section is being added.
+            addSection()
+            
+            // This section is being deleted because it has been replaced.
+            deleteSection = true
         } else {
             // For this case, this section is being extracted.
             xmlText.append("<\(elementName)>")
@@ -570,7 +590,6 @@ class myParser: UIViewController, XMLParserDelegate {
                 // Create the new BookSection and add it to myBook.
                 let newBookSection:BookSection = BookSection(text: attributedString, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
                 data.myBook.sections.append(newBookSection)
-                
                 // Reset the temporary variables.
                 tempText = ""
                 tempSeparator = ""
@@ -578,20 +597,18 @@ class myParser: UIViewController, XMLParserDelegate {
                 tempDevices = []
                 tempAnswers = []
             }
-        } else if deleteSection && parsingSection == data.mySectionNum {
+        } else if deleteSection && currentSection == data.mySectionNum {
             // For this case, this section is being deleted.
-            parsingSection += 1
+            currentSection += 1
         } else {
             // For this case, this section is being extracted.
-            xmlText.append(xmlText)
             xmlText.append("</\(elementName)>")
-            xmlText = ""
-            parsingSection += 1
+            currentSection += 1
         }
     }
     
     
-    func addSection() {
+    private func addSection() {
         // Start the section.
         xmlText.append("<section>")
         
@@ -651,19 +668,3 @@ extension UIViewController {
         return variation
     }
 }
-
-extension XMLParserDelegate {
-    func startParse(fileName:String) {
-        // Access the book file.
-        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
-        
-        // Parse the book.
-        let parser: XMLParser = XMLParser(contentsOf: url)!
-        parser.delegate = self
-        parser.parse()
-    }
-}
-
-
-
-

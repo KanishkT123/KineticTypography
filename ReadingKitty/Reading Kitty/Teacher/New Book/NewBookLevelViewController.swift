@@ -302,66 +302,7 @@ class NewBookLevelViewController: UIViewController, UITableViewDelegate, UITable
     
     // Saves book as an xml file
     func saveToXML() {
-//        // Create string that will make up the xml file
-//        var xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-//        xmlText.append("<article>")
-//
-//        // Add each section to xmlText
-//        for section:BookSection in data.myBook.sections {
-//            // Start the section
-//            xmlText.append("<section>")
-//
-//            // Add the text
-//            xmlText.append("<text>")
-//            xmlText.append(section.text.string)
-//            xmlText.append("</text>")
-//
-//            // Add the separator
-//            xmlText.append("<separator>")
-//            xmlText.append(section.separator)
-//            xmlText.append("</separator>")
-//
-//            // Add each question, device, and answers
-//            for question in 0..<section.questions.count {
-//                // Add the question
-//                xmlText.append("<question>")
-//                xmlText.append(section.questions[question])
-//                xmlText.append("</question>")
-//
-//                // Add the device
-//                xmlText.append("<device>")
-//                xmlText.append(section.devices[question])
-//                xmlText.append("</device>")
-//
-//                // Add the answers
-//                xmlText.append("<answer>")
-//                for answer:String in section.answers[question] {
-//                    xmlText.append(answer + ", ")
-//                }
-//                // Remove last comma and space.
-//                xmlText.removeLast()
-//                xmlText.removeLast()
-//                xmlText.append("</answer>")
-//            }
-//
-//            // Close the section
-//            xmlText.append("</section>")
-//        }
-//
-//        // End xmlText
-//        xmlText.append("</article>")
-//
-//        // Create xml file from string
-//        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-//        let filename = path?.appendingPathComponent(data.myBook.file + ".xml")
-//        do {
-//            try xmlText.write(to: filename!, atomically: true, encoding: String.Encoding.utf8)
-//        } catch {
-//            print("error in making xml file")
-//        }
-        
-        let xmlString:String = parser.newBook(fileName: data.myBook.file, sections: data.myBook.sections)
-        parser.saveXML(fileName: data.myBook.file, xmlString: xmlString)
+        parser.newBook(fileName: data.myBook.file, sections: data.myBook.sections)
         
         // Save book in the level data in the library.
         data.myBook.sections = []

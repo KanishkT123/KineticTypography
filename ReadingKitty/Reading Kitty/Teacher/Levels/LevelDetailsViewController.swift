@@ -26,7 +26,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     var tempAnswers: [[String]] = []
     var tempSeparator:String = ""
     
-    var parser:myParser = myParser()
+//    var parser:myParser = myParser()
     var data:Data = Data()
     var library:Library = Library()
     var levelBooks:[Book] = []
@@ -38,7 +38,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         super.viewWillAppear(animated)
         
         // Get UserDefaults values
-        parser.data = data
+        //parser.data = data
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
@@ -216,8 +216,7 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         }
         data.myBook = library.books[data.myBookInt]
         
-        // Parse the selected book.
-        parser.sectionText(fileName: data.myBook.file)
+        
         
         // Go to the EditBook scene.
         self.performSegue(withIdentifier: "EditBook", sender: self)

@@ -52,7 +52,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     @IBOutlet weak var questionDeviceError: UILabel!
     @IBOutlet weak var questionAnswerError: UILabel!
     @IBOutlet weak var sectionTextError: UILabel!
-    @IBOutlet weak var sectionSeparatorError: UILabel!
     @IBOutlet weak var sectionQuestionError: UILabel!
     @IBOutlet weak var answerError: UILabel!
     
@@ -89,7 +88,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         bookSection.text = "Section \(data.mySectionNum + 1)"
         
         // Set the separators' backgrounds.
-        resetSeparators()
+        defaultSeparators()
         
         // Set the separators' example text.
         setSeparatorExamples()
@@ -113,7 +112,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         questionDeviceError.isHidden = true
         questionAnswerError.isHidden = true
         sectionTextError.isHidden = true
-        sectionSeparatorError.isHidden = true
         sectionQuestionError.isHidden = true
         answerError.isHidden = true
     }
@@ -192,7 +190,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         textBox.text = section.text.string
         
         // Update separator
-        resetSeparators()
+        clearSeparators()
         if section.separator == "New Line" {
             // Make new line background visible.
             let blue:Color = data.colors[4]
@@ -232,7 +230,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
      */
     @IBAction func newLineButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make new line background visible.
         let blue:Color = data.colors[4]
@@ -246,7 +244,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
      */
     @IBAction func spaceButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make space background visible.
         let blue:Color = data.colors[4]
@@ -260,7 +258,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
      */
     @IBAction func noneButton(_ sender: Any) {
         // Make all backgrounds invisible.
-        resetSeparators()
+        clearSeparators()
         
         // Make none background visible.
         let blue:Color = data.colors[4]
@@ -270,9 +268,23 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     }
     
     /*
+     This function makes the default separator appear selected.
+     */
+    func defaultSeparators() {
+        // Make all backgrounds invisible.
+        clearSeparators()
+        
+        // Make default separator (new line) visible.
+        let blue:Color = data.colors[4]
+        newLineBackground.backgroundColor = blue.getColorLight(opacity: 0.6)
+        newLineLabel.textColor = blue.getColorDark(opacity: 1)
+        separatorSelected = "New Line"
+    }
+    
+    /*
      This function makes all of the separators appear unseleted.
      */
-    func resetSeparators() {
+    func clearSeparators() {
         newLineBackground.backgroundColor = UIColor.clear
         spaceBackground.backgroundColor = UIColor.clear
         noneBackground.backgroundColor = UIColor.clear
@@ -498,17 +510,18 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             Cell.delegate = self
             
             // Create answer label.
-            Cell.answer.frame = CGRect(x: 10, y: 0, width: 850, height: 60)
+            Cell.answer.frame = CGRect(x: 10, y: 0, width: 835, height: 60)
             Cell.answer.backgroundColor = UIColor.clear
             Cell.answer.text = newAnswers[indexPath.row]
             Cell.answer.textColor = textBox.backgroundColor
             Cell.answer.font = Cell.answer.font.withSize(30.0)
             
             // Create delete button.
-            Cell.deleteButton.frame = CGRect(x: 850, y: 0, width: 80, height: 60)
-            Cell.deleteButton.backgroundColor = UIColor.clear
+            Cell.deleteButton.frame = CGRect(x: 835, y: 5, width: 90, height: 50)
+            let blue:Color = data.colors[4]
+            Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
-            Cell.deleteButton.setTitleColor(UIColor.black, for: .normal)
+            Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
             
             return Cell
         } else {
@@ -519,21 +532,21 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             Cell.delegate = self
             
             // Create question label.
-            Cell.question.frame = CGRect(x: 10, y: 0, width: 850, height: 45)
+            Cell.question.frame = CGRect(x: 10, y: 0, width: 835, height: 45)
             Cell.question.backgroundColor = UIColor.clear
             Cell.question.text = currentQuestions[indexPath.row]
             Cell.question.textColor = textBox.backgroundColor
             Cell.question.font = Cell.device.font.withSize(30.0)
             
             // Create device label.
-            Cell.device.frame = CGRect(x: 50, y: 45, width: 850, height: 25)
+            Cell.device.frame = CGRect(x: 50, y: 45, width: 835, height: 25)
             Cell.device.backgroundColor = UIColor.clear
             Cell.device.text = currentDevices[indexPath.row]
             Cell.device.textColor = textBox.backgroundColor
             Cell.device.font = Cell.device.font.withSize(20.0)
             
             // Create answers label.
-            Cell.answers.frame = CGRect(x: 50, y: 70, width: 850, height: 25)
+            Cell.answers.frame = CGRect(x: 50, y: 70, width: 835, height: 25)
             Cell.answers.backgroundColor = UIColor.clear
             Cell.answers.textColor = textBox.backgroundColor
             Cell.answers.font = Cell.answers.font.withSize(20.0)
@@ -546,10 +559,11 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             Cell.answers.text?.removeLast()
             
             // Create delete button.
-            Cell.deleteButton.frame = CGRect(x: 850, y: 0, width: 80, height: 100)
-            Cell.deleteButton.backgroundColor = UIColor.clear
+            Cell.deleteButton.frame = CGRect(x: 835, y: 25, width: 90, height: 50)
+            let blue:Color = data.colors[4]
+            Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
-            Cell.deleteButton.setTitleColor(UIColor.black, for: .normal)
+            Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
             
             return Cell
         }
@@ -587,122 +601,13 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
     }
     
     
-    /********** PARSING FUNCTIONS **********/
-//    /*
-//     This function parses the book.
-//    */
-//    func startParse() {
-//        // Access the book file.
-//        let fileName = data.myBook.file
-//        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
-//
-//        // Parse the book.
-//        let parser: XMLParser = XMLParser(contentsOf: url)!
-//        parser.delegate = self
-//        parser.parse()
-//    }
-    
-//    /*
-//     This function either adds the start tag or updates the section. It is called when the parser reads a start tag.
-//    */
-//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-//        if parsingSection == data.mySectionNum {
-//            // This is the updated section. Delete the old section by not adding it to xmlText, and add the updated section.
-//            if elementName == "section" {
-//                newSection()
-//            }
-//
-//        } else {
-//            // This is not the updated section. Keep the current section.
-//            xmlText.append("<\(elementName)")
-//        }
-//    }
-//
-//    /*
-//     This function saves the characters into tempText. It is called when the parser reads a character.
-//    */
-//    func parser(_ parser: XMLParser, foundCharacters string: String) {
-//        tempText.append(string)
-//    }
-
-//    /*
-//     This function ... It is called every time the parser reads an end tag.
-//    */
-//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-//        if parsingSection == data.mySectionNum {
-//            // This is the updated section. Delete the old section by not adding it to xmlText.
-//        } else {
-//            // This is not the updated section. Keep the current section.
-//            xmlText.append(tempText)
-//            xmlText.append("</\(elementName)")
-//        }
-//
-//        if elementName == "section" {
-//            // This is the end of a section, so the next section will now be parsed.
-//            parsingSection += 1
-//        }
-//
-//        // Reset the text.
-//        tempText = ""
-//    }
-//
-//    /*
-//     This function ...
-//    */
-//    func newSection() {
-//        // Start the section
-//        xmlText.append("<section>")
-//
-//        // Add the text
-//        xmlText.append("<text>")
-//        xmlText.append(textBox.text)
-//        xmlText.append("</text>")
-//
-//
-//        // Add the separator
-//        xmlText.append("<separator>")
-//        xmlText.append(separatorSelected)
-//        xmlText.append("</separator>")
-//
-//        // Add each question, device, and answers
-//        for questionInt:Int in 0..<currentQuestions.count {
-//            // Add the question
-//            xmlText.append("<question>")
-//            xmlText.append(currentQuestions[questionInt])
-//            xmlText.append("</question>")
-//
-//
-//            // Add the device
-//            xmlText.append("<device>")
-//            xmlText.append(currentDevices[questionInt])
-//            xmlText.append("</device>")
-//
-//            // Add the answers
-//            print(currentAnswers)
-//            xmlText.append("<answer>")
-//            for answer:String in currentAnswers[questionInt] {
-//                xmlText.append(answer + ", ")
-//            }
-//            // Remove last comma and space.
-//            xmlText.removeLast()
-//            xmlText.removeLast()
-//            xmlText.append("</answer>")
-//        }
-//
-//        // Close the section
-//        xmlText.append("</section>")
-//    }
-    
-    
-
     /********** BUTTONS FUNCTIONS **********/
     /*
      This function deletes the section from newBook and segues to the EditBook scene. It gets called when the user taps on the delete section button.
      */
     @IBAction func deleteSection(_ sender: Any) {
         // Update the xml file.
-        let xmlString:String = parser.deleteSection(fileName: data.myBook.file)
-        parser.saveXML(fileName: data.myBook.file, xmlString: xmlString)
+        parser.deleteSection(fileName: data.myBook.file)
         
         // Update myBook. Library doesn't store sections.
         data.myBook.sections.remove(at: data.mySectionNum)
@@ -713,7 +618,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         currentAnswers = []
         newAnswers = []
         textBox.text = ""
-        resetSeparators()
+        clearSeparators()
         newQuestion.text = ""
         deviceDrop.setTitle("Select a Literary Device", for: .normal)
         newAnswer.text = ""
@@ -732,11 +637,10 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
         hideErrors()
         
         // Check if the section has all its pieces.
-        if textBox.text != "" && separatorSelected != "" && currentQuestions.count != 0 {
-            
+        if textBox.text != "" && currentQuestions.count != 0 {
             // Update the xml file.
-            let xmlString:String = parser.newSection(fileName: data.myBook.file, updateOld: true, text: textBox.text, separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
-            parser.saveXML(fileName: data.myBook.file, xmlString: xmlString)
+            parser.updateSection(fileName: data.myBook.file, text: textBox.text, separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
+
             
             // Update myBook. Library doesn't store sections.
             data.myBook.sections[data.mySectionNum] = BookSection(text: NSMutableAttributedString(string: textBox.text), separator: separatorSelected, questions: currentQuestions, devices: currentDevices, answers: currentAnswers)
@@ -748,7 +652,7 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             currentAnswers = []
             newAnswers = []
             textBox.text = ""
-            resetSeparators()
+            clearSeparators()
             newQuestion.text = ""
             deviceDrop.setTitle("Select a Literary Device", for: .normal)
             newAnswer.text = ""
@@ -761,9 +665,6 @@ class EditSectionViewController: UIViewController, UITextViewDelegate, UITextFie
             oopsErrors.isHidden = false
             if textBox.text == "" {
                 sectionTextError.isHidden = false
-            }
-            if separatorSelected == "" {
-                sectionSeparatorError.isHidden = false
             }
             if currentQuestions.count == 0 {
                 sectionQuestionError.isHidden = false
