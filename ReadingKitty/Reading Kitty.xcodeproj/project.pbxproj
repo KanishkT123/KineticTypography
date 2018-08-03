@@ -20,7 +20,6 @@
 		EB6F7AE220F96AD50040D37B /* EditBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */; };
 		EB6F7AE420F96EC30040D37B /* SectionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6F7AE320F96EC30040D37B /* SectionsTableViewCell.swift */; };
 		EB6FA5FC20D4355F00EF0E5A /* Emperor's New Clothes.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EB6FA5FB20D4355F00EF0E5A /* Emperor's New Clothes.mp4 */; };
-		EB6FA60220D467C000EF0E5A /* LA Devotee.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EB6FA60120D467BF00EF0E5A /* LA Devotee.mp4 */; };
 		EB6FA60420D47D8700EF0E5A /* StudentLevelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6FA60320D47D8700EF0E5A /* StudentLevelsViewController.swift */; };
 		EB73DD5120D1D0FA000C46C3 /* VideoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB73DD5020D1D0FA000C46C3 /* VideoDetailsViewController.swift */; };
 		EB73DD5320D1DA0A000C46C3 /* TeacherWelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB73DD5220D1DA0A000C46C3 /* TeacherWelcomeViewController.swift */; };
@@ -67,7 +66,6 @@
 		EB6F7AE120F96AD50040D37B /* EditBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBookViewController.swift; sourceTree = "<group>"; };
 		EB6F7AE320F96EC30040D37B /* SectionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionsTableViewCell.swift; sourceTree = "<group>"; };
 		EB6FA5FB20D4355F00EF0E5A /* Emperor's New Clothes.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Emperor's New Clothes.mp4"; path = "Reading Kitty/Reading Kitty files/Videos/Emperor's New Clothes.mp4"; sourceTree = "<group>"; };
-		EB6FA60120D467BF00EF0E5A /* LA Devotee.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "LA Devotee.mp4"; path = "Reading Kitty/Reading Kitty files/Videos/LA Devotee.mp4"; sourceTree = "<group>"; };
 		EB6FA60320D47D8700EF0E5A /* StudentLevelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLevelsViewController.swift; sourceTree = "<group>"; };
 		EB73DD5020D1D0FA000C46C3 /* VideoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDetailsViewController.swift; sourceTree = "<group>"; };
 		EB73DD5220D1DA0A000C46C3 /* TeacherWelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherWelcomeViewController.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				EBF44F7520D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml */,
-				EB6FA60120D467BF00EF0E5A /* LA Devotee.mp4 */,
 				EB6FA5FB20D4355F00EF0E5A /* Emperor's New Clothes.mp4 */,
 				EBCF2DCD20C59E7200862F7F /* Reading Kitty */,
 				EBCF2DCC20C59E7200862F7F /* Products */,
@@ -321,7 +318,6 @@
 				EB1ECDC220EC2DC500649CAB /* Main.storyboard in Resources */,
 				EBCF2DD920C59E7500862F7F /* LaunchScreen.storyboard in Resources */,
 				EBCF2DD620C59E7500862F7F /* Assets.xcassets in Resources */,
-				EB6FA60220D467C000EF0E5A /* LA Devotee.mp4 in Resources */,
 				EB6FA5FC20D4355F00EF0E5A /* Emperor's New Clothes.mp4 in Resources */,
 				EBF44F7620D8350500BD7440 /* There was an Old Woman Who Lived in a Shoe.xml in Resources */,
 			);

@@ -132,20 +132,16 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
     */
     func rankLevels() {
         // Update bookDevicesPerLevel.
-        print(bookDevices)
         for level in 0..<8 {
             var levelDevicesBook:[String] = []
-            print(data.allDevices[level])
             for device:String in data.allDevices[level] {
                 // The following if statement checks if the device appears in the book.
                 if bookDevices.contains(device) {
                     levelDevicesBook.append(device)
                 }
             }
-            print(levelDevicesBook)
             bookDevicesPerLevel.append(levelDevicesBook)
         }
-        print(bookDevicesPerLevel)
         
         // Update levelRankings.
         var count:Int = 0
@@ -158,7 +154,6 @@ class EditHeaderViewController: UIViewController, UITableViewDelegate, UITableVi
             }
             count += 1
         }
-        print(levelRankings)
     }
     
     /*

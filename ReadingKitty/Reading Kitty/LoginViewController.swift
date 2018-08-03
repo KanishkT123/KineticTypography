@@ -35,7 +35,6 @@ class LoginViewController: UIViewController {
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             
             // Save the default data in UserDefaults.
-            
             saveLibraryVariables()
             saveTeacherVariables()
             
@@ -72,7 +71,7 @@ class LoginViewController: UIViewController {
         let password:String = "password"
         
         // The teacher's security question.
-        let securityQuestion:String = "What is your mother's maiden name?"
+        let securityQuestion:String = "What is your mother's maiden name? Hint: Smith"
         
         // The teacher's security answer.
         let securityAnswer:String = "Smith"

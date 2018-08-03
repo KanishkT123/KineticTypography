@@ -38,7 +38,6 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
         super.viewWillAppear(animated)
         
         // Get UserDefaults values
-        //parser.data = data
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
         // Set delegates.
@@ -94,104 +93,6 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     
-    /********** PARSING FUNCTIONS **********/
-//    // Parses the book.
-//    func startParse() {
-//        // Access the book file.
-//        let fileName = data.myBook.file
-//        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
-//        
-//        // Parse the book.
-//        let parser: XMLParser = XMLParser(contentsOf: url)!
-//        parser.delegate = self
-//        parser.parse()
-//    }
-//
-//    // Every time the parser reads a start tag, reset tempCharacters.
-//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-//        tempCharacters = ""
-//    }
-//
-//    // Every time the parser reads a character, save the character to tempCharacters.
-//    func parser(_ parser: XMLParser, foundCharacters string: String) {
-//        tempCharacters += string
-//    }
-//
-//    // Every time the parser reads an end tag, modify and add tempCharacters to its correct location.
-//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-//        if elementName == "text" {
-//            // tempCharacters doesn't need to be modified because tempText is a string.
-//            // Add tempCharacters to tempText.
-//            tempText = tempCharacters
-//        }
-//
-//        if elementName == "question" {
-//            // tempCharacters doesn't need to be modified because each string in tempQuestions represents an entire question.
-//            // Add tempCharacters to tempQuestions.
-//            tempQuestions.append(tempCharacters)
-//        }
-//        if elementName == "device" {
-//            // tempCharacters doesn't need to be modified because each string in tempDevices represents an entire device.
-//            // Add tempCharacters to tempDevices.
-//            tempDevices.append(tempCharacters)
-//        }
-//
-//        if elementName == "answer" {
-//            // Modify tempCharacters from String to [String], where each string in the array is an answer.
-//            var charsCopy:String = tempCharacters
-//            var answerArray:[String] = []
-//            var answer:String = ""
-//            while !charsCopy.isEmpty {
-//                // Get words from charsCopy.
-//                if charsCopy.contains(", ") {
-//                    let separator = charsCopy.range(of: ", ")!
-//                    answer = String(charsCopy.prefix(upTo: separator.lowerBound))
-//                    charsCopy.removeSubrange(charsCopy.startIndex..<separator.upperBound)
-//                } else {
-//                    answer = String(charsCopy.prefix(upTo: charsCopy.endIndex))
-//                    charsCopy.removeSubrange(charsCopy.startIndex..<charsCopy.endIndex)
-//                }
-//                answerArray.append(answer)
-//            }
-//
-//            // Add modified tempCharacters to tempAnswers.
-//            tempAnswers.append(answerArray)
-//        }
-//
-//        if elementName == "separator" {
-//            if tempCharacters == "new line"{
-//                tempSeparator = "\n"
-//            } else if tempCharacters == "space" {
-//                tempSeparator = " "
-//            } else if tempCharacters == "none" {
-//                tempSeparator = ""
-//            }
-//        }
-//
-//        if elementName == "section" {
-//            // Modify tempText from String to NSMutableAttributedString.
-//            let standardAttributes = data.standardAttributes
-//            let attributedText = NSMutableAttributedString(string: tempText, attributes: standardAttributes)
-//
-//            // Add spacing between paragraphs.
-//            let paragraphStyle = NSMutableParagraphStyle()
-//            paragraphStyle.lineSpacing = 5
-//            paragraphStyle.paragraphSpacing = 20
-//            attributedText.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedText.length))
-//
-//            // Make a new BookSection with the collected information.
-//            let newBookSection:BookSection = BookSection(text: attributedText, separator: tempSeparator, questions: tempQuestions, devices: tempDevices, answers: tempAnswers)
-//            data.myBook.sections.append(newBookSection)
-//
-//            // Reset all temporary variables. tempCharacters doesn't need to be reset because it is reset at every start tag.
-//            tempText = ""
-//            tempQuestions = []
-//            tempAnswers = []
-//            tempSeparator = ""
-//        }
-//    }
-    
-    
     /********** SEGUE FUNCTIONS **********/
     // When user clicks the back button, it send them to the TeacherLevels scene
     @IBAction func backButton(_ sender: Any) {
@@ -215,8 +116,6 @@ class LevelDetailsViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
         data.myBook = library.books[data.myBookInt]
-        
-        
         
         // Go to the EditBook scene.
         self.performSegue(withIdentifier: "EditBook", sender: self)

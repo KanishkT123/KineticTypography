@@ -236,6 +236,7 @@ struct Color {
 /**************************/
 
 struct Data {
+    // Library Data
     let readingLevels:[String] = ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"]
     let gradeLevels:[String] = ["Kindergarten", "Kindergarten", "1st Grade", "1st Grade", "2nd Grade", "2nd Grade", "3rd Grade", "3rd Grade"]
     let allDevices:[[String]] = [["Device 1", "Device 2"],
@@ -278,7 +279,7 @@ struct Data {
 }
 
 class myParser: UIViewController, XMLParserDelegate {
-    
+    /********** LOCAL VARIABLES **********/
     // Parsing variables.
     private var xmlText:String = ""
     private var currentSection:Int = 0
@@ -307,7 +308,7 @@ class myParser: UIViewController, XMLParserDelegate {
     var data:Data = Data()
     
     
-    
+    /********** PUBLIC FUNCTIONS **********/
     /*
      This function creates an xml file of a book from provided BookSections. It is called in the following view controllers: NewBookLevel.
      */
@@ -427,16 +428,6 @@ class myParser: UIViewController, XMLParserDelegate {
         newQuestions = questions
         newDevices = devices
         newAnswers = answers
-//        print("text:")
-//        print(newText)
-//        print("separator:")
-//        print(newSeparator)
-//        print("questions:")
-//        print(newQuestions)
-//        print("devices:")
-//        print(newDevices)
-//        print("answers:")
-//        print(newAnswers)
         
         // Parse the book.
         startParse(fileName: fileName, bundle: false)
@@ -445,6 +436,8 @@ class myParser: UIViewController, XMLParserDelegate {
         saveXML(fileName: fileName, xmlString: xmlText)
     }
     
+    
+    /********** PRIVATE FUNCTIONS **********/
     /*
      This function saves an xml string to an xml file in the documents directory. It is called in the following functions: newBook(), bundleToDocuments(), deleteSection(), insertSection, updateSection().
      */

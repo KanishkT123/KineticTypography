@@ -173,7 +173,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
     }
 
     
-    /********** TEXT FUNCTIONS **********/
+    /********** SEPARATOR FUNCTIONS **********/
     /*
      This function makes the new line separator appear selected. It is called when the user taps the new line button.
     */
@@ -471,6 +471,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
             Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
+            Cell.deleteButton.titleLabel?.font = Cell.deleteButton.titleLabel?.font.withSize(20.0)
             
             return Cell
         } else {
@@ -513,6 +514,7 @@ class NewBookDetailsViewController: UIViewController, UITextViewDelegate, UIText
             Cell.deleteButton.backgroundColor = blue.getColorLight(opacity: 0.4)
             Cell.deleteButton.setTitle("Delete", for: .normal)
             Cell.deleteButton.setTitleColor(blue.getColorDark(opacity: 1.0), for: .normal)
+            Cell.deleteButton.titleLabel?.font = Cell.deleteButton.titleLabel?.font.withSize(20.0)
             
             return Cell
         }
