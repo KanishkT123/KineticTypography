@@ -41,6 +41,7 @@ class VideoPlayerViewController: UIViewController {
         // Get UserDefaults values.
         library = Library(dictionary: UserDefaults.standard.dictionary(forKey: "library")!)
         
+        // Sometimes viewWillAppear() gets called twice, so this if statement prevents the incorrect objects from being shown.
         if makeNewVideo {
             // Show loading icon, and hide play and done buttons
             loadingIcon.isHidden = false
@@ -57,10 +58,12 @@ class VideoPlayerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Sometimes viewDidAppear() gets called twice, so this if statement prevents a video from being created twice. Once the kinetic typography videos and the feedback have been implemented, delete everything between the start and stop deleting comments.
         if makeNewVideo {
             // Start loading icon
             loadingIcon.startAnimating()
             
+            /***** Start deleting here *****/
             // Reset timer
             if timer != nil {
                 timer.invalidate()
@@ -71,6 +74,9 @@ class VideoPlayerViewController: UIViewController {
             // Start loading timer
             invalidated = false
             timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(timerOff), userInfo: nil, repeats: false)
+            /***** Stop deleting here *****/
+            
+            //makeVideo()
         }
     }
     
@@ -79,14 +85,8 @@ class VideoPlayerViewController: UIViewController {
         timer = nil
         invalidated = true
         
-        // Stop loading icon
-        loadingIcon.stopAnimating()
-        
         // Make video
         makeVideo()
-        
-        // Show play and done buttons
-        buttons.isHidden = false
     }
     
     func makeVideo() {
@@ -99,23 +99,39 @@ class VideoPlayerViewController: UIViewController {
         audioURL = data.audioURL
         maxFrequency = data.maxFrequency
         minFrequency = data.minFrequency
+        
+        
+        // Generate feedback
         let frequencyRange = maxFrequency - minFrequency
+        var frequencyFeedback:String = ""
+        if frequencyRange < 50 {
+            frequencyFeedback = "Struggling reader."
+        } else {
+            frequencyFeedback = "Strong reader."
+        }
+        feedback = frequencyFeedback
         
-        // import video into data set
-        
-        // get file name, feedback, and url
+        // Create video
         videoFileName = "Emperor's New Clothes"
         
-        if frequencyRange < 50 {
-            feedback = "Struggling reader."
-        } else {
-            feedback = "Strong reader."
-        }
+        // Save video to documents directory
+        
+        // Save video to Library
+        let newVideo:Video = Video(name: data.name, bookTitle: data.myBook.file, feedback: feedback, file: videoFileName)
+        library.videos.append(newVideo)
+        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
+        
+        // Stop loading icon
+        loadingIcon.stopAnimating()
+        
+        // Show play and done buttons
+        buttons.isHidden = false
         
         makeNewVideo = false
     }
     
     @IBAction func playButton(_ sender: Any) {
+        //let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(videoFileName + ".mp4")
         if let path = Bundle.main.path(forResource: videoFileName, ofType: "mp4") {
             let video = AVPlayer(url: URL(fileURLWithPath: path))
             let videoPlayer = AVPlayerViewController()
@@ -130,11 +146,6 @@ class VideoPlayerViewController: UIViewController {
     
     /********** SEGUE FUNCTIONS **********/
     @IBAction func doneButton(_ sender: Any) {
-        // Save video
-        let newVideo:Video = Video(name: data.name, bookTitle: data.myBook.file, feedback: feedback, file: videoFileName)
-        library.videos.append(newVideo)
-        UserDefaults.standard.set(library.toDictionary(), forKey: "library")
-        
         // The next time a book is opened, the user will be on the first section and the first question.
         data.mySectionNum = 0
         data.myQuestionNum = 0

@@ -442,10 +442,9 @@ class myParser: UIViewController, XMLParserDelegate {
      This function saves an xml string to an xml file in the documents directory. It is called in the following functions: newBook(), bundleToDocuments(), deleteSection(), insertSection, updateSection().
      */
     private func saveXML(fileName:String, xmlString:String) {
-        let url:URL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let xmlURL:URL = url.appendingPathComponent(fileName + ".xml")
+        let url:URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(fileName + ".xml"))!
         do {
-            try xmlString.write(to: xmlURL, atomically: true, encoding: String.Encoding.utf8)
+            try xmlString.write(to: url, atomically: true, encoding: String.Encoding.utf8)
             print("Saving xml:")
             print(xmlString)
         } catch {
