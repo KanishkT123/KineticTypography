@@ -177,7 +177,7 @@ def getBoundingBinary(thresh, resultName):
             txt = ocr(outP)
             print("About to add ocr output")
 
-            with open("OCR_output_all.txt", "a") as text_file:
+            with open("OCR_output_OCTOBER.txt", "a") as text_file:
                 text = txt + "\n"
                 text_file.write(text)
             outName = "appended_" + resultName
