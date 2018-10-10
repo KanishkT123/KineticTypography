@@ -687,7 +687,7 @@ def processFrames(numFrames):
     out = ""
     rootDir = "./Frames_4"
     frameName = "/thumb"
-    ext = ".png"
+    ext = ".jpg"
     
     # rootdir = 'C:/Users/sid/Desktop/test'
 
