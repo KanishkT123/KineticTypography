@@ -685,9 +685,16 @@ def makeFour(num):
 """
 def processFrames(numFrames):
     out = ""
-    rootDir = "./Frames_3"
+    rootDir = "./Frames_4"
     frameName = "/thumb"
     ext = ".png"
+    
+    # rootdir = 'C:/Users/sid/Desktop/test'
+
+    # for subdir, dirs, files in os.walk(rootdir):
+    #     for file in files:
+    #         print os.path.join(subdir, file)
+
 
     # Loop through each frame
     for i in range(1, numFrames):
@@ -761,7 +768,7 @@ if __name__=='__main__':
 
     # # imagePath = sys.argv[1]
     colors = int(sys.argv[2])
-    resultPath = "./Results/" + sys.argv[3]
+    resultPath = "./Results_4/" + sys.argv[3]
 
     # tr = sys.argv[1]
     # oc = sys.argv[3]
@@ -782,7 +789,7 @@ if __name__=='__main__':
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
     
-    numFrames = 1843
+    numFrames = 1681
     processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
@@ -793,3 +800,7 @@ if __name__=='__main__':
 
     # https://www.youtube.com/watch?v=yjENu24QBgs
     # https://www.youtube.com/watch?v=QG4smsvZuiE 
+
+    # https://www.youtube.com/watch?v=Vdv9kBno68k
+
+    # scp -r /source username@a:/destination
