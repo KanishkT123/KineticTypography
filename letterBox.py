@@ -685,9 +685,9 @@ def makeFour(num):
 """
 def processFrames(numFrames):
     out = ""
-    rootDir = "./Frames_4"
+    rootDir = "./Frames_5"
     frameName = "/thumb"
-    ext = ".jpg"
+    ext = ".png"
     
     # rootdir = 'C:/Users/sid/Desktop/test'
 
@@ -715,7 +715,7 @@ def processFrames(numFrames):
         changed = detectChange(thresh)
 
         if changed == True:
-            resultPath = "./Results_3/out" + str(i+1) + ".jpg"
+            resultPath = "./Results_3/out" + str(i+1) + ".png"
 
             getBoundingBinary(thresh, resultPath)
 
@@ -789,18 +789,20 @@ if __name__=='__main__':
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
     
-    numFrames = 1680 
+    numFrames = 6835
     processFrames(numFrames)
 
     # python letterBox.py crooked.jpg 2 crookedRes.jpg
 
     # ffmpeg -i video.webm thumb%04d.jpg -hide_banner
     # ffmpeg -i video.webm -vf fps=1/5 thumb%04d.jpg -hide_banner
-    # youtube-dl -o dreamSpeech.mp4 "url"
+    # youtube-dl -f 22 "url"
 
     # https://www.youtube.com/watch?v=yjENu24QBgs
     # https://www.youtube.com/watch?v=QG4smsvZuiE 
 
     # https://www.youtube.com/watch?v=Vdv9kBno68k
+    # Moving:
+    # https://www.youtube.com/watch?v=52ubwhA4TaQ 
 
     # scp -r /source username@a:/destination
