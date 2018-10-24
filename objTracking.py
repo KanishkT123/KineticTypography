@@ -47,25 +47,33 @@ else:
 initBB = None
 
 
-# # if a video path was not supplied, grab the reference to the web cam
-# if not args.get("video", False):
-# 	print("[INFO] starting video stream...")
-# 	vs = VideoStream(src=0).start()
-# 	time.sleep(1.0)
+# if a video path was not supplied, grab the reference to the web cam
+if not args.get("video", False):
+	print("[INFO] starting video stream...")
+	vs = VideoStream(src=0).start()
+	time.sleep(1.0)
  
-# # otherwise, grab a reference to the video file
-# else:
-# 	vs = cv2.VideoCapture(args["video"])
+# otherwise, grab a reference to the video file
+else:
+	vs = cv2.VideoCapture(args["video"])
  
 # initialize the FPS throughput estimator
-# fps = None
+fps = None
 
 # loop over frames from the video stream
 while True:
 	# grab the current frame, then handle if we are using a
 	# VideoStream or VideoCapture object
-	frame = vs.read()
-	frame = frame[1] if args.get("video", False) else frame
+	# frame = vs.read()
+	# frame = frame[1] if args.get("video", False) else frame
+
+    # REPLACE WITH FRAMES FROM DIRECTORY
+    
+    """
+    for rect in contours:
+        track across multiple frames
+
+    """
  
 	# check to see if we have reached the end of the stream
 	if frame is None:
