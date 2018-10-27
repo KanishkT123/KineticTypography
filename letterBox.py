@@ -139,12 +139,12 @@ def getRectCoords(imagePath, numClusters):
         for cnt in contours:
             cropName += 1
             rect = cv2.minAreaRect(cnt)
+            # coords = rect
             print("Adding to actualRect")
 
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
-            boxOg = box
 
             # print("about to call crop2")
             croppedRotated = crop2(rect, box, image, str(cropName))
@@ -152,16 +152,12 @@ def getRectCoords(imagePath, numClusters):
             findColor(croppedRotated)
             # print("finished crop2")
 
-            coords = []
-
             rect = box.tolist() # save vertices as a python list
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
-                for vert in boxOg:
-                    x = vert[0]
-                    y = vert[1]
-                    tup = (x, y)
-                    coords.append(tup)
+                # ((307.0, 598.0), (4.0, 4.0), -90.0)
+                # (xmin,ymin,boxwidth,boxheight)
+                coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
                 rectList.append(coords)
 
         return rectList    
