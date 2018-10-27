@@ -63,6 +63,7 @@ rectList = getRectCoords(imagePath, numClusters)
 # initialize the bounding box coordinates of the object we are going
 # to track
 initBB = rectList[0]
+print(initBB)
 
 # initialize the FPS throughput estimator
 fps = None
@@ -90,7 +91,7 @@ while True:
     if fps is None:
         tracker.init(frame, initBB)
         fps = FPS().start()
-        
+
     # resize the frame (so we can process it faster) and grab the
     # frame dimensions
     frame = imutils.resize(frame, width=500)
