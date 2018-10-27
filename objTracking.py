@@ -64,8 +64,8 @@ fps = None
 while True:
     # grab the current frame, then handle if we are using a
     # VideoStream or VideoCapture object
-    # frame = vs.read()
-    # frame = frame[1] if args.get("video", False) else frame
+    frame = vs.read()
+    frame = frame[1] if args.get("video", False) else frame
 
     # REPLACE WITH FRAMES FROM DIRECTORY
     
