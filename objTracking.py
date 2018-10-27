@@ -5,6 +5,9 @@ import argparse
 import imutils
 import time
 import cv2
+import letterBox
+
+
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -13,7 +16,6 @@ ap.add_argument("-v", "--video", type=str,
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
     help="OpenCV object tracker type")
 args = vars(ap.parse_args())
-
 
 # extract the OpenCV version info
 (major, minor) = cv2.__version__.split(".")[:2]
@@ -41,10 +43,7 @@ else:
     # grab the appropriate object tracker using our dictionary of
     # OpenCV object tracker objects
     tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
- 
-# initialize the bounding box coordinates of the object we are going
-# to track
-initBB = None
+
 
 
 # if a video path was not supplied, grab the reference to the web cam
@@ -56,7 +55,15 @@ if not args.get("video", False):
 # otherwise, grab a reference to the video file
 else:
     vs = cv2.VideoCapture(args["video"])
+
+imagePath = "Frames_5/thumb0294.png"
+numClusters = 3
+rectList = getRectCoords(imagePath, numClusters)
  
+# initialize the bounding box coordinates of the object we are going
+# to track
+initBB = rectList[0]
+
 # initialize the FPS throughput estimator
 fps = None
 
@@ -115,25 +122,25 @@ while True:
 
             # show the output frame
 
-    cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
+    cv2.imwrite("Frame_lemon.png", frame)
+    # key = cv2.waitKey(1) & 0xFF
  
-    # if the 's' key is selected, we are going to "select" a bounding
-    # box to track
-    if key == ord("s"):
-        # select the bounding box of the object we want to track (make
-        # sure you press ENTER or SPACE after selecting the ROI)
-        initBB = cv2.selectROI("Frame", frame, fromCenter=False,
-            showCrosshair=True)
+    # # if the 's' key is selected, we are going to "select" a bounding
+    # # box to track
+    # if key == ord("s"):
+    #     # select the bounding box of the object we want to track (make
+    #     # sure you press ENTER or SPACE after selecting the ROI)
+    #     initBB = cv2.selectROI("Frame", frame, fromCenter=False,
+    #         showCrosshair=True)
  
-        # start OpenCV object tracker using the supplied bounding box
-        # coordinates, then start the FPS throughput estimator as well
-        tracker.init(frame, initBB)
-        fps = FPS().start()
+    #     # start OpenCV object tracker using the supplied bounding box
+    #     # coordinates, then start the FPS throughput estimator as well
+    #     tracker.init(frame, initBB)
+    #     fps = FPS().start()
     
-    # if the `q` key was pressed, break from the loop
-    elif key == ord("q"):
-        break
+    # # if the `q` key was pressed, break from the loop
+    # elif key == ord("q"):
+    #     break
  
 # if we are using a webcam, release the pointer
 if not args.get("video", False):
@@ -144,7 +151,7 @@ else:
     vs.release()
  
 # close all windows
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 
 
 # python opencv_object_tracking.py --video dashcam_boston.mp4 --tracker csrt

@@ -91,7 +91,72 @@ def getBounding(imagePath, numClusters, resultName):
                 cv2.imwrite(resultName, ogImage) # Save image
 
 
+"""
+    Get bounding boxes around each letter and return box coordinates
+"""
+def getRectCoords(imagePath, numClusters):
+    ogImage = cv2.imread(imagePath) # Save original image
+    image = cv2.imread(imagePath)
+    # img_copy = cv2.imread(imagePath)
 
+    # thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
+
+    # image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
+   
+    # print("About to write maskedIm.png")
+    # cv2.imwrite("maskedIm.png", image)
+
+    height, width, channels = image.shape
+
+    print("Calling getPredictions")
+    labels, clusterCenters = getPredictions(image, numClusters)
+
+    print("Going into for loop for number of clusters")
+    for cluster in range(numClusters):
+        mask = np.zeros(image.shape[:2], np.uint8)
+
+        print("Calling getColor")
+        xList, yList = getColor(labels, imagePath, cluster)
+        print("Finished getColor")
+        for i in range(len(xList)):
+            xVal = xList[i]
+            yVal = yList[i]
+
+            mask[yVal, xVal] = 255
+    
+        kernel = np.ones((5,5),np.uint8)
+        # mask = cv2.dilate(mask, kernel, iterations = 2)
+        # mask = cv2.erode(mask, kernel, iterations = 2)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+        cv2.imwrite("mask.png", mask)
+        
+        masked = cv2.imread("mask.png")
+        print("Calling findContours")
+        _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        cropName = 0
+        rectList = []
+        for cnt in contours:
+            cropName += 1
+            rect = cv2.minAreaRect(cnt)
+            print("Adding to actualRect")
+
+            h, w = rect[1] # get width and height of rectangle
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
+
+            # print("about to call crop2")
+            croppedRotated = crop2(rect, box, image, str(cropName))
+            cv2.imwrite("MODE_crop.png", croppedRotated)
+            findColor(croppedRotated)
+            # print("finished crop2")
+
+            rect = box.tolist() # save vertices as a python list
+
+            if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
+                rectList.append(rect)
+
+        return rectList    
 
 """
     Takes in the frame subtracted image, then gets bounding boxes around each letter 
