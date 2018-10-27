@@ -139,6 +139,7 @@ def getRectCoords(imagePath, numClusters):
         for cnt in contours:
             cropName += 1
             rect = cv2.minAreaRect(cnt)
+            coords = rect
             print("Adding to actualRect")
 
             h, w = rect[1] # get width and height of rectangle
@@ -154,7 +155,7 @@ def getRectCoords(imagePath, numClusters):
             rect = box.tolist() # save vertices as a python list
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
-                rectList.append(rect)
+                rectList.append(coords)
 
         return rectList    
 
