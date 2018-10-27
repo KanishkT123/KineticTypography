@@ -5,7 +5,7 @@ import argparse
 import imutils
 import time
 import cv2
-import letterBox
+from letterBox import getRectCoords
 
 
 
