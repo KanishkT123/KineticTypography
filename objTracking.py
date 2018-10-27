@@ -67,6 +67,7 @@ initBB = rectList[0]
 # initialize the FPS throughput estimator
 fps = None
 
+
 # loop over frames from the video stream
 while True:
     # grab the current frame, then handle if we are using a
@@ -85,7 +86,11 @@ while True:
     # check to see if we have reached the end of the stream
     if frame is None:
         break
- 
+    
+    if fps is None:
+        tracker.init(frame, initBB)
+        fps = FPS().start()
+        
     # resize the frame (so we can process it faster) and grab the
     # frame dimensions
     frame = imutils.resize(frame, width=500)
