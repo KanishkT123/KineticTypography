@@ -71,6 +71,7 @@ fps = None
 
 # loop over frames from the video stream
 while True:
+    print("I made it!")
     # grab the current frame, then handle if we are using a
     # VideoStream or VideoCapture object
     frame = vs.read()
@@ -89,6 +90,7 @@ while True:
         break
     
     if fps is None:
+        print("me me me")
         tracker.init(frame, initBB)
         fps = FPS().start()
 
