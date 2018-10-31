@@ -56,8 +56,8 @@ if not args.get("video", False):
 else:
     vs = cv2.VideoCapture(args["video"])
 
-imagePath = "Frames_5/thumb0294.png"
-numClusters = 3
+imagePath = "moveFrames/thumb0001.png"
+numClusters = 2
 rectList = getRectCoords(imagePath, numClusters)
  
 # initialize the bounding box coordinates of the object we are going
@@ -128,7 +128,7 @@ while True:
 
             # show the output frame
 
-    cv2.imwrite("Frame_lemon.png", frame)
+    cv2.imwrite("Frame_dumbledore.png", frame)
     # key = cv2.waitKey(1) & 0xFF
  
     # # if the 's' key is selected, we are going to "select" a bounding
