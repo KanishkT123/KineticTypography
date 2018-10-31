@@ -63,7 +63,7 @@ rectList = getRectCoords(imagePath, numClusters)
 # initialize the bounding box coordinates of the object we are going
 # to track
 initBB = rectList[1]
-print(initBB)
+print(rectList)
 
 # initialize the FPS throughput estimator
 fps = None
