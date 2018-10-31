@@ -833,11 +833,13 @@ if __name__=='__main__':
         sys.exit("Please make sure to include the image filepath, number of colors, and result image name as command-line arguments")
 
     # # Save arguments as variables
-    imagePath = "./Images/" + sys.argv[1]
+    # imagePath = "./Images/" + sys.argv[1]
+    imagePath = sys.argv[1]
 
     # # imagePath = sys.argv[1]
     colors = int(sys.argv[2])
-    resultPath = "./Results_4/" + sys.argv[3]
+    # resultPath = "./Results_4/" + sys.argv[3]
+    resultPath = sys.argv[3]
 
     # tr = sys.argv[1]
     # oc = sys.argv[3]
@@ -856,7 +858,7 @@ if __name__=='__main__':
     # thresh = frameSubtract(img1, img2)
 
     # print("About to go into getBounding \n")
-    # getBounding(imagePath, colors, resultPath)
+    getBounding(imagePath, colors, resultPath)
     
     # numFrames = 6835
     # processFrames(numFrames)
