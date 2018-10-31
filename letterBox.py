@@ -160,7 +160,7 @@ def getRectCoords(imagePath, numClusters):
                 coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
                 rectList.append(coords)
 
-        return rectList    
+    return rectList    
 
 """
     Takes in the frame subtracted image, then gets bounding boxes around each letter 
