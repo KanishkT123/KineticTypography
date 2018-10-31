@@ -110,7 +110,7 @@ def getRectCoords(imagePath, numClusters):
 
     print("Calling getPredictions")
     labels, clusterCenters = getPredictions(image, numClusters)
-
+    rectList = []
     print("Going into for loop for number of clusters")
     for cluster in range(numClusters):
         mask = np.zeros(image.shape[:2], np.uint8)
@@ -135,7 +135,7 @@ def getRectCoords(imagePath, numClusters):
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         cropName = 0
-        rectList = []
+        
         for cnt in contours:
             cropName += 1
             rect = cv2.minAreaRect(cnt)
