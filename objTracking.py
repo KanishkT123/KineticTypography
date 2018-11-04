@@ -63,7 +63,7 @@ resultName = "why.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
-initBB = rectList[2]
+initBB = rectList[-3]
 print(rectList)
 
 # initialize the FPS throughput estimator
