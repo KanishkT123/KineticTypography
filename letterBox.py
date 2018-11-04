@@ -143,7 +143,8 @@ def getRectCoords(imagePath, numClusters):
             # coords = rect
             print("Adding to actualRect")
 
-            # h, w = rect[1] # get width and height of rectangle
+            w = rect[2]
+            h = rect[3] # get width and height of rectangle
             # box = cv2.boxPoints(rect) # get vertices
             # box = np.int0(box) # round to nearest integer
 
