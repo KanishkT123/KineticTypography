@@ -59,7 +59,7 @@ else:
 imagePath = "moveFrames/thumb0001.png"
 numClusters = 2
 rectList = getRectCoords(imagePath, numClusters)
-resultName = "why"
+resultName = "why.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
