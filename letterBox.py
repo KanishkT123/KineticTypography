@@ -859,7 +859,8 @@ if __name__=='__main__':
     # thresh = frameSubtract(img1, img2)
 
     # print("About to go into getBounding \n")
-    getBounding(imagePath, colors, resultPath)
+    # getBounding(imagePath, colors, resultPath)
+    getRectCoords(imagePath, numClusters)
     
     # numFrames = 6835
     # processFrames(numFrames)
