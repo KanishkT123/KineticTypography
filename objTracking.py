@@ -98,7 +98,7 @@ while True:
 
     # resize the frame (so we can process it faster) and grab the
     # frame dimensions
-    frame = imutils.resize(frame, width=500)
+    # frame = imutils.resize(frame, width=500)
     (H, W) = frame.shape[:2]
 
     count = 0 
