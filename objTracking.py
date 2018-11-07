@@ -59,7 +59,7 @@ else:
 imagePath = "moveFrames/thumb0001.png"
 numClusters = 2
 rectList = getRectCoords(imagePath, numClusters)
-resultName = "why.png"
+resultName = "out.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
@@ -100,6 +100,8 @@ while True:
     frame = imutils.resize(frame, width=500)
     (H, W) = frame.shape[:2]
 
+    count = 0 
+
     # check to see if we are currently tracking an object
     if initBB is not None:
         # grab the new bounding box coordinates of the object
@@ -131,7 +133,9 @@ while True:
 
             # show the output frame
 
-    cv2.imwrite("Frame_dumbledore.png", frame)
+            cv2.imwrite("stitch_dumble/frame%04d.png" % count, frame)
+            
+            count += 1
     # key = cv2.waitKey(1) & 0xFF
  
     # # if the 's' key is selected, we are going to "select" a bounding
