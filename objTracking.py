@@ -133,7 +133,7 @@ while True:
 
             # show the output frame
 
-            cv2.imwrite("stitch_dumble/frame%04d.png" % count, frame)
+            cv2.imwrite("stitch_dumble2/frame%04d.png" % count, frame)
 
             count += 1
     # key = cv2.waitKey(1) & 0xFF
