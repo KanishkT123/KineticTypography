@@ -63,6 +63,7 @@ resultName = "out.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
+currentRect = 0
 initBB = rectList[0]
 print(rectList)
 
@@ -104,38 +105,43 @@ while True:
 
     # check to see if we are currently tracking an object
     if initBB is not None:
-        # grab the new bounding box coordinates of the object
-        (success, box) = tracker.update(frame)
- 
-        # check to see if the tracking was a success
-        if success:
-            (x, y, w, h) = [int(v) for v in box]
-            cv2.rectangle(frame, (x, y), (x + w, y + h),
-                (0, 255, 0), 2)
- 
-        # update the FPS counter
-        fps.update()
-        fps.stop()
- 
-        # initialize the set of information we'll be displaying on
-        # the frame
-        info = [
-            ("Tracker", args["tracker"]),
-            ("Success", "Yes" if success else "No"),
-            ("FPS", "{:.2f}".format(fps.fps())),
-        ]
- 
-        # loop over the info tuples and draw them on our frame
-        for (i, (k, v)) in enumerate(info):
-            text = "{}: {}".format(k, v)
-            cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        try:
+            # grab the new bounding box coordinates of the object
+            (success, box) = tracker.update(frame)
 
-            # show the output frame
+            # check to see if the tracking was a success
+            if success:
+                (x, y, w, h) = [int(v) for v in box]
+                cv2.rectangle(frame, (x, y), (x + w, y + h),
+                    (0, 255, 0), 2)
 
-            cv2.imwrite("stitch_dumble2/frame%04d.png" % count, frame)
+            # update the FPS counter
+            fps.update()
+            fps.stop()
 
-            count += 1
+            # initialize the set of information we'll be displaying on
+            # the frame
+            info = [
+                ("Tracker", args["tracker"]),
+                ("Success", "Yes" if success else "No"),
+                ("FPS", "{:.2f}".format(fps.fps())),
+            ]
+
+            # loop over the info tuples and draw them on our frame
+            for (i, (k, v)) in enumerate(info):
+                text = "{}: {}".format(k, v)
+                cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
+                # show the output frame
+
+                cv2.imwrite("stitch_dumble2/frame%04d.png" % count, frame)
+
+                count += 1
+                
+        except Exception:
+            currentRect += 1
+            initBB = rectList[1]
     # key = cv2.waitKey(1) & 0xFF
  
     # # if the 's' key is selected, we are going to "select" a bounding
