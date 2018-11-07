@@ -141,7 +141,8 @@ while True:
                 
         except Exception:
             currentRect += 1
-            initBB = rectList[1]
+            initBB = rectList[currectRect]
+
     # key = cv2.waitKey(1) & 0xFF
  
     # # if the 's' key is selected, we are going to "select" a bounding
