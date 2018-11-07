@@ -160,7 +160,12 @@ def getRectCoords(imagePath, numClusters):
                 # ((307.0, 598.0), (4.0, 4.0), -90.0)
                 # (xmin,ymin,boxwidth,boxheight)
                 # coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
-                rectList.append(rect)
+                xmin = rect[0]
+                ymin = rect[1]
+                boxwidth = rect[2]
+                boxheight = rect[3]
+                if xmin + boxwidth < width and ymin + boxheight < height:
+                    rectList.append(rect)
 
     return rectList    
 

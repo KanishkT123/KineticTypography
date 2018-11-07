@@ -63,7 +63,7 @@ resultName = "out.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
-initBB = rectList[-3]
+initBB = rectList[0]
 print(rectList)
 
 # initialize the FPS throughput estimator
@@ -134,7 +134,7 @@ while True:
             # show the output frame
 
             cv2.imwrite("stitch_dumble/frame%04d.png" % count, frame)
-            
+
             count += 1
     # key = cv2.waitKey(1) & 0xFF
  
@@ -168,3 +168,7 @@ else:
 
 
 # python objTracking.py --video dumbledore.mp4 --tracker csrt
+
+#  ffmpeg -r 30 -i frame%04d.png 'stitched.mp4'
+
+# [(0, 717, 152, 3), (247, 706, 71, 14), (246, 651, 73, 46), (246, 600, 73, 44), (0, 572, 207, 148), (247, 551, 72, 40), (247, 497, 72, 47), (247, 452, 72, 40), (247, 399, 73, 48), (247, 354, 72, 39), (248, 274, 72, 43), (247, 221, 74, 43), (560, 194, 85, 134), (464, 193, 76, 135), (365, 180, 92, 146), (248, 171, 72, 47), (0, 115, 207, 423), (0, 0, 207, 78)]
