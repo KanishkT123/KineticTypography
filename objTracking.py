@@ -141,7 +141,7 @@ while True:
                 
         except Exception:
             currentRect += 1
-            initBB = rectList[currectRect]
+            initBB = rectList[currentRect]
 
     # key = cv2.waitKey(1) & 0xFF
  
