@@ -119,6 +119,8 @@ while True:
                 currentRect += 1
                 if currentRect < len(rectList):
                     initBB = rectList[currentRect]
+                else:
+                    break
 
             # update the FPS counter
             fps.update()
