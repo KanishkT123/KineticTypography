@@ -114,9 +114,11 @@ while True:
                 (x, y, w, h) = [int(v) for v in box]
                 cv2.rectangle(frame, (x, y), (x + w, y + h),
                     (0, 255, 0), 2)
-                    
+
             if not success:
-                break
+                currentRect += 1
+                if currentRect < len(rectList):
+                    initBB = rectList[currentRect]
 
             # update the FPS counter
             fps.update()
