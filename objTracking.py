@@ -144,7 +144,7 @@ while True:
 
                 # show the output frame
 
-                cv2.imwrite("stitch_dumble2/frame%04d.png" % count, frame)
+                cv2.imwrite("stitch_dumble3/frame%05d.png" % count, frame)
 
                 count += 1
                 
