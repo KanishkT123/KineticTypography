@@ -63,13 +63,13 @@ resultName = "out.png"
 # getBounding(imagePath, numClusters, resultName)
 # initialize the bounding box coordinates of the object we are going
 # to track
-currentRect = 0
-initBB = rectList[0]
+currentRect = 1
+initBB = rectList[1]
 print(rectList)
 
 # initialize the FPS throughput estimator
 fps = None
-
+count = 0 
 
 # loop over frames from the video stream
 while True:
@@ -101,7 +101,7 @@ while True:
     # frame = imutils.resize(frame, width=500)
     (H, W) = frame.shape[:2]
 
-    count = 0 
+    
 
     # check to see if we are currently tracking an object
     if initBB is not None:
@@ -115,12 +115,14 @@ while True:
                 cv2.rectangle(frame, (x, y), (x + w, y + h),
                     (0, 255, 0), 2)
 
+            # if not success:
+            #     currentRect += 1
+            #     if currentRect < len(rectList):
+            #         initBB = rectList[currentRect]
+            #     else:
+            #         break
             if not success:
-                currentRect += 1
-                if currentRect < len(rectList):
-                    initBB = rectList[currentRect]
-                else:
-                    break
+                break
 
             # update the FPS counter
             fps.update()
@@ -181,7 +183,7 @@ else:
 # cv2.destroyAllWindows()
 
 
-# python objTracking.py --video dumbledore.mp4 --tracker csrt
+# python objTracking.py --video cutDumble.mp4 --tracker csrt
 
 #  ffmpeg -r 30 -i frame%04d.png 'stitched.mp4'
 
