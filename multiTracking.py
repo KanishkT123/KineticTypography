@@ -74,7 +74,7 @@ while cap.isOpened():
     cv2.rectangle(frame, p1, p2, colors[i], 2, 1)
  
   # show frame
-  cv2.imwrite('MultiTracker', frame)
+  cv2.imwrite('mult_dumble/MultiTracker.jpg', frame)
    
  
   # quit on ESC button
