@@ -77,7 +77,7 @@ while cap.isOpened():
  
     # show frame
     # cv2.imwrite('mult_dumble/MultiTracker.jpg', frame)
-
+    print("about to write")
     cv2.imwrite("mult_dumble/frame%05d.jpg" % count, frame)
     count += 1
    
