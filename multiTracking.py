@@ -56,7 +56,7 @@ multiTracker = cv2.MultiTracker_create()
  
 # Initialize MultiTracker 
 for bbox in bboxes:
-    multiTracker.add(createTrackerByName(trackerType), frame, bbox)
+    multiTracker.add(cv2.TrackerCSRT_create(), frame, bbox)
 
 
 # Process video and track objects
