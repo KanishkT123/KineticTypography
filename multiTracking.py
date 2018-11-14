@@ -62,7 +62,8 @@ for bbox in bboxes:
 # Process video and track objects
 while cap.isOpened():
     success, frame = cap.read()
-    if not success:
+
+    if frame is None or not success:
         break
    
     # get updated location of objects in subsequent frames
