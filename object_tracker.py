@@ -102,6 +102,6 @@ while cap.isOpened():
     cv2.imwrite("short_mult2/frame%04d.jpg" % count, frame)
     count += 1
 
-    # if the `q` key was pressed, break from the loop
-    if key == ord("q"):
-        break
+    # # if the `q` key was pressed, break from the loop
+    # if key == ord("q"):
+    #     break
