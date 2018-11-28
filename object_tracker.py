@@ -30,9 +30,9 @@ args = vars(ap.parse_args())
 ct = CentroidTracker()
 (H, W) = (None, None)
 
-# load our serialized model from disk
-print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+# # load our serialized model from disk
+# print("[INFO] loading model...")
+# net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 
 # initialize the video stream and allow the camera sensor to warmup
 print("[INFO] starting video stream...")
