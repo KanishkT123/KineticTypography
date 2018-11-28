@@ -99,7 +99,8 @@ while cap.isOpened():
 		cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
 	# show the output frame
-	cv2.imwrite("CentroidFrame.png", frame)
+	cv2.imwrite("short_mult2/frame%04d.jpg" % count, frame)
+    count += 1
 
 	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
