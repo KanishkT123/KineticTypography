@@ -94,7 +94,7 @@ def getBounding(imagePath, numClusters, resultName):
 """
     Get bounding boxes around each letter and return box coordinates
 """
-def getRectCoords(imagePath, numClusters):
+def getRectCoords(image, numClusters):
     ogImage = cv2.imread(imagePath) # Save original image
     image = cv2.imread(imagePath)
     # img_copy = cv2.imread(imagePath)
@@ -116,7 +116,7 @@ def getRectCoords(imagePath, numClusters):
         mask = np.zeros(image.shape[:2], np.uint8)
 
         print("Calling getColor")
-        xList, yList = getColor(labels, imagePath, cluster)
+        xList, yList = getColorImage(labels, image, cluster)
         print("Finished getColor")
         for i in range(len(xList)):
             xVal = xList[i]
@@ -165,7 +165,8 @@ def getRectCoords(imagePath, numClusters):
                 boxwidth = rect[2]
                 boxheight = rect[3]
                 if xmin + boxwidth < width and ymin + boxheight < height:
-                    rectList.append(rect)
+                    newBox = (xmin, ymin, xmin + boxwidth, ymin + boxheight)
+                    rectList.append(newBox)
 
     return rectList    
 
@@ -317,6 +318,39 @@ def allCoords(image):
 """
 def getColor(pixArray, imagePath, clusterNumber):
     image = cv2.imread(imagePath)
+    height, width, channels = image.shape 
+
+    xList = []
+    yList = []
+
+    # locationList = []
+
+    # 0 = blue, 1 = white, 2 = yellow
+
+    for row in range(height):
+        for col in range(width): 
+            idx = row * width + col
+            if pixArray[idx] == clusterNumber: 
+                xList.append(col)
+                yList.append(row)
+
+    for i in range(len(pixArray)):
+        if pixArray[i] == clusterNumber:
+            # JM: Changed height to width here, since the arrays are one row at a time. 
+            row = i // width 
+            col = i % width
+
+            xList.append(col)
+            yList.append(row)
+
+    # print(locationList)
+    return xList, yList
+
+"""
+    Takes in an array of predictions for every pixel in an image, and the image path. Then it checks if the
+    prediction was the specified color, and if it was, it adds it to a list of x and y coordinates of the pixel and returns this list
+"""
+def getColorImage(pixArray, image, clusterNumber):
     height, width, channels = image.shape 
 
     xList = []
