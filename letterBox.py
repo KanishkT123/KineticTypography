@@ -95,8 +95,8 @@ def getBounding(imagePath, numClusters, resultName):
     Get bounding boxes around each letter and return box coordinates
 """
 def getRectCoords(image, numClusters):
-    ogImage = cv2.imread(imagePath) # Save original image
-    image = cv2.imread(imagePath)
+    # ogImage = cv2.imread(imagePath) # Save original image
+    # image = cv2.imread(imagePath)
     # img_copy = cv2.imread(imagePath)
 
     # thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
