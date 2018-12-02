@@ -58,7 +58,7 @@ bboxes = getRectCoords(frame, numClusters)
 while cap.isOpened():
     # read the next frame from the video stream
     success, frame = cap.read()
-    frame = imutils.resize(frame, width=500)
+    frame = imutils.resize(frame, width=800)
 
     if frame is None or not success:
         break

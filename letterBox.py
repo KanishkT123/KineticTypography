@@ -108,16 +108,12 @@ def getRectCoords(image, numClusters):
 
     height, width, channels = image.shape
 
-    print("Calling getPredictions")
     labels, clusterCenters = getPredictions(image, numClusters)
     rectList = []
-    print("Going into for loop for number of clusters")
     for cluster in range(numClusters):
         mask = np.zeros(image.shape[:2], np.uint8)
-
-        print("Calling getColor")
         xList, yList = getColorImage(labels, image, cluster)
-        print("Finished getColor")
+
         for i in range(len(xList)):
             xVal = xList[i]
             yVal = yList[i]
@@ -131,7 +127,6 @@ def getRectCoords(image, numClusters):
         cv2.imwrite("mask.png", mask)
         
         masked = cv2.imread("mask.png")
-        print("Calling findContours")
         _ , contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         cropName = 0
@@ -139,9 +134,6 @@ def getRectCoords(image, numClusters):
         for cnt in contours:
             cropName += 1
             rect = cv2.boundingRect(cnt)
-            print(rect)
-            # coords = rect
-            print("Adding to actualRect")
 
             w = rect[2]
             h = rect[3] # get width and height of rectangle
