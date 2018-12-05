@@ -138,8 +138,8 @@ def getRectCoords(image, numClusters):
 
             w = rect[2]
             h = rect[3] # get width and height of rectangle
-            # box = cv2.boxPoints(rect) # get vertices
-            # box = np.int0(box) # round to nearest integer
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
             croppedRotated = crop2(rect, box, image)
