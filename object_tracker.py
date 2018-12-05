@@ -52,7 +52,7 @@ bboxes = []
 count = 0
 
 numClusters = args["colors"]
-bboxes = getRectCoords(frame, numClusters)
+bboxes, textOCR = getRectCoords(frame, numClusters)
 
 # loop over the frames from the video stream
 while cap.isOpened():
