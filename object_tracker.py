@@ -100,7 +100,7 @@ while cap.isOpened():
         cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
     # show the output frame
-    cv2.imwrite("short_mult3/frame%04d.png" % count, frame)
+    cv2.imwrite("maps_detect/frame%04d.png" % count, frame)
     count += 1
 
     # # if the `q` key was pressed, break from the loop
