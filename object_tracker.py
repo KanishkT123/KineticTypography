@@ -82,9 +82,9 @@ while cap.isOpened():
         # draw a bounding box surrounding the object so we can
         # visualize it
         (startX, startY, endX, endY) = box
-        randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
+        # randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
         cv2.rectangle(frame, (startX, startY), (endX, endY),
-            randColor, 2)
+            (0, 255, 0), 2)
 
     # update our centroid tracker using the computed set of bounding
     # box rectangles
