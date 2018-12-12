@@ -152,7 +152,7 @@ def getRectCoords(image, numClusters):
                     txt = ocr(padded)
                     textList.append(text)
 
-    return rectList    
+    return rectList, textList
 
 """
     Takes in the frame subtracted image, then gets bounding boxes around each letter 
