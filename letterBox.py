@@ -635,10 +635,7 @@ def cropImage(rect, img):
     center = (int((x1+x2)/2), int((y1+y2)/2))
     size = (int(mult*(x2-x1)),int(mult*(y2-y1)))
 
-    M = cv2.getRotationMatrix2D((size[0]/2, size[1]/2), angle, 1.0)
-
-    cropped = cv2.getRectSubPix(img, size, center)    
-    cropped = cv2.warpAffine(cropped, M, size)
+    cropped = cv2.getRectSubPix(img, size, center)
 
     croppedW = W if not rotated else H 
     croppedH = H if not rotated else W
