@@ -68,40 +68,41 @@ while cap.isOpened():
         (H, W) = frame.shape[:2]
 
     # get detections
-    detections = getRectCoords(frame, numClusters)
+    detections, text = getRectCoords(frame, numClusters)
     rects = []
-
-    # loop over the detections
-    for i in range(len(detections)):
     
-        # compute the (x, y)-coordinates of the bounding box for
-        # the object, then update the bounding box rectangles list
-        box = detections[i]
-        rects.append(box)
+    if len(detections) != 0:
+        # loop over the detections
+        for i in range(len(detections)):
+        
+            # compute the (x, y)-coordinates of the bounding box for
+            # the object, then update the bounding box rectangles list
+            box = detections[i]
+            rects.append(box)
 
-        # draw a bounding box surrounding the object so we can
-        # visualize it
-        (startX, startY, endX, endY) = box
-        # randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
-        cv2.rectangle(frame, (startX, startY), (endX, endY),
-            (0, 255, 0), 2)
+            # draw a bounding box surrounding the object so we can
+            # visualize it
+            (startX, startY, endX, endY) = box
+            # randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
+            cv2.rectangle(frame, (startX, startY), (endX, endY),
+                (0, 255, 0), 2)
 
-    # update our centroid tracker using the computed set of bounding
-    # box rectangles
-    objects = ct.update(rects)
+        # update our centroid tracker using the computed set of bounding
+        # box rectangles
+        objects = ct.update(rects)
 
-    # loop over the tracked objects
-    for (objectID, centroid) in objects.items():
-        # draw both the ID of the object and the centroid of the
-        # object on the output frame
-        text = "ID {}".format(objectID)
-        cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
+        # loop over the tracked objects
+        for (objectID, centroid) in objects.items():
+            # draw both the ID of the object and the centroid of the
+            # object on the output frame
+            text = "ID {}".format(objectID)
+            cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
-    # show the output frame
-    cv2.imwrite("maps_detect/frame%04d.png" % count, frame)
-    count += 1
+        # show the output frame
+        cv2.imwrite("maps_detect/frame%04d.png" % count, frame)
+        count += 1
 
     # # if the `q` key was pressed, break from the loop
     # if key == ord("q"):
