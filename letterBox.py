@@ -129,7 +129,7 @@ def getRectCoords(image, numClusters):
             h = rect[3] # get width and height of rectangle
 
             # (startX, startY, endX, endY)
-            # croppedRotated = cropImage(rect, image)
+            croppedRotated = cropImage(rect, image)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
@@ -148,9 +148,9 @@ def getRectCoords(image, numClusters):
                 if xmin + boxwidth < width and ymin + boxheight < height:
                     newBox = (xmin, ymin, xmin + boxwidth, ymin + boxheight)
                     rectList.append(newBox)
-                    # padded = pad(croppedRotated)
-                    # txt = ocr(padded)
-                    # textList.append(text)
+                    padded = pad(croppedRotated)
+                    txt = ocr(padded)
+                    textList.append(text)
     print(rectList)
     return rectList, textList
 
