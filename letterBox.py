@@ -151,7 +151,7 @@ def getRectCoords(image, numClusters):
                     padded = pad(croppedRotated)
                     txt = ocr(padded)
                     textList.append(text)
-
+    print(rectList)
     return rectList, textList
 
 """
