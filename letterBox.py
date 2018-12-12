@@ -151,7 +151,6 @@ def getRectCoords(image, numClusters):
                     padded = pad(croppedRotated)
                     txt = ocr(padded)
                     textList.append(text)
-    print(rectList)
     return rectList, textList
 
 """
@@ -250,9 +249,9 @@ def getBoundingBinary(thresh, resultName):
     Does the same thing as findLines but using all coordinates
 """
 def getPredictions(image, numClusters):
-    print("Calling allCoords")
+    # print("Calling allCoords")
     coordList = allCoords(image)
-    print("Finished allCoords")
+    # print("Finished allCoords")
     
     xArray = np.array(coordList) # make it into numpy array
 
