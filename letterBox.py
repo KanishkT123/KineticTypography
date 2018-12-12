@@ -256,7 +256,8 @@ def getPredictions(image, numClusters):
     
     xArray = np.array(coordList) # make it into numpy array
 
-    kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    # kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    kmeans = KMeans().fit(xArray)
 
     # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
