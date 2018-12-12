@@ -95,17 +95,6 @@ def getBounding(imagePath, numClusters, resultName):
     Get bounding boxes around each letter and return box coordinates
 """
 def getRectCoords(image, numClusters):
-    # ogImage = cv2.imread(imagePath) # Save original image
-    # image = cv2.imread(imagePath)
-    # img_copy = cv2.imread(imagePath)
-
-    # thresh = cv2.imread("post-Threshold.tif", 0) # Read in mask image
-
-    # image = cv2.bitwise_and(image, image, mask = thresh) # Apply mask to image
-   
-    # print("About to write maskedIm.png")
-    # cv2.imwrite("maskedIm.png", image)
-
     height, width, channels = image.shape
 
     labels, clusterCenters = getPredictions(image, numClusters)
@@ -138,11 +127,9 @@ def getRectCoords(image, numClusters):
 
             w = rect[2]
             h = rect[3] # get width and height of rectangle
-            box = cv2.boxPoints(rect) # get vertices
-            box = np.int0(box) # round to nearest integer
 
-            # print("about to call crop2")
-            croppedRotated = crop2(rect, box, image)
+            # (startX, startY, endX, endY)
+            croppedRotated = cropImage(rect, image)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
@@ -628,25 +615,22 @@ def crop2(rect, box, img, resultName):
 
     ...only if pytesseract would actually work...
 """
-def cropImage(rect, box, img):
+def cropImage(rect, img):
     # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
-    W = rect[1][0]
-    H = rect[1][1]
+    startX, startY, endX, endY = rect
+    
+    W = endX - startX
+    H = endY - startY
     mult = 1.0
 
-    Xs = [i[0] for i in box]
-    Ys = [i[1] for i in box]
-    x1 = min(Xs)
-    x2 = max(Xs)
-    y1 = min(Ys)
-    y2 = max(Ys)
+    # (startX, startY, endX, endY)
+
+    x1 = startX
+    x2 = endX
+    y1 = startY
+    y2 = endY
 
     rotated = False
-    angle = rect[2]
-
-    if angle < -45:
-        angle+=90
-        rotated = True
 
     center = (int((x1+x2)/2), int((y1+y2)/2))
     size = (int(mult*(x2-x1)),int(mult*(y2-y1)))
