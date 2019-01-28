@@ -39,6 +39,15 @@ print("[INFO] starting video stream...")
 cap = cv2.VideoCapture(args["video"])
 time.sleep(2.0)
 
+
+# Default resolutions of the frame are obtained.The default resolutions are system dependent.
+# We convert the resolutions from float to integer.
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+
+# Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
+out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width, frame_height))
+
 success, frame = cap.read()
 
 # quit if unable to read the video file
@@ -52,7 +61,7 @@ bboxes = []
 count = 0
 
 numClusters = args["colors"]
-bboxes, textOCR = getRectCoords(frame, numClusters)
+bboxes, textOCR = getRectCoords(frame)
 
 # loop over the frames from the video stream
 while cap.isOpened():
@@ -68,7 +77,7 @@ while cap.isOpened():
         (H, W) = frame.shape[:2]
 
     # get detections
-    detections, text = getRectCoords(frame, numClusters)
+    detections, text = getRectCoords(frame)
     rects = []
     
     if len(detections) != 0:
@@ -101,9 +110,16 @@ while cap.isOpened():
             cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
         # show the output frame
-        cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
+        # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
+        
+        # Write the frame into the file 'output.avi'
+        out.write(frame)
         count += 1
 
     # # if the `q` key was pressed, break from the loop
     # if key == ord("q"):
     #     break
+
+# When everything done, release the video capture and video write objects
+cap.release()
+out.release()
