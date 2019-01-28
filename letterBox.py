@@ -539,6 +539,7 @@ def crop(rect):
     then calls tesseract on the padded image
 
     ...only if pytesseract would actually work...
+
 """
 def crop2(rect, box, img, resultName):
     # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
@@ -615,6 +616,11 @@ def crop2(rect, box, img, resultName):
     then calls tesseract on the padded image
 
     ...only if pytesseract would actually work...
+
+    TRY THIS: img = cv2.imread("lenna.png")
+    crop_img = img[y:y+h, x:x+w]
+    cv2.imshow("cropped", crop_img) 
+        numpy array slicing for cropping????
 """
 def cropImage(rect, img):
     # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
@@ -636,13 +642,14 @@ def cropImage(rect, img):
     center = (int((x1+x2)/2), int((y1+y2)/2))
     size = (int(mult*(x2-x1)),int(mult*(y2-y1)))
 
-    cropped = cv2.getRectSubPix(img, size, center)
+    # cropped = cv2.getRectSubPix(img, size, center)
+    cropped = img[y1:y2, x1:x2].copy()
 
-    croppedW = W if not rotated else H 
-    croppedH = H if not rotated else W
+    # croppedW = W if not rotated else H 
+    # croppedH = H if not rotated else W
 
-    # THIS is the cropped and unskewed letter
-    croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
+    # # THIS is the cropped and unskewed letter
+    # croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
     
     # sets border type to constant
     borderType = cv2.BORDER_CONSTANT
@@ -652,15 +659,21 @@ def cropImage(rect, img):
     # Basically how big you want the border to be
     perc = 10.0
 
-    top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
+    # top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
+    # bottom = top
+    # left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
+    # right = left
+
+    top = int(perc * cropped.shape[0])  # shape[0] = rows
     bottom = top
-    left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
+    left = int(perc * cropped.shape[1])  # shape[1] = cols
     right = left
     
     # COLOR of border
     # value = [255, 255, 255]    
     value = [0, 0, 0]    
-    dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+    # dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+    dst = cv2.copyMakeBorder(cropped, top, bottom, left, right, borderType, None, value)
 
     # resultName = "./Results/padded" + resultName
     # resultName += ".png"
@@ -672,7 +685,7 @@ def cropImage(rect, img):
     # txt = pytesseract.image_to_string(img_n, lang="eng")
     # print(txt)
 
-    return croppedRotated
+    return cropped
 
 
 """
