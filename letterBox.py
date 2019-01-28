@@ -37,7 +37,7 @@ def getBounding(imagePath, numClusters, resultName):
     height, width, channels = image.shape
 
     print("Calling getPredictions")
-    labels, clusterCenters = getPredictions(image, numClusters)
+    labels, clusterCenters = getPredictions(image)
 
     print("Going into for loop for number of clusters")
     for cluster in range(numClusters):
@@ -94,13 +94,13 @@ def getBounding(imagePath, numClusters, resultName):
 """
     Get bounding boxes around each letter and return box coordinates
 """
-def getRectCoords(image, numClusters):
+def getRectCoords(image):
     height, width, channels = image.shape
 
-    labels, clusterCenters = getPredictions(image, numClusters)
+    labels, clusterCenters = getPredictions(image)
     rectList = []
     textList = []
-    for cluster in range(numClusters):
+    for cluster in range(len(clusterCenters)):
         mask = np.zeros(image.shape[:2], np.uint8)
         xList, yList = getColorImage(labels, image, cluster)
 
@@ -249,7 +249,7 @@ def getBoundingBinary(thresh, resultName):
 """
     Does the same thing as findLines but using all coordinates
 """
-def getPredictions(image, numClusters):
+def getPredictions(image):
     # print("Calling allCoords")
     coordList = allCoords(image)
     # print("Finished allCoords")
@@ -975,7 +975,7 @@ if __name__=='__main__':
 
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
-    getRectCoords(imagePath, colors)
+    getRectCoords(imagePath)
     
     # numFrames = 6835
     # processFrames(numFrames)

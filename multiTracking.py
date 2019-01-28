@@ -38,7 +38,7 @@ count = 0
 
 imagePath = args["frame"]
 numClusters = args["colors"]
-bboxes = getRectCoords(imagePath, numClusters)
+bboxes = getRectCoords(imagePath)
  
 
 for box in bboxes:

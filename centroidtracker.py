@@ -3,6 +3,14 @@ from scipy.spatial import distance as dist
 from collections import OrderedDict
 import numpy as np
 
+class Rectangle():
+	def __init__(self):
+		self.coordinates = []
+		self.angle = 0
+
+    # def add_flight(self, duration):
+    #     self.flights.append(Flight(duration))
+
 class CentroidTracker():
 	def __init__(self, maxDisappeared=5):
 		# initialize the next unique object ID along with two ordered
