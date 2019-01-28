@@ -23,7 +23,15 @@ tracker = cv2.TrackerCSRT_create()
 
 # Create a video capture object to read videos
 cap = cv2.VideoCapture(args["video"])
- 
+
+# Default resolutions of the frame are obtained.The default resolutions are system dependent.
+# We convert the resolutions from float to integer.
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+
+# Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
+out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width, frame_height))
+
 # Read first frame
 success, frame = cap.read()
 # quit if unable to read the video file
@@ -58,7 +66,6 @@ multiTracker = cv2.MultiTracker_create()
 for bbox in bboxes:
     multiTracker.add(cv2.TrackerCSRT_create(), frame, bbox)
 
-
 # Process video and track objects
 while cap.isOpened():
     success, frame = cap.read()
@@ -78,7 +85,9 @@ while cap.isOpened():
     # show frame
     # cv2.imwrite('mult_dumble/MultiTracker.jpg', frame)
     
-    cv2.imwrite("short_mult/frame%04d.jpg" % count, frame)
+    # cv2.imwrite("short_mult/frame%04d.jpg" % count, frame)
+    # Write the frame into the file 'output.avi'
+    out.write(frame)
     count += 1
 
     if count % 50 == 0:
@@ -88,5 +97,8 @@ while cap.isOpened():
     if cv2.waitKey(1) & 0xFF == 27:  # Esc pressed
         break
 
+# When everything done, release the video capture and video write objects
+cap.release()
+out.release()
 
 # python3 multiTracking.py -v cutDumble.mp4 -f moveFrames/thumb0001.png -c 2
