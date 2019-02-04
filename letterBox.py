@@ -1000,7 +1000,8 @@ if __name__=='__main__':
 
     # print("About to go into getBounding \n")
     # getBounding(imagePath, colors, resultPath)
-    getRectCoords(imagePath)
+    frame = cv2.imread(imagePath)
+    getRectCoords(frame)
     
     # numFrames = 6835
     # processFrames(numFrames)
