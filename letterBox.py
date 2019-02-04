@@ -157,7 +157,7 @@ def getRectCoords(image):
                 xmin = min(rect)
                 ymin = min(rect, key=lambda x: x[1])
                 xmax = max(rect)
-                ymax = max(ls, key=lambda x: x[1])
+                ymax = max(rect, key=lambda x: x[1])
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
                 
