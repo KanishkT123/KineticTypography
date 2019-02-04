@@ -165,7 +165,8 @@ def getRectCoords(image):
                 # ymin = rect[1]
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
-
+                print(xmin)
+                
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
