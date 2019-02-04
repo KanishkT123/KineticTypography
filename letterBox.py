@@ -141,7 +141,7 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            croppedRotated = cropImageRot(rect, box, img)
+            croppedRotated = cropImageRot(rect, box, image)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
