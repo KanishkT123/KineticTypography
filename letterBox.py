@@ -129,7 +129,7 @@ def getRectCoords(image):
             # h = rect[3] # get width and height of rectangle
 
             # # (startX, startY, endX, endY)
-            # croppedRotated = cropImage(rect, image)
+            # croppedRotated = cropImageRot(rect, box, img)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
@@ -141,7 +141,7 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            # croppedRotated = crop2(rect, box, image, str(cropName))
+            croppedRotated = cropImageRot(rect, box, img)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
@@ -169,9 +169,9 @@ def getRectCoords(image):
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
-                    # padded = pad(croppedRotated)
-                    # txt = ocr(padded)
-                    # textList.append(text)
+                    padded = pad(croppedRotated)
+                    txt = ocr(padded)
+                    textList.append(text)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
@@ -638,6 +638,67 @@ def crop2(rect, box, img, resultName):
     # cv2.imwrite(resultName, croppedRotated)
     return croppedRotated
 
+
+""" This returns a IMAGE rather than writing out
+"""
+def cropImageRot(rect, box, img):
+    # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
+    W = rect[1][0]
+    H = rect[1][1]
+    mult = 1.0
+
+    Xs = [i[0] for i in box]
+    Ys = [i[1] for i in box]
+    x1 = min(Xs)
+    x2 = max(Xs)
+    y1 = min(Ys)
+    y2 = max(Ys)
+
+    rotated = False
+    angle = rect[2]
+
+    if angle < -45:
+        angle+=90
+        rotated = True
+
+    center = (int((x1+x2)/2), int((y1+y2)/2))
+    size = (int(mult*(x2-x1)),int(mult*(y2-y1)))
+
+    M = cv2.getRotationMatrix2D((size[0]/2, size[1]/2), angle, 1.0)
+
+    cropped = cv2.getRectSubPix(img, size, center)    
+    cropped = cv2.warpAffine(cropped, M, size)
+
+    croppedW = W if not rotated else H 
+    croppedH = H if not rotated else W
+
+    # THIS is the cropped and unskewed letter
+    croppedRotated = cv2.getRectSubPix(cropped, (int(croppedW*mult), int(croppedH*mult)), (size[0]/2, size[1]/2))
+    
+    # sets border type to constant
+    borderType = cv2.BORDER_CONSTANT
+    # borderType = cv2.BORDER_REPLICATE
+    #^ doesn't work
+
+    # Basically how big you want the border to be
+    perc = 10.0
+
+    top = int(perc * croppedRotated.shape[0])  # shape[0] = rows
+    bottom = top
+    left = int(perc * croppedRotated.shape[1])  # shape[1] = cols
+    right = left
+    
+    # COLOR of border
+    # value = [255, 255, 255]    
+    value = [0, 0, 0]    
+    dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
+
+    # # Calling pytesseract on the image
+    # img_n = Image.fromarray(dst)
+    # txt = pytesseract.image_to_string(img_n, lang="eng")
+    # print(txt)
+
+    return croppedRotated
 
 """ This is the one that works
     It takes in a single rectangle rect, its coordinates box, the original image img

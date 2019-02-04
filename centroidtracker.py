@@ -3,10 +3,13 @@ from scipy.spatial import distance as dist
 from collections import OrderedDict
 import numpy as np
 
-class Rectangle():
+class Letter():
 	def __init__(self):
 		self.coordinates = []
+		self.centroid = (0, 0)
 		self.angle = 0
+		self.text = ""
+
 
     # def add_flight(self, duration):
     #     self.flights.append(Flight(duration))
@@ -29,7 +32,7 @@ class CentroidTracker():
 	def register(self, centroid):
 		# when registering an object we use the next available object
 		# ID to store the centroid
-		self.objects[self.nextObjectID] = centroid
+		self.objects[self.nextObjectID] = centroid # should be letter.centroid 
 		self.disappeared[self.nextObjectID] = 0
 		self.nextObjectID += 1
 
