@@ -170,7 +170,7 @@ def getRectCoords(image):
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
-                    padded = pad(croppedRotated)
+                    padded = padImage(croppedRotated)
                     txt = ocr(padded)
                     textList.append(text)
 
