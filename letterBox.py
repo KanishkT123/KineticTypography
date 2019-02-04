@@ -123,19 +123,31 @@ def getRectCoords(image):
         
         for cnt in contours:
             cropName += 1
-            rect = cv2.boundingRect(cnt)
+            # rect = cv2.boundingRect(cnt)
 
-            w = rect[2]
-            h = rect[3] # get width and height of rectangle
+            # w = rect[2]
+            # h = rect[3] # get width and height of rectangle
 
-            # (startX, startY, endX, endY)
-            croppedRotated = cropImage(rect, image)
+            # # (startX, startY, endX, endY)
+            # croppedRotated = cropImage(rect, image)
             # cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
             
+            rect = cv2.minAreaRect(cnt)
 
-            # rect = box.tolist() # save vertices as a python list
+            h, w = rect[1] # get width and height of rectangle
+            box = cv2.boxPoints(rect) # get vertices
+            box = np.int0(box) # round to nearest integer
+
+            # print("about to call crop2")
+            # croppedRotated = crop2(rect, box, image, str(cropName))
+            # cv2.imwrite("MODE_crop.png", croppedRotated)
+            # findColor(croppedRotated)
+            # print("finished crop2")
+
+            rect = box.tolist() # save vertices as a python list
+            print(rect)
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 # ((307.0, 598.0), (4.0, 4.0), -90.0)
