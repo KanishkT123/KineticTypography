@@ -157,12 +157,12 @@ def getRectCoords(image):
                 ymin = rect[1]
                 boxwidth = rect[2]
                 boxheight = rect[3]
-                if xmin + boxwidth < width and ymin + boxheight < height:
-                    newBox = (xmin, ymin, xmin + boxwidth, ymin + boxheight)
-                    rectList.append(newBox)
-                    padded = pad(croppedRotated)
-                    txt = ocr(padded)
-                    textList.append(text)
+                # if xmin + boxwidth < width and ymin + boxheight < height:
+                #     newBox = (xmin, ymin, xmin + boxwidth, ymin + boxheight)
+                #     rectList.append(newBox)
+                #     padded = pad(croppedRotated)
+                #     txt = ocr(padded)
+                #     textList.append(text)
     print(textList)
     return rectList, textList
 
