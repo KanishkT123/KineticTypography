@@ -154,10 +154,10 @@ def getRectCoords(image):
                 # (xmin,ymin,boxwidth,boxheight)
                 # coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
 
-                xmin = min(rect)
-                ymin = min(rect, key=lambda x: x[1])
-                xmax = max(rect)
-                ymax = max(rect, key=lambda x: x[1])
+                xmin = min(rect)[0]
+                ymin = min(rect, key=lambda x: x[1])[1]
+                xmax = max(rect)[0]
+                ymax = max(rect, key=lambda x: x[1])[1]
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
                 
@@ -166,7 +166,7 @@ def getRectCoords(image):
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
                 print(xmin)
-                
+
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
