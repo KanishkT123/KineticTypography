@@ -147,16 +147,33 @@ def getRectCoords(image):
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
-            print(rect)
+            # print(rect)
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
                 # ((307.0, 598.0), (4.0, 4.0), -90.0)
                 # (xmin,ymin,boxwidth,boxheight)
                 # coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
-                xmin = rect[0]
-                ymin = rect[1]
-                boxwidth = rect[2]
-                boxheight = rect[3]
+
+                xmin = min(rect)
+                ymin = min(rect, key=lambda x: x[1])
+                xmax = max(rect)
+                ymax = max(ls, key=lambda x: x[1])
+                # boxwidth = rect[2]
+                # boxheight = rect[3]
+                
+                # xmin = rect[0]
+                # ymin = rect[1]
+                # boxwidth = rect[2]
+                # boxheight = rect[3]
+
+                if xmax < width and ymax < height:
+                    newBox = (xmin, ymin, xmax, ymax)
+                    rectList.append(newBox)
+                    # padded = pad(croppedRotated)
+                    # txt = ocr(padded)
+                    # textList.append(text)
+
+
                 # if xmin + boxwidth < width and ymin + boxheight < height:
                 #     newBox = (xmin, ymin, xmin + boxwidth, ymin + boxheight)
                 #     rectList.append(newBox)
