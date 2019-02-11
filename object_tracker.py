@@ -98,6 +98,7 @@ while cap.isOpened():
 
         # update our centroid tracker using the computed set of bounding
         # box rectangles
+        print(rects)
         objects = ct.update(rects)
 
         # loop over the tracked objects
