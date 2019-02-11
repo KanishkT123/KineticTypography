@@ -171,7 +171,7 @@ def getRectCoords(image):
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
                     padded = padImage(croppedRotated)
-                    cv2.imwrite("tesseractError", padded)
+                    cv2.imwrite("tesseractError.png", padded)
                     # txt = ocr(padded)
                     # textList.append(txt)
 
