@@ -87,7 +87,8 @@ class CentroidTracker():
 		else:
 			# grab the set of object IDs and corresponding centroids
 			objectIDs = list(self.objects.keys())
-			objectCentroids = list(self.objects.values().centroid)
+			objectCentroids = list(self.objects.values())
+			objectCentroids = [let.centroid for x in objectCentroids]
 
 			# compute the distance between each pair of object
 			# centroids and input centroids, respectively -- our
