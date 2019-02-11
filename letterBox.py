@@ -5,7 +5,7 @@ import numpy as np
 import pytesseract
 from PIL import Image
 from matplotlib import pyplot as plt
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, MiniBatchKMeans
 from scipy.spatial import distance
 from scipy import stats
 import operator
@@ -289,7 +289,9 @@ def getPredictions(image):
     xArray = np.array(coordList) # make it into numpy array
 
     # kmeans = KMeans(n_clusters = numClusters).fit(xArray)
-    kmeans = KMeans().fit(xArray)
+
+    # kmeans = KMeans().fit(xArray) RIGHT ONE
+    kmeans = MiniBatchKMeans().fit(xArray)
 
     # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)
