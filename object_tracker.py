@@ -115,6 +115,7 @@ while cap.isOpened():
         # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
         
         # Write the frame into the file 'output.avi'
+        cv2.imwrite("TEST_Frame.png", frame)
         out.write(frame)
         count += 1
 
