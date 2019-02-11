@@ -141,8 +141,8 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            croppedRotated = cropImageRot(rect, box, image)
-            # cv2.imwrite("MODE_crop.png", croppedRotated)
+            croppedRotated = cropImageRot(rect, box, masked)
+            cv2.imwrite("MODE_crop.png", croppedRotated)
             # findColor(croppedRotated)
             # print("finished crop2")
 
@@ -165,15 +165,15 @@ def getRectCoords(image):
                 # ymin = rect[1]
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
-                print(xmin)
+                # print(xmin)
 
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox)
                     padded = padImage(croppedRotated)
                     cv2.imwrite("tesseractError.png", padded)
-                    # txt = ocr(padded)
-                    # textList.append(txt)
+                    txt = ocr(padded)
+                    textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
