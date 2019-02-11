@@ -109,8 +109,7 @@ while cap.isOpened():
         objects = ct.update(rects)
 
         # loop over the tracked objects
-        for (objectID, letter) in objects.items():
-            centroid = letter.centroid
+        for (objectID, centroid) in objects.items():
             # draw both the ID of the object and the centroid of the
             # object on the output frame
             text = "ID {}".format(objectID)
