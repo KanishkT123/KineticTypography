@@ -9,6 +9,7 @@ class Letter():
 		self.centroid = (0, 0)
 		self.angle = 0
 		self.text = ""
+		self.objectID = 0
 
 
     # def add_flight(self, duration):
@@ -29,10 +30,11 @@ class CentroidTracker():
 		# need to deregister the object from tracking
 		self.maxDisappeared = maxDisappeared
 
-	def register(self, centroid):
+	def register(self, letter):
 		# when registering an object we use the next available object
 		# ID to store the centroid
-		self.objects[self.nextObjectID] = centroid # should be letter.centroid 
+		letter.objectID = self.nextObjectID
+		self.objects[self.nextObjectID] = letter # should be letter.centroid 
 		self.disappeared[self.nextObjectID] = 0
 		self.nextObjectID += 1
 
@@ -75,7 +77,9 @@ class CentroidTracker():
 		# centroids and register each of them
 		if len(self.objects) == 0:
 			for i in range(0, len(inputCentroids)):
-				self.register(inputCentroids[i])
+				let = Letter()
+				let.centroid = inputCentroids[i]
+				self.register(let)
 
 		# otherwise, are are currently tracking objects so we need to
 		# try to match the input centroids to existing object
@@ -83,7 +87,7 @@ class CentroidTracker():
 		else:
 			# grab the set of object IDs and corresponding centroids
 			objectIDs = list(self.objects.keys())
-			objectCentroids = list(self.objects.values())
+			objectCentroids = list(self.objects.values().centroid)
 
 			# compute the distance between each pair of object
 			# centroids and input centroids, respectively -- our
@@ -158,7 +162,9 @@ class CentroidTracker():
 			# register each new input centroid as a trackable object
 			else:
 				for col in unusedCols:
-					self.register(inputCentroids[col])
+					let = Letter()
+					let.centroid = inputCentroids[col]
+					self.register(let)
 
 		# return the set of trackable objects
 		return self.objects
