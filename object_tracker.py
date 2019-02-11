@@ -5,7 +5,7 @@
 from centroidtracker import CentroidTracker
 from letterBox import getRectCoords
 from random import randint
-from skvideo import VideoWriter
+# from skvideo import VideoWriter
 import numpy as np
 import argparse
 import imutils
@@ -45,12 +45,12 @@ time.sleep(2.0)
 # We convert the resolutions from float to integer.
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
-
-writer = VideoWriter("outpy.avi", frameSize=(frame_width, frame_height))
-writer.open()
+fps = cap.get(5)
+# writer = VideoWriter("outpy.avi", frameSize=(frame_width, frame_height))
+# writer.open()
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-# out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame_width, frame_height))
+# out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (frame_width, frame_height))
 
 success, frame = cap.read()
 
@@ -80,6 +80,9 @@ while cap.isOpened():
     if W is None or H is None:
         (H, W) = frame.shape[:2]
 
+    if count == 0:
+        out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+
     # get detections
     detections, text = getRectCoords(frame)
     rects = []
@@ -102,7 +105,7 @@ while cap.isOpened():
 
         # update our centroid tracker using the computed set of bounding
         # box rectangles
-        print(rects)
+        # print(rects)
         objects = ct.update(rects)
 
         # loop over the tracked objects
@@ -120,9 +123,9 @@ while cap.isOpened():
         
         # Write the frame into the file 'output.avi'
         cv2.imwrite("TEST_Frame.png", frame)
-        writer.write(frame)
+        # writer.write(frame)
 
-        # out.write(frame)
+        out.write(frame)
         count += 1
 
     # # if the `q` key was pressed, break from the loop
@@ -131,4 +134,4 @@ while cap.isOpened():
 
 # When everything done, release the video capture and video write objects
 cap.release()
-writer.release()
+out.release()
