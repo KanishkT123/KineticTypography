@@ -173,8 +173,8 @@ def getRectCoords(image):
                     padded = padImage(croppedRotated)
                     cv2.imwrite("tesseractError.png", padded)
                     pad = cv2.imread("tesseractError.png")
-                    txt = ocr(pad)
-                    textList.append(txt)
+                    # txt = ocr(pad)
+                    # textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
