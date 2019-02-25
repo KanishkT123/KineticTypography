@@ -71,8 +71,8 @@ bboxes, textOCR, colors = getRectCoords(frame)
 while cap.isOpened():
     # read the next frame from the video stream
     success, frame = cap.read()
-    if frame == None:
-        break
+    # if frame == None:
+    #     break
     frame = imutils.resize(frame, width=800)
 
     if frame is None or not success:
