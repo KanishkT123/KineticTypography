@@ -86,7 +86,7 @@ while cap.isOpened():
         out = cv2.VideoWriter('out2_24.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
     # get detections
-    detections, text = getRectCoords(frame)
+    detections, texts, colors = getRectCoords(frame)
     rects = []
     
     if len(detections) != 0:
@@ -108,7 +108,7 @@ while cap.isOpened():
         # update our centroid tracker using the computed set of bounding
         # box rectangles
         # print(rects)
-        objects = ct.update(rects)
+        objects = ct.update(rects, texts, colors)
 
         # loop over the tracked objects
         for (objectID, letter) in objects.items():
