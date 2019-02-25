@@ -10,6 +10,7 @@ class Letter():
 		self.angle = 0
 		self.text = ""
 		self.objectID = 0
+		self.color = 0
 
 
     # def add_flight(self, duration):
@@ -44,7 +45,7 @@ class CentroidTracker():
 		del self.objects[objectID]
 		del self.disappeared[objectID]
 
-	def update(self, rects):
+	def update(self, rects, texts, colors):
 		# check to see if the list of input bounding box rectangles
 		# is empty
 		if len(rects) == 0:
@@ -79,6 +80,8 @@ class CentroidTracker():
 			for i in range(0, len(inputCentroids)):
 				let = Letter()
 				let.centroid = inputCentroids[i]
+				let.text = texts[i]
+				let.color = colors[i]
 				self.register(let)
 
 		# otherwise, are are currently tracking objects so we need to

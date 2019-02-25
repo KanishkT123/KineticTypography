@@ -100,6 +100,7 @@ def getRectCoords(image):
     labels, clusterCenters = getPredictions(image)
     rectList = []
     textList = []
+    colorList = []
     for cluster in range(len(clusterCenters)):
         mask = np.zeros(image.shape[:2], np.uint8)
         xList, yList = getColorImage(labels, image, cluster)
@@ -141,9 +142,10 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            croppedRotated = cropImageRot(rect, box, masked)
+            croppedRotated = cropImageRot(rect, box, image)
             cv2.imwrite("MODE_crop.png", croppedRotated)
-            # findColor(croppedRotated)
+            col = findColor(croppedRotated)
+            colorList += col
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -173,8 +175,8 @@ def getRectCoords(image):
                     padded = padImage(croppedRotated)
                     cv2.imwrite("tesseractError.png", padded)
                     pad = cv2.imread("tesseractError.png")
-                    # txt = ocr(pad)
-                    # textList.append(txt)
+                    txt = ocr(pad)
+                    textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
@@ -184,7 +186,7 @@ def getRectCoords(image):
                 #     txt = ocr(padded)
                 #     textList.append(text)
     print(textList)
-    return rectList, textList
+    return rectList, textList, colorList
 
 """
     Takes in the frame subtracted image, then gets bounding boxes around each letter 
@@ -809,6 +811,7 @@ def findColor(croppedRotated):
     print("This is the color of this rectangle: ")
     print(max(colorD.items(), key=operator.itemgetter(1))[0])
 
+    return max(colorD.items(), key=operator.itemgetter(1))[0]
     # print("This is the color of this rectangle: ")
     # # Since opencv images are technically numpy arrays, use scipy to determine mode
     # mode, count = stats.mode(croppedRotated, axis=None)

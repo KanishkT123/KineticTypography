@@ -65,7 +65,7 @@ bboxes = []
 count = 0
 
 numClusters = args["colors"]
-bboxes, textOCR = getRectCoords(frame)
+bboxes, textOCR, colors = getRectCoords(frame)
 
 # loop over the frames from the video stream
 while cap.isOpened():
@@ -83,7 +83,7 @@ while cap.isOpened():
         (H, W) = frame.shape[:2]
 
     if count == 0:
-        out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+        out = cv2.VideoWriter('out2_24.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
     # get detections
     detections, text = getRectCoords(frame)
