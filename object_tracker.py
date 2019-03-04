@@ -125,6 +125,7 @@ with open(csvPath, "wb") as csv_file: # open csv writer
                 text = letter.text
                 lettId = str(letter.objectID)
                 info = [lettId, text, color]
+                print(info)
 
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
