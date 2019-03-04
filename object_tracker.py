@@ -71,7 +71,7 @@ count = 0
 numClusters = args["colors"]
 bboxes, textOCR, colors = getRectCoords(frame)
 
-with open(csvPath, "wb") as csv_file: # open csv writer
+with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
     
     # loop over the frames from the video stream
