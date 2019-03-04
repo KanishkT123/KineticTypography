@@ -120,11 +120,11 @@ with open(csvPath, "wb") as csv_file: # open csv writer
 
             # loop over the tracked objects
             for (objectID, letter) in objects.items():
-                centroid = str(letter.centroid)
+                centroid = letter.centroid
                 color = str(letter.color)
                 text = letter.text
                 lettId = str(letter.objectID)
-                info = [lettId, text, color, centroid]
+                info = [lettId, text, color]
 
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
