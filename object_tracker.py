@@ -121,7 +121,7 @@ with open(csvPath, "wb") as csv_file: # open csv writer
             # loop over the tracked objects
             for (objectID, letter) in objects.items():
                 centroid = letter.centroid
-                color = str(letter.color)
+                color = letter.color
                 text = letter.text
                 lettId = str(letter.objectID)
                 info = [lettId, text, color]
@@ -134,7 +134,9 @@ with open(csvPath, "wb") as csv_file: # open csv writer
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
-                writer.writerow(info)
+                writer.writerow(color)
+                writer.writerow(text)
+                writer.writerow(lettId)
 
             # show the output frame
             # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
