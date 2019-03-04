@@ -11,6 +11,8 @@ import argparse
 import imutils
 import time
 import cv2
+import csv
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -49,6 +51,8 @@ fps = cap.get(5)
 # writer = VideoWriter("outpy.avi", frameSize=(frame_width, frame_height))
 # writer.open()
 
+csvPath = "tracking_results"
+
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
 # out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (frame_width, frame_height))
 
@@ -67,72 +71,81 @@ count = 0
 numClusters = args["colors"]
 bboxes, textOCR, colors = getRectCoords(frame)
 
-# loop over the frames from the video stream
-while cap.isOpened():
-    # read the next frame from the video stream
-    success, frame = cap.read()
-    # if frame == None:
-    #     break
-    frame = imutils.resize(frame, width=800)
-
-    if frame is None or not success:
-        break
-
-    # if the frame dimensions are None, grab them
-    if W is None or H is None:
-        (H, W) = frame.shape[:2]
-
-    if count == 0:
-        out = cv2.VideoWriter('out2_24.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
-
-    # get detections
-    detections, texts, colors = getRectCoords(frame)
-    rects = []
+with open(csvPath, "wb") as csv_file: # open csv writer
+    writer = csv.writer(csv_file) 
     
-    if len(detections) != 0:
-        # loop over the detections
-        for i in range(len(detections)):
+    # loop over the frames from the video stream
+    while cap.isOpened():
+        # read the next frame from the video stream
+        success, frame = cap.read()
+        # if frame == None:
+        #     break
+        frame = imutils.resize(frame, width=800)
+
+        if frame is None or not success:
+            break
+
+        # if the frame dimensions are None, grab them
+        if W is None or H is None:
+            (H, W) = frame.shape[:2]
+
+        if count == 0:
+            out = cv2.VideoWriter('out2_24.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+
+        # get detections
+        detections, texts, colors = getRectCoords(frame)
+        rects = []
         
-            # compute the (x, y)-coordinates of the bounding box for
-            # the object, then update the bounding box rectangles list
-            box = detections[i]
-            rects.append(box)
-
-            # draw a bounding box surrounding the object so we can
-            # visualize it
-            (startX, startY, endX, endY) = box
-            # randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
-            cv2.rectangle(frame, (startX, startY), (endX, endY),
-                (0, 255, 0), 2)
-
-        # update our centroid tracker using the computed set of bounding
-        # box rectangles
-        # print(rects)
-        objects = ct.update(rects, texts, colors)
-
-        # loop over the tracked objects
-        for (objectID, letter) in objects.items():
-            centroid = letter.centroid
-            # draw both the ID of the object and the centroid of the
-            # object on the output frame
-            text = "ID {}".format(objectID)
-            cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
-
-        # show the output frame
-        # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
         
-        # Write the frame into the file 'output.avi'
-        cv2.imwrite("TEST_Frame.png", frame)
-        # writer.write(frame)
+        if len(detections) != 0:
+            # loop over the detections
+            for i in range(len(detections)):
+            
+                # compute the (x, y)-coordinates of the bounding box for
+                # the object, then update the bounding box rectangles list
+                box = detections[i]
+                rects.append(box)
 
-        out.write(frame)
-        count += 1
+                # draw a bounding box surrounding the object so we can
+                # visualize it
+                (startX, startY, endX, endY) = box
+                # randColor = (randint(0, 255), randint(0, 255), randint(0, 255))
+                cv2.rectangle(frame, (startX, startY), (endX, endY),
+                    (0, 255, 0), 2)
 
-    # # if the `q` key was pressed, break from the loop
-    # if key == ord("q"):
-    #     break
+            # update our centroid tracker using the computed set of bounding
+            # box rectangles
+            # print(rects)
+            objects = ct.update(rects, texts, colors)
+
+            # loop over the tracked objects
+            for (objectID, letter) in objects.items():
+                centroid = letter.centroid
+                color = letter.color
+                text = letter.text
+                lettId = letter.objectID
+                info = [lettId, text, color, centroid]
+
+                # draw both the ID of the object and the centroid of the
+                # object on the output frame
+                text = "ID {}".format(objectID)
+                cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
+
+                writer.writerow(info)
+
+            # show the output frame
+            # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
+            
+            # Write the frame into the file 'output.avi'
+            cv2.imwrite("TEST_Frame.png", frame)
+            # writer.write(frame)
+
+            out.write(frame)
+            count += 1
+
+    writer.close()
 
 # When everything done, release the video capture and video write objects
 cap.release()
