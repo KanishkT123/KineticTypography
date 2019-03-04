@@ -123,7 +123,7 @@ with open(csvPath, "wb") as csv_file: # open csv writer
                 centroid = letter.centroid
                 color = letter.color
                 text = letter.text
-                lettId = str(letter.objectID)
+                lettId = letter.objectID
                 info = [lettId, text, color]
                 print(info)
 
