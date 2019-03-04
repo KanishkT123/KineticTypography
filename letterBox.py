@@ -185,7 +185,7 @@ def getRectCoords(image):
                 #     padded = pad(croppedRotated)
                 #     txt = ocr(padded)
                 #     textList.append(text)
-    print(textList)
+    # print(textList)
     return rectList, textList, colorList
 
 """
@@ -808,8 +808,8 @@ def findColor(croppedRotated):
                 colorD[coords] += 1
             else:
                 colorD[coords] = 1
-    print("This is the color of this rectangle: ")
-    print(max(colorD.items(), key=operator.itemgetter(1))[0])
+    # print("This is the color of this rectangle: ")
+    # print(max(colorD.items(), key=operator.itemgetter(1))[0])
 
     return max(colorD.items(), key=operator.itemgetter(1))[0]
     # print("This is the color of this rectangle: ")
