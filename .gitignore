@@ -36,3 +36,19 @@ ompiled source #
 ehthumbs.db
 Thumbs.db
 
+# Directories #
+###############
+/Results_2
+/Results_3
+/stitch_dumble3
+
+# Generated photos #
+####################
+thumb*.png
+thumb*.jpg
+frame*.png
+frame*.jpg
+
+# Secret files #
+###############
+*.json
