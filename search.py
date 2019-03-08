@@ -10,20 +10,32 @@
 #       to find the correct place to provide that key..
 
 import argparse
+import sys
+import json
 
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+"""
+Takes in a filename as input (JSON)
+Returns the parsed file as a list
+"""
+def parseFiles(fileName):
+    with open(fileName) as fileData:
+        data = json.load(fileData)
+    fileData.close()
+    return data
 
 # Set DEVELOPER_KEY to the API key value from the APIs & auth > Registered apps
 # tab of
 #   https://cloud.google.com/console
 # Please ensure that you have enabled the YouTube Data API for your project.
-DEVELOPER_KEY = 'AIzaSyCDVZRnHa3bCTgxI4mlHCG3Lr851pp0QP4'
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 YOUTUBE_API_VERSION = 'v3'
 
 def youtube_search(options):
+    DEVELOPER_KEY = parseFiles(options.f)['key']
+
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
     developerKey=DEVELOPER_KEY)
 
@@ -61,6 +73,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--q', help='Search term', default='Google')
     parser.add_argument('--max-results', help='Max results', default=25)
+    parser.add_argument('--f', help='API Key JSON filename')
     args = parser.parse_args()
 
     try:
