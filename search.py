@@ -66,7 +66,7 @@ def youtube_search(options):
 
     with open("youtubeVideoList.txt", "w") as text_file:
         for vid in videos:
-            text = "https://www.youtube.com/watch?v" + vid + "\n"
+            text = "https://www.youtube.com/watch?v=" + vid + "\n"
             text_file.write(text)
     text_file.close()
 
