@@ -65,6 +65,12 @@ def youtube_search(options):
             playlists.append('%s (%s)' % (search_result['snippet']['title'],
                                             search_result['id']['playlistId']))
 
+    with open("youtubeVideoList.txt", "w") as text_file:
+        for vid in videos:
+            text = vid + "\n"
+            text_file.write(text)
+    text_file.close()
+
     print('Videos:\n', '\n'.join(videos), '\n')
     print('Channels:\n', '\n'.join(channels), '\n')
     print('Playlists:\n', '\n'.join(playlists), '\n')
