@@ -10,6 +10,7 @@ from scipy.spatial import distance
 from scipy import stats
 import operator
 import nltk_metrics_distance
+import copy
 
 
 """
@@ -146,7 +147,7 @@ def getRectCoords(image):
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
-
+            boxCopy = copy.deepCopy(box)
             # print("about to call crop2")
             
             # print("finished crop2")
@@ -175,7 +176,7 @@ def getRectCoords(image):
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox) # append box coords to list
-                    boxList.append((rect, box))
+                    boxList.append((rect, boxCopy))
                     croppedRotated = cropImageRot(rect, box, image)
                     cv2.imwrite("MODE_crop.png", croppedRotated)
                     col = findColor(croppedRotated)
