@@ -12,6 +12,7 @@ import imutils
 import time
 import cv2
 import csv
+import datetime
 
 
 # construct the argument parse and parse the arguments
@@ -51,7 +52,8 @@ fps = cap.get(5)
 # writer = VideoWriter("outpy.avi", frameSize=(frame_width, frame_height))
 # writer.open()
 
-csvPath = "tracking_results"
+dt = datetime.datetime.now().strftime("%Y-%m-%d")
+csvPath = "tracking_results" + dt + ".csv" 
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
 # out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (frame_width, frame_height))

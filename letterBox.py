@@ -142,10 +142,7 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
 
             # print("about to call crop2")
-            croppedRotated = cropImageRot(rect, box, image)
-            cv2.imwrite("MODE_crop.png", croppedRotated)
-            col = findColor(croppedRotated)
-            colorList += col
+            
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -171,7 +168,11 @@ def getRectCoords(image):
 
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
-                    rectList.append(newBox)
+                    rectList.append(newBox) # append box coords to list
+                    croppedRotated = cropImageRot(rect, box, image)
+                    cv2.imwrite("MODE_crop.png", croppedRotated)
+                    col = findColor(croppedRotated)
+                    colorList += col
                     padded = padImage(croppedRotated)
                     cv2.imwrite("tesseractError.png", padded)
                     pad = cv2.imread("tesseractError.png")
@@ -186,6 +187,50 @@ def getRectCoords(image):
                 #     txt = ocr(padded)
                 #     textList.append(text)
     # print(textList)
+
+    rectList = sorted(rectList, key=getKey)
+    if len(rectList) == 0:
+        return rectList, textList, colorList
+    else:
+        rect1 = rectList[0]
+        box1 = cv2.boxPoints(rect1)
+        box1 = np.int0(box1)
+        cropR1 = cropImageRot(rect1, box1, image)
+        # cv2.imwrite("cropR1.png", cropR1)
+
+        if len(actualRect) > 1:
+            rect2 = actualRect[1]
+            box2 = cv2.boxPoints(rect2)
+            box2 = np.int0(box2)
+            cropR2 = cropImageRot(rect2, box2, image)
+            # cropR2 = crop2(rect2, box2, masked, str(cropName))
+            # cv2.imwrite("cropR2.png", cropR2)
+
+            out = boxAppendImg(cropR1, cropR2)
+            # cv2.imwrite("out.png", out)
+            template = cropR1
+
+            for i in range(len(rectList)):
+                rect = rectList[i] 
+                box = cv2.boxPoints(rect) # get vertices
+                box = np.int0(box) # round to nearest integer
+
+                crop = cropImageRot(rect, box, image) # create cropped letter image
+                # cropResized = makeSameSize(template, crop, resultName)
+                # cv2.imwrite("crop.png", crop)
+
+                if i != 0 and i != 1:
+                    out = boxAppend(out, crop)
+                    # cv2.imwrite("out.png", out)
+            outP = padImage(out)
+            txt = ocr(outP)
+            # print("About to add ocr output")
+
+            with open("OCR_output_3_11.txt", "a") as text_file:
+                text = txt + "\n"
+                text_file.write(text)
+            # outName = "appended_" + resultName
+            # cv2.imwrite(outName, out)
     return rectList, textList, colorList
 
 """
@@ -888,6 +933,39 @@ def ocr(img):
 def boxAppend(imageFile1, imageFile2):
     img1 = cv2.imread(imageFile1, 0)
     img2 = cv2.imread(imageFile2, 0)
+
+    h1, w1 = img1.shape[:2]
+    h2, w2 = img2.shape[:2]
+
+    # Spacing between letters?
+    h3 = h2
+    w3 = 10
+    # space = np.zeros(h3,w3, np.uint8)
+
+    vis = np.zeros((max(h1, h2), w1+w2+w3), np.uint8)
+    vis[:h1, :w1] = img1
+    # vis[:h3, w1:w1+w3] = space
+    vis[:h2, w1+w3:w1+w2+w3] = img2
+    # vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
+
+    # #create empty matrix
+    # vis = np.zeros((max(h1, h2), w1+w2,3), np.uint8)
+
+    # #combine 2 images
+    # vis[:h1, :w1,:3] = img1
+    # vis[:h2, w1:w1+w2,:3] = img2
+
+    output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
+    # cv2.imwrite("attached.png", output)
+    return output
+
+"""
+    Takes in two images, then "appends" them, basically adding the second image right 
+    next to the first imagae and outputs an opencv image
+"""
+def boxAppendImg(img1, img2):
+    # img1 = cv2.imread(imageFile1, 0)
+    # img2 = cv2.imread(imageFile2, 0)
 
     h1, w1 = img1.shape[:2]
     h2, w2 = img2.shape[:2]
