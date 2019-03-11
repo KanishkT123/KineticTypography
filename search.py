@@ -56,8 +56,7 @@ def youtube_search(options):
     # matching videos, channels, and playlists.
     for search_result in search_response.get('items', []):
         if search_result['id']['kind'] == 'youtube#video':
-            videos.append('%s (%s)' % (search_result['snippet']['title'],
-                                        search_result['id']['videoId']))
+            videos.append('%s' % (search_result['id']['videoId']))
         elif search_result['id']['kind'] == 'youtube#channel':
             channels.append('%s (%s)' % (search_result['snippet']['title'],
                                         search_result['id']['channelId']))
@@ -67,7 +66,7 @@ def youtube_search(options):
 
     with open("youtubeVideoList.txt", "w") as text_file:
         for vid in videos:
-            text = vid + "\n"
+            text = "https://www.youtube.com/watch?v" + vid + "\n"
             text_file.write(text)
     text_file.close()
 
