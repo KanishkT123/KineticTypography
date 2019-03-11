@@ -19,6 +19,11 @@ def getKey(rect):
     center = rect[0]
     return center[0]
 
+def getKeyTup(tup):
+    rectCenter = tup[0][0]
+    return rectCenter[0]
+
+
 """
     Get bounding boxes around each letter 
 """
@@ -101,6 +106,7 @@ def getRectCoords(image):
     rectList = []
     textList = []
     colorList = []
+    boxList = []
     for cluster in range(len(clusterCenters)):
         mask = np.zeros(image.shape[:2], np.uint8)
         xList, yList = getColorImage(labels, image, cluster)
@@ -169,6 +175,7 @@ def getRectCoords(image):
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox) # append box coords to list
+                    boxList.append((rect, box))
                     croppedRotated = cropImageRot(rect, box, image)
                     cv2.imwrite("MODE_crop.png", croppedRotated)
                     col = findColor(croppedRotated)
@@ -188,20 +195,20 @@ def getRectCoords(image):
                 #     textList.append(text)
     # print(textList)
 
-    rectList = sorted(rectList, key=getKey)
-    if len(rectList) == 0:
+    boxList = sorted(boxList, key=getKeyTup)
+    if len(boxList) == 0:
         return rectList, textList, colorList
     else:
-        rect1 = rectList[0]
-        box1 = cv2.boxPoints(rect1)
-        box1 = np.int0(box1)
+        rect1 = boxList[0][0]
+        box1 = boxList[0][1]
         cropR1 = cropImageRot(rect1, box1, image)
         # cv2.imwrite("cropR1.png", cropR1)
 
-        if len(actualRect) > 1:
-            rect2 = actualRect[1]
-            box2 = cv2.boxPoints(rect2)
-            box2 = np.int0(box2)
+        if len(boxList) > 1:
+            rect2 = boxList[1][0]
+            # box2 = cv2.boxPoints(rect2)
+            # box2 = np.int0(box2)
+            box2 = boxList[1][1]
             cropR2 = cropImageRot(rect2, box2, image)
             # cropR2 = crop2(rect2, box2, masked, str(cropName))
             # cv2.imwrite("cropR2.png", cropR2)
@@ -210,17 +217,17 @@ def getRectCoords(image):
             # cv2.imwrite("out.png", out)
             template = cropR1
 
-            for i in range(len(rectList)):
-                rect = rectList[i] 
-                box = cv2.boxPoints(rect) # get vertices
-                box = np.int0(box) # round to nearest integer
-
+            for i in range(len(boxList)):
+                rect = boxList[i][0] 
+                # box = cv2.boxPoints(rect) # get vertices
+                # box = np.int0(box) # round to nearest integer
+                box = boxList[i][1]
                 crop = cropImageRot(rect, box, image) # create cropped letter image
                 # cropResized = makeSameSize(template, crop, resultName)
                 # cv2.imwrite("crop.png", crop)
 
                 if i != 0 and i != 1:
-                    out = boxAppend(out, crop)
+                    out = boxAppendImg(out, crop)
                     # cv2.imwrite("out.png", out)
             outP = padImage(out)
             txt = ocr(outP)
