@@ -147,7 +147,7 @@ def getRectCoords(image):
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
-            boxCopy = copy.deepCopy(box)
+            boxCopy = copy.deepcopy(box)
             # print("about to call crop2")
             
             # print("finished crop2")
