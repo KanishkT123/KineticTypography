@@ -155,7 +155,7 @@ def getRectCoords(image):
             
             # print("finished crop2")
 
-            rect = box.tolist() # save vertices as a python list
+            rect2 = box.tolist() # save vertices as a python list
             # print(rect)
 
             if w not in range(width - 25, width + 10) and h not in range(height - 25, height + 10):
@@ -163,10 +163,10 @@ def getRectCoords(image):
                 # (xmin,ymin,boxwidth,boxheight)
                 # coords = (rect[0][0], rect[0][1], rect[1][0], rect[1][1])
 
-                xmin = min(rect)[0]
-                ymin = min(rect, key=lambda x: x[1])[1]
-                xmax = max(rect)[0]
-                ymax = max(rect, key=lambda x: x[1])[1]
+                xmin = min(rect2)[0]
+                ymin = min(rect2, key=lambda x: x[1])[1]
+                xmax = max(rect2)[0]
+                ymax = max(rect2, key=lambda x: x[1])[1]
                 # boxwidth = rect[2]
                 # boxheight = rect[3]
                 
