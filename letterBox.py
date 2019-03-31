@@ -149,7 +149,8 @@ def getRectCoords(image):
             box = np.int0(box) # round to nearest integer
             boxCopy = copy.deepcopy(box)
             # print("about to call crop2")
-            
+            croppedRotated = cropImageRot(rect, box, image)
+            cv2.imwrite("MODE_crop.png", croppedRotated)
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -177,8 +178,7 @@ def getRectCoords(image):
                     newBox = (xmin, ymin, xmax, ymax)
                     rectList.append(newBox) # append box coords to list
                     boxList.append((rect, boxCopy))
-                    croppedRotated = cropImageRot(rect, box, image)
-                    cv2.imwrite("MODE_crop.png", croppedRotated)
+                    
                     col = findColor(croppedRotated)
                     colorList += col
                     padded = padImage(croppedRotated)
