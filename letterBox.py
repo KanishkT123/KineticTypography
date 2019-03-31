@@ -147,10 +147,12 @@ def getRectCoords(image):
             h, w = rect[1] # get width and height of rectangle
             box = cv2.boxPoints(rect) # get vertices
             box = np.int0(box) # round to nearest integer
-            boxCopy = copy.deepcopy(box)
-            # print("about to call crop2")
+
             croppedRotated = cropImageRot(rect, box, image)
             cv2.imwrite("MODE_crop.png", croppedRotated)
+            boxCopy = copy.deepcopy(box)
+            # print("about to call crop2")
+            
             # print("finished crop2")
 
             rect = box.tolist() # save vertices as a python list
@@ -185,7 +187,7 @@ def getRectCoords(image):
                     cv2.imwrite("tesseractError.png", padded)
                     pad = cv2.imread("tesseractError.png")
                     # txt = ocr(pad)
-                    textList.append(txt)
+                    # textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
