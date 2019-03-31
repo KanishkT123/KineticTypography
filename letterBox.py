@@ -705,6 +705,8 @@ def crop2(rect, box, img, resultName):
 """
 def cropImageRot(rect, box, img):
     # I got this code from: https://stackoverflow.com/questions/37177811/crop-rectangle-returned-by-minarearect-opencv-python
+    print(rect)
+    print(box)
     W = rect[1][0]
     H = rect[1][1]
     mult = 1.0
