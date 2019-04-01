@@ -187,7 +187,7 @@ def getRectCoords(image):
                     cv2.imwrite("tesseractError.png", padded)
                     pad = cv2.imread("tesseractError.png")
                     txt = ocr(pad)
-                    # textList.append(txt)
+                    textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:
@@ -1000,9 +1000,9 @@ def boxAppendImg(img1, img2):
     # vis[:h1, :w1,:3] = img1
     # vis[:h2, w1:w1+w2,:3] = img2
 
-    output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
+    # output = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
     # cv2.imwrite("attached.png", output)
-    return output
+    return vis
 
 
 """
