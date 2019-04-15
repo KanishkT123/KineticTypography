@@ -94,7 +94,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
 
         if count == 0:
             outname = "out" + dt + ".avi"
-            out = cv2.VideoWriter(outname,cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+            out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
         # get detections
         detections, texts, colors = getRectCoords(frame, avoid)

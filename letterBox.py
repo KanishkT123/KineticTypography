@@ -5,6 +5,7 @@ import numpy as np
 import pytesseract
 from PIL import Image
 from matplotlib import pyplot as plt
+plt.use('Agg') 
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from scipy.spatial import distance
 from scipy import stats
