@@ -92,7 +92,8 @@ with open(csvPath, "w") as csv_file: # open csv writer
             (H, W) = frame.shape[:2]
 
         if count == 0:
-            out = cv2.VideoWriter('out2_24.avi',cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+            outname = "out" + dt + ".avi"
+            out = cv2.VideoWriter(outname,cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
         # get detections
         detections, texts, colors = getRectCoords(frame)
@@ -127,12 +128,13 @@ with open(csvPath, "w") as csv_file: # open csv writer
                 text = letter.text
                 lettId = letter.objectID
                 info = [lettId, text, color]
-                print(info)
+                # print(info)
 
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
-                text = "ID {}".format(objectID)
-                cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
+                # text = "ID {}".format(objectID)
+                textBox = "Letter {}".format(text)
+                cv2.putText(frame, textBox, (centroid[0] - 10, centroid[1] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
