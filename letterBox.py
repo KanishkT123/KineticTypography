@@ -100,7 +100,7 @@ def getBounding(imagePath, numClusters, resultName):
 """
     Get bounding boxes around each letter and return box coordinates
 """
-def getRectCoords(image):
+def getRectCoords(image, avoid):
     height, width, channels = image.shape
 
     labels, clusterCenters = getPredictions(image)
@@ -178,16 +178,17 @@ def getRectCoords(image):
 
                 if xmax < width and ymax < height:
                     newBox = (xmin, ymin, xmax, ymax)
-                    rectList.append(newBox) # append box coords to list
-                    boxList.append((rect, boxCopy))
-                    
-                    col = findColor(croppedRotated)
-                    colorList += col
-                    padded = padImage(croppedRotated)
-                    cv2.imwrite("tesseractError.png", padded)
-                    pad = cv2.imread("tesseractError.png")
-                    txt = ocr(pad)
-                    textList.append(txt)
+                    if newBox not in avoid:
+                        rectList.append(newBox) # append box coords to list
+                        boxList.append((rect, boxCopy))
+                        
+                        col = findColor(croppedRotated)
+                        colorList += col
+                        padded = padImage(croppedRotated)
+                        cv2.imwrite("tesseractError.png", padded)
+                        pad = cv2.imread("tesseractError.png")
+                        txt = ocr(pad)
+                        textList.append(txt)
 
 
                 # if xmin + boxwidth < width and ymin + boxheight < height:

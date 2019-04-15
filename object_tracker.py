@@ -75,7 +75,8 @@ bboxes, textOCR, colors = getRectCoords(frame)
 
 with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
-    
+    avoid = []
+
     # loop over the frames from the video stream
     while cap.isOpened():
         # read the next frame from the video stream
@@ -96,7 +97,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
             out = cv2.VideoWriter(outname,cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
         # get detections
-        detections, texts, colors = getRectCoords(frame)
+        detections, texts, colors = getRectCoords(frame, avoid)
         rects = []
         
         
@@ -119,7 +120,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
             # update our centroid tracker using the computed set of bounding
             # box rectangles
             # print(rects)
-            objects = ct.update(rects, texts, colors)
+            objects, avoid = ct.update(rects, texts, colors)
 
             # loop over the tracked objects
             for (objectID, letter) in objects.items():
@@ -132,6 +133,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
 
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
+
                 # text = "ID {}".format(objectID)
                 textBox = "Letter {}".format(text)
                 cv2.putText(frame, textBox, (centroid[0] - 10, centroid[1] - 10),
