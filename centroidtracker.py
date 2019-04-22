@@ -11,6 +11,7 @@ class Letter():
 		self.text = ""
 		self.objectID = 0
 		self.color = 0
+		self.present = 0
 
 
     # def add_flight(self, duration):
@@ -26,6 +27,7 @@ class CentroidTracker():
 		self.objects = OrderedDict()
 		self.disappeared = OrderedDict()
 		self.avoid = []
+		self.lifespan = []
 
 		# store the number of maximum consecutive frames a given
 		# object is allowed to be marked as "disappeared" until we
@@ -46,6 +48,8 @@ class CentroidTracker():
 		let = self.objects[objectID]
 		cent = let.centroid
 		coords = let.coordinates
+		life = let.present
+		self.lifespan.append(life) # write out how long this existed
 		del self.objects[objectID]
 		del self.disappeared[objectID]
 		self.avoid.append(coords)
@@ -87,6 +91,7 @@ class CentroidTracker():
 				let.centroid = inputCentroids[i]
 				let.text = texts[i]
 				let.color = colors[i]
+				let.present = 1
 				self.register(let)
 
 		# otherwise, are are currently tracking objects so we need to
@@ -136,6 +141,7 @@ class CentroidTracker():
 				# counter
 				objectID = objectIDs[row]
 				self.objects[objectID].centroid = inputCentroids[col]
+				self.objects[objectID].present += 1 # increment how many frames it's been present for 
 				self.disappeared[objectID] = 0
 
 				# indicate that we have examined each of the row and
@@ -176,4 +182,4 @@ class CentroidTracker():
 					self.register(let)
 
 		# return the set of trackable objects
-		return self.objects, self.avoid
+		return self.objects, self.avoid, self.lifespan

@@ -72,6 +72,7 @@ count = 0
 
 numClusters = args["colors"]
 # bboxes, textOCR, colors = getRectCoords(frame, [])
+lifespanFile = "lifespan_" + dt + ".txt"
 
 with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
@@ -120,7 +121,16 @@ with open(csvPath, "w") as csv_file: # open csv writer
             # update our centroid tracker using the computed set of bounding
             # box rectangles
             # print(rects)
-            objects, avoid = ct.update(rects, texts, colors)
+            objects, avoid, lifespan = ct.update(rects, texts, colors)
+
+            averageLifespan = sum(lifespan)/len(lifespan)
+            minLifespan = min(lifespan)
+            maxLifespan = max(lifespan)
+
+            with open(lifespanFile, "a") as text_file:
+                text_file.write("Frame %s Average: %s" % (count, averageLifespan)
+                text_file.write("Frame %s Minimum: %s" % (count, minLifespan)
+                text_file.write("Frame %s Maximum: %s" % (count, maxLifespan)
 
             # loop over the tracked objects
             for (objectID, letter) in objects.items():
