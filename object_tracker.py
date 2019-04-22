@@ -128,9 +128,9 @@ with open(csvPath, "w") as csv_file: # open csv writer
             maxLifespan = max(lifespan)
 
             with open(lifespanFile, "a") as text_file:
-                text_file.write("Frame %s Average: %s" % (count, averageLifespan)
-                text_file.write("Frame %s Minimum: %s" % (count, minLifespan)
-                text_file.write("Frame %s Maximum: %s" % (count, maxLifespan)
+                text_file.write("Frame %s Average: %s" % (count, averageLifespan))
+                text_file.write("Frame %s Minimum: %s" % (count, minLifespan))
+                text_file.write("Frame %s Maximum: %s" % (count, maxLifespan))
 
             # loop over the tracked objects
             for (objectID, letter) in objects.items():
