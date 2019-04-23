@@ -73,7 +73,8 @@ count = 0
 
 numClusters = args["colors"]
 # bboxes, textOCR, colors = getRectCoords(frame, [])
-lifespanFile = "lifespan_" + dt + ".txt"
+lifespanFile = "lifespan_" + dt + ".csv"
+moveFile = "moved_" + dt + ".csv"
 
 with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
@@ -123,25 +124,36 @@ with open(csvPath, "w") as csv_file: # open csv writer
             # box rectangles
             # print(rects)
             objects, avoid, lifespan = ct.update(rects, texts, colors)
+    
+            if len(lifespan) > 0:
+                averageLifespan = sum(lifespan)/len(lifespan)
+                minLifespan = min(lifespan)
+                maxLifespan = max(lifespan)
 
-            averageLifespan = sum(lifespan)/len(lifespan)
-            minLifespan = min(lifespan)
-            maxLifespan = max(lifespan)
-
-            with open(lifespanFile, "a") as text_file:
-                text_file.write("Frame %s Average: %s" % (count, averageLifespan))
-                text_file.write("Frame %s Minimum: %s" % (count, minLifespan))
-                text_file.write("Frame %s Maximum: %s" % (count, maxLifespan))
-
-            # loop over the tracked objects
-            for (objectID, letter) in objects.items():
-                centroid = letter.centroid
-                color = letter.color
-                text = letter.text
-                lettId = letter.objectID
-                info = [lettId, text, color]
-                # print(info)
-
+                with open(lifespanFile, "a") as ls_file:
+                    writerLs = csv.writer(ls_file, delimiter=',') 
+                    writerLs.writerow("Frame %s Average: %s" % (count, averageLifespan))
+                    writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
+                    writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
+                    for item in lifespan:
+                        writerLs.writerow(item)
+                    writerLs.close()
+                    
+            with open(moveFile, "a") as mv_file:
+                writerMv = csv.writer(mv_file, delimiter=',') 
+                # loop over the tracked objects
+                for (objectID, letter) in objects.items():
+                    centroid = letter.centroid
+                    color = letter.color
+                    text = letter.text
+                    lettId = letter.objectID
+                    info = [lettId, text, color]
+                    moveInfo = letter.move
+                    # print(info) 
+                
+                    
+                    writerMv.writerow(moveInfo)
+                writerMv.close()
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
 

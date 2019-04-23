@@ -12,6 +12,7 @@ class Letter():
 		self.objectID = 0
 		self.color = 0
 		self.present = 0
+		self.move = 0
 
 
     # def add_flight(self, duration):
@@ -28,7 +29,7 @@ class CentroidTracker():
 		self.disappeared = OrderedDict()
 		self.avoid = []
 		self.lifespan = []
-
+		
 		# store the number of maximum consecutive frames a given
 		# object is allowed to be marked as "disappeared" until we
 		# need to deregister the object from tracking
@@ -140,6 +141,8 @@ class CentroidTracker():
 				# set its new centroid, and reset the disappeared
 				# counter
 				objectID = objectIDs[row]
+				if self.objects[objectID].centroid != inputCentroids[col]:
+					self.objects[objectID].move += 1
 				self.objects[objectID].centroid = inputCentroids[col]
 				self.objects[objectID].present += 1 # increment how many frames it's been present for 
 				self.disappeared[objectID] = 0
