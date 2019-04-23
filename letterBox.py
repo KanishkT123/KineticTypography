@@ -935,7 +935,7 @@ def ocr(img):
     # Calling pytesseract on the image
     img_n = Image.fromarray(img)
     txt = pytesseract.image_to_string(img_n, lang="eng")
-    print(txt)
+    # print(txt)
     return txt
 
 
