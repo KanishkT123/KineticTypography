@@ -73,8 +73,8 @@ count = 0
 
 numClusters = args["colors"]
 # bboxes, textOCR, colors = getRectCoords(frame, [])
-lifespanFile = "lifespan_" + dt + ".csv"
-moveFile = "moved_" + dt + ".csv"
+lifespanFile = "lifespan_" + dt + ".txt"
+moveFile = "moved_" + dt + ".txt"
 
 with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
@@ -131,16 +131,18 @@ with open(csvPath, "w") as csv_file: # open csv writer
                 maxLifespan = max(lifespan)
 
                 with open(lifespanFile, "a") as ls_file:
-                    writerLs = csv.writer(ls_file, delimiter=',') 
-                    writerLs.writerow("Frame %s Average: %s" % (count, averageLifespan))
-                    writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
-                    writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
+                    ls_file.write("Frame %s Average: %s" % (count, averageLifespan))
+                    ls_file.write("Frame %s Minimum: %s" % (count, minLifespan))
+                    ls_file.write("Frame %s Maximum: %s" % (count, maxLifespan))
+                    # writerLs.writerow("Frame %s Average: %s" % (count, averageLifespan))
+                    # writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
+                    # writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
                     for item in lifespan:
-                        writerLs.writerow(item)
-                    writerLs.close()
+                        ls_file.write(item)
+                    ls_file.close()
                     
             with open(moveFile, "a") as mv_file:
-                writerMv = csv.writer(mv_file, delimiter=',') 
+                # writerMv = csv.writer(mv_file, delimiter=',') 
                 # loop over the tracked objects
                 for (objectID, letter) in objects.items():
                     centroid = letter.centroid
@@ -152,8 +154,8 @@ with open(csvPath, "w") as csv_file: # open csv writer
                     # print(info) 
                 
                     
-                    writerMv.writerow(moveInfo)
-                writerMv.close()
+                    mv_file.write(moveInfo)
+                mv_file.close()
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
 
