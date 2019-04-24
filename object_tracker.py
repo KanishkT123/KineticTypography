@@ -138,7 +138,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
                     # writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
                     # writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
                     for item in lifespan:
-                        ls_file.write(item)
+                        ls_file.write(str(item))
                     ls_file.close()
                     
             with open(moveFile, "a") as mv_file:
@@ -154,7 +154,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
                     # print(info) 
                 
                     
-                    mv_file.write(moveInfo)
+                    mv_file.write(str(moveInfo))
                 mv_file.close()
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
