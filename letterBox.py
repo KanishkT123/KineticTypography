@@ -188,7 +188,8 @@ def getRectCoords(image, avoid):
                         padded = padImage(croppedRotated)
                         cv2.imwrite("tesseractError.png", padded)
                         pad = cv2.imread("tesseractError.png")
-                        txt = ocr(pad)
+                        # txt = ocr(pad)
+                        txt = ""
                         textList.append(txt)
 
 
@@ -235,12 +236,12 @@ def getRectCoords(image, avoid):
                     out = boxAppendImg(out, crop)
                     # cv2.imwrite("out.png", out)
             outP = padImage(out)
-            txt = ocr(outP)
+            # txt = ocr(outP)
             # print("About to add ocr output")
 
-            with open("OCR_output_3_11.txt", "a") as text_file:
-                text = txt + "\n"
-                text_file.write(text)
+            # with open("OCR_output_3_11.txt", "a") as text_file:
+            #     text = txt + "\n"
+            #     text_file.write(text)
             # outName = "appended_" + resultName
             # cv2.imwrite(outName, out)
     return rectList, textList, colorList
