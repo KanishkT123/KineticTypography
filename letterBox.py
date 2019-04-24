@@ -207,35 +207,35 @@ def getRectCoords(image, avoid):
     else:
         rect1 = boxList[0][0]
         box1 = boxList[0][1]
-        cropR1 = cropImageRot(rect1, box1, image)
-        # cv2.imwrite("cropR1.png", cropR1)
+        # cropR1 = cropImageRot(rect1, box1, image)
+        # # cv2.imwrite("cropR1.png", cropR1)
 
-        if len(boxList) > 1:
-            rect2 = boxList[1][0]
-            # box2 = cv2.boxPoints(rect2)
-            # box2 = np.int0(box2)
-            box2 = boxList[1][1]
-            cropR2 = cropImageRot(rect2, box2, image)
-            # cropR2 = crop2(rect2, box2, masked, str(cropName))
-            # cv2.imwrite("cropR2.png", cropR2)
+        # if len(boxList) > 1:
+        #     rect2 = boxList[1][0]
+        #     # box2 = cv2.boxPoints(rect2)
+        #     # box2 = np.int0(box2)
+        #     box2 = boxList[1][1]
+        #     cropR2 = cropImageRot(rect2, box2, image)
+        #     # cropR2 = crop2(rect2, box2, masked, str(cropName))
+        #     # cv2.imwrite("cropR2.png", cropR2)
 
-            out = boxAppendImg(cropR1, cropR2)
-            # cv2.imwrite("out.png", out)
-            template = cropR1
+        #     out = boxAppendImg(cropR1, cropR2)
+        #     # cv2.imwrite("out.png", out)
+        #     template = cropR1
 
-            for i in range(len(boxList)):
-                rect = boxList[i][0] 
-                # box = cv2.boxPoints(rect) # get vertices
-                # box = np.int0(box) # round to nearest integer
-                box = boxList[i][1]
-                crop = cropImageRot(rect, box, image) # create cropped letter image
-                # cropResized = makeSameSize(template, crop, resultName)
-                # cv2.imwrite("crop.png", crop)
+        #     for i in range(len(boxList)):
+        #         rect = boxList[i][0] 
+        #         # box = cv2.boxPoints(rect) # get vertices
+        #         # box = np.int0(box) # round to nearest integer
+        #         box = boxList[i][1]
+        #         crop = cropImageRot(rect, box, image) # create cropped letter image
+        #         # cropResized = makeSameSize(template, crop, resultName)
+        #         # cv2.imwrite("crop.png", crop)
 
-                if i != 0 and i != 1:
-                    out = boxAppendImg(out, crop)
-                    # cv2.imwrite("out.png", out)
-            outP = padImage(out)
+        #         if i != 0 and i != 1:
+        #             out = boxAppendImg(out, crop)
+        #             # cv2.imwrite("out.png", out)
+        #     outP = padImage(out)
             # txt = ocr(outP)
             # print("About to add ocr output")
 
