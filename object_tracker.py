@@ -99,6 +99,8 @@ with open(csvPath, "w") as csv_file: # open csv writer
             outname = "out" + dt + ".avi"
             out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
+        if count >= 300:
+            break
         # get detections
         detections, texts, colors = getRectCoords(frame, avoid)
         rects = []
