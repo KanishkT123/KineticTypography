@@ -53,7 +53,7 @@ fps = cap.get(5)
 # writer = VideoWriter("outpy.avi", frameSize=(frame_width, frame_height))
 # writer.open()
 
-dt = datetime.datetime.now().strftime("%Y-%m-%d")
+dt = datetime.datetime.now().strftime("%Y-%m-%d-%X")
 csvPath = "tracking_results" + dt + ".csv" 
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
@@ -131,14 +131,14 @@ with open(csvPath, "w") as csv_file: # open csv writer
                 maxLifespan = max(lifespan)
 
                 with open(lifespanFile, "a") as ls_file:
-                    ls_file.write("Frame %s Average: %s" % (count, averageLifespan))
-                    ls_file.write("Frame %s Minimum: %s" % (count, minLifespan))
-                    ls_file.write("Frame %s Maximum: %s" % (count, maxLifespan))
+                    ls_file.write("Frame %s Average: %s \n" % (count, averageLifespan))
+                    ls_file.write("Frame %s Minimum: %s \n" % (count, minLifespan))
+                    ls_file.write("Frame %s Maximum: %s \n" % (count, maxLifespan))
                     # writerLs.writerow("Frame %s Average: %s" % (count, averageLifespan))
                     # writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
                     # writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
                     for item in lifespan:
-                        ls_file.write(str(item))
+                        ls_file.write(str(item)+"\n")
                     ls_file.close()
                     
             with open(moveFile, "a") as mv_file:
