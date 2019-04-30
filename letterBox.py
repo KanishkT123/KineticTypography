@@ -243,8 +243,8 @@ def getRectCoords(image, avoid, numColors):
             with open("OCR_output_3_11.txt", "a") as text_file:
                 text = txt + "\n"
                 text_file.write(text)
-            outName = "appended_" + resultName
-            cv2.imwrite(outName, out)
+            # outName = "appended_" + resultName
+            # cv2.imwrite(outName, out)
     return rectList, textList, colorList
 
 """
