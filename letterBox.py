@@ -12,6 +12,7 @@ from scipy import stats
 import operator
 import nltk_metrics_distance
 import copy
+import datetime
 
 
 """
@@ -101,10 +102,10 @@ def getBounding(imagePath, numClusters, resultName):
 """
     Get bounding boxes around each letter and return box coordinates
 """
-def getRectCoords(image, avoid):
+def getRectCoords(image, avoid, numColors):
     height, width, channels = image.shape
 
-    labels, clusterCenters = getPredictions(image)
+    labels, clusterCenters = getPredictions(image, numColors)
     rectList = []
     textList = []
     colorList = []
@@ -188,7 +189,7 @@ def getRectCoords(image, avoid):
                         padded = padImage(croppedRotated)
                         cv2.imwrite("tesseractError.png", padded)
                         pad = cv2.imread("tesseractError.png")
-                        # txt = ocr(pad)
+                        txt = ocr(pad)
                         txt = ""
                         textList.append(txt)
 
@@ -207,43 +208,43 @@ def getRectCoords(image, avoid):
     else:
         rect1 = boxList[0][0]
         box1 = boxList[0][1]
-        # cropR1 = cropImageRot(rect1, box1, image)
-        # # cv2.imwrite("cropR1.png", cropR1)
+        cropR1 = cropImageRot(rect1, box1, image)
+        # cv2.imwrite("cropR1.png", cropR1)
 
-        # if len(boxList) > 1:
-        #     rect2 = boxList[1][0]
-        #     # box2 = cv2.boxPoints(rect2)
-        #     # box2 = np.int0(box2)
-        #     box2 = boxList[1][1]
-        #     cropR2 = cropImageRot(rect2, box2, image)
-        #     # cropR2 = crop2(rect2, box2, masked, str(cropName))
-        #     # cv2.imwrite("cropR2.png", cropR2)
+        if len(boxList) > 1:
+            rect2 = boxList[1][0]
+            # box2 = cv2.boxPoints(rect2)
+            # box2 = np.int0(box2)
+            box2 = boxList[1][1]
+            cropR2 = cropImageRot(rect2, box2, image)
+            # cropR2 = crop2(rect2, box2, masked, str(cropName))
+            # cv2.imwrite("cropR2.png", cropR2)
 
-        #     out = boxAppendImg(cropR1, cropR2)
-        #     # cv2.imwrite("out.png", out)
-        #     template = cropR1
+            out = boxAppendImg(cropR1, cropR2)
+            # cv2.imwrite("out.png", out)
+            template = cropR1
 
-        #     for i in range(len(boxList)):
-        #         rect = boxList[i][0] 
-        #         # box = cv2.boxPoints(rect) # get vertices
-        #         # box = np.int0(box) # round to nearest integer
-        #         box = boxList[i][1]
-        #         crop = cropImageRot(rect, box, image) # create cropped letter image
-        #         # cropResized = makeSameSize(template, crop, resultName)
-        #         # cv2.imwrite("crop.png", crop)
+            for i in range(len(boxList)):
+                rect = boxList[i][0] 
+                # box = cv2.boxPoints(rect) # get vertices
+                # box = np.int0(box) # round to nearest integer
+                box = boxList[i][1]
+                crop = cropImageRot(rect, box, image) # create cropped letter image
+                # cropResized = makeSameSize(template, crop, resultName)
+                # cv2.imwrite("crop.png", crop)
 
-        #         if i != 0 and i != 1:
-        #             out = boxAppendImg(out, crop)
-        #             # cv2.imwrite("out.png", out)
-        #     outP = padImage(out)
-            # txt = ocr(outP)
-            # print("About to add ocr output")
+                if i != 0 and i != 1:
+                    out = boxAppendImg(out, crop)
+                    # cv2.imwrite("out.png", out)
+            outP = padImage(out)
+            txt = ocr(outP)
+            print("About to add ocr output")
 
-            # with open("OCR_output_3_11.txt", "a") as text_file:
-            #     text = txt + "\n"
-            #     text_file.write(text)
-            # outName = "appended_" + resultName
-            # cv2.imwrite(outName, out)
+            with open("OCR_output_3_11.txt", "a") as text_file:
+                text = txt + "\n"
+                text_file.write(text)
+            outName = "appended_" + resultName
+            cv2.imwrite(outName, out)
     return rectList, textList, colorList
 
 """
@@ -330,7 +331,9 @@ def getBoundingBinary(thresh, resultName):
             txt = ocr(outP)
             print("About to add ocr output")
 
-            with open("OCR_output_OCTOBER.txt", "a") as text_file:
+            dt = datetime.datetime.now().strftime("%Y-%m-%d-%X")
+            ocrPath = "ocrOutput_" + dt + ".txt"
+            with open(ocrPath, "a") as text_file:
                 text = txt + "\n"
                 text_file.write(text)
             outName = "appended_" + resultName
@@ -341,17 +344,17 @@ def getBoundingBinary(thresh, resultName):
 """
     Does the same thing as findLines but using all coordinates
 """
-def getPredictions(image):
+def getPredictions(image, numColors):
     # print("Calling allCoords")
     coordList = allCoords(image)
     # print("Finished allCoords")
     
     xArray = np.array(coordList) # make it into numpy array
 
-    # kmeans = KMeans(n_clusters = numClusters).fit(xArray)
+    kmeans = KMeans(n_clusters = numColors).fit(xArray)
 
-    # kmeans = KMeans().fit(xArray) RIGHT ONE
-    kmeans = MiniBatchKMeans().fit(xArray)
+    kmeans = KMeans().fit(xArray) 
+    # kmeans = MiniBatchKMeans().fit(xArray)
 
     # print(kmeans.cluster_centers_)
     # print(kmeans.labels_)

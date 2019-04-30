@@ -43,7 +43,7 @@ ct = CentroidTracker()
 print("[INFO] starting video stream...")
 cap = cv2.VideoCapture(args["video"])
 time.sleep(2.0)
-
+numColors = args["colors"]
 
 # Default resolutions of the frame are obtained.The default resolutions are system dependent.
 # We convert the resolutions from float to integer.
@@ -73,8 +73,9 @@ count = 0
 
 numClusters = args["colors"]
 # bboxes, textOCR, colors = getRectCoords(frame, [])
-lifespanFile = "lifespan_" + dt + ".txt"
-moveFile = "moved_" + dt + ".txt"
+lifespanFile = "lifespan_" + dt + ".csv"
+lifespanAverageFile = "lifespanAverage_" + dt + ".csv"
+moveFile = "moved_" + dt + ".csv"
 
 with open(csvPath, "w") as csv_file: # open csv writer
     writer = csv.writer(csv_file, delimiter=',') 
@@ -99,10 +100,10 @@ with open(csvPath, "w") as csv_file: # open csv writer
             outname = "out" + dt + ".avi"
             out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
-        if count >= 300:
-            break
+        # if count >= 300:
+        #     break
         # get detections
-        detections, texts, colors = getRectCoords(frame, avoid)
+        detections, texts, colors = getRectCoords(frame, avoid, numColors)
         rects = []
         
         
@@ -125,7 +126,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
             # update our centroid tracker using the computed set of bounding
             # box rectangles
             # print(rects)
-            objects, avoid, lifespan = ct.update(rects, texts, colors)
+            objects, avoid, lifespan, moved = ct.update(rects, texts, colors)
     
             if len(lifespan) > 0:
                 averageLifespan = sum(lifespan)/len(lifespan)
@@ -133,18 +134,30 @@ with open(csvPath, "w") as csv_file: # open csv writer
                 maxLifespan = max(lifespan)
 
                 with open(lifespanFile, "a") as ls_file:
-                    ls_file.write("Frame %s Average: %s \n" % (count, averageLifespan))
-                    ls_file.write("Frame %s Minimum: %s \n" % (count, minLifespan))
-                    ls_file.write("Frame %s Maximum: %s \n" % (count, maxLifespan))
+                    writerLs = csv.writer(ls_file, delimiter=',') 
+
+                    # ls_file.write("Frame %s Average: %s \n" % (count, averageLifespan))
+                    # ls_file.write("Frame %s Minimum: %s \n" % (count, minLifespan))
+                    # ls_file.write("Frame %s Maximum: %s \n" % (count, maxLifespan))
                     # writerLs.writerow("Frame %s Average: %s" % (count, averageLifespan))
                     # writerLs.writerow("Frame %s Minimum: %s" % (count, minLifespan))
                     # writerLs.writerow("Frame %s Maximum: %s" % (count, maxLifespan))
                     for item in lifespan:
-                        ls_file.write(str(item)+"\n")
-                    ls_file.close()
-                    
+                        writerLs.writerow([str(item)])
+                        # ls_file.write(str(item)+"\n")
+                    # ls_file.close()
+
+                with open(lifespanAverageFile, "a") as lsavg_file:
+                    writerLsAvg = csv.writer(lsavg_file, delimiter=',')
+
+                    writerLsAvg.writerow([averageLifespan])
+
             with open(moveFile, "a") as mv_file:
-                # writerMv = csv.writer(mv_file, delimiter=',') 
+                writerMv = csv.writer(mv_file, delimiter=',') 
+
+                for moveNum in moved: 
+                    writerMv.writerow([moveNum])
+
                 # loop over the tracked objects
                 for (objectID, letter) in objects.items():
                     centroid = letter.centroid
@@ -152,12 +165,12 @@ with open(csvPath, "w") as csv_file: # open csv writer
                     text = letter.text
                     lettId = letter.objectID
                     info = [lettId, text, color]
-                    moveInfo = letter.move
+                    # moveInfo = letter.move
                     # print(info) 
                 
                     
-                    mv_file.write(str(moveInfo))
-                mv_file.close()
+                    # mv_file.write(str(moveInfo))
+                # mv_file.close()
                 # draw both the ID of the object and the centroid of the
                 # object on the output frame
 
@@ -179,7 +192,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
             out.write(frame)
             count += 1
 
-    writer.close()
+    # writer.close()
 
 # When everything done, release the video capture and video write objects
 cap.release()
