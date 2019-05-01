@@ -29,6 +29,7 @@ class CentroidTracker():
 		self.disappeared = OrderedDict()
 		self.avoid = []
 		self.lifespan = []
+		self.moved = []
 
 		# store the number of maximum consecutive frames a given
 		# object is allowed to be marked as "disappeared" until we
@@ -50,7 +51,9 @@ class CentroidTracker():
 		cent = let.centroid
 		coords = let.coordinates
 		life = let.present
+		moveNum = let.move
 		self.lifespan.append(life) # write out how long this existed
+		self.moved.append(moveNume) # write out how many frames it moved for
 		del self.objects[objectID]
 		del self.disappeared[objectID]
 		self.avoid.append(coords)
@@ -185,4 +188,4 @@ class CentroidTracker():
 					self.register(let)
 
 		# return the set of trackable objects
-		return self.objects, self.avoid, self.lifespan
+		return self.objects, self.avoid, self.lifespan, self.moved
