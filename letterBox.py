@@ -238,7 +238,7 @@ def getRectCoords(image, avoid, numColors):
                     # cv2.imwrite("out.png", out)
             outP = padImage(out)
             txt = ocr(outP)
-            print("About to add ocr output")
+            # print("About to add ocr output")
 
             with open("OCR_output_3_11.txt", "a") as text_file:
                 text = txt + "\n"
