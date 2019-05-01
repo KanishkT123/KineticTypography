@@ -763,6 +763,13 @@ def cropImageRot(rect, box, img):
     value = [0, 0, 0]    
     dst = cv2.copyMakeBorder(croppedRotated, top, bottom, left, right, borderType, None, value)
 
+    scale_percent = 60 # percent of original size
+    width = int(croppedRotated.shape[1] * scale_percent / 100)
+    height = int(croppedRotated.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    # resize image
+    resized = cv2.resize(croppedRotated, dim, interpolation = cv2.INTER_AREA)
+
     # # Calling pytesseract on the image
     # img_n = Image.fromarray(dst)
     # txt = pytesseract.image_to_string(img_n, lang="eng")
