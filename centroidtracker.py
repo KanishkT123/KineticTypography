@@ -53,7 +53,7 @@ class CentroidTracker():
 		life = let.present
 		moveNum = let.move
 		self.lifespan.append(life) # write out how long this existed
-		self.moved.append(moveNume) # write out how many frames it moved for
+		self.moved.append(moveNum) # write out how many frames it moved for
 		del self.objects[objectID]
 		del self.disappeared[objectID]
 		self.avoid.append(coords)
