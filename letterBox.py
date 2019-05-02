@@ -186,10 +186,10 @@ def getRectCoords(image, avoid, numColors):
                         
                         col = findColor(croppedRotated)
                         colorList += col
-                        padded = padImage(croppedRotated)
-                        cv2.imwrite("tesseractError.png", padded)
-                        pad = cv2.imread("tesseractError.png")
-                        txt = ocr(pad)
+                        # padded = padImage(croppedRotated)
+                        # cv2.imwrite("tesseractError.png", padded)
+                        # pad = cv2.imread("tesseractError.png")
+                        # txt = ocr(pad)
                         txt = ""
                         textList.append(txt)
 
