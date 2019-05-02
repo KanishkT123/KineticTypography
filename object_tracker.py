@@ -100,7 +100,7 @@ with open(csvPath, "w") as csv_file: # open csv writer
         #     outname = "out" + dt + ".avi"
         #     out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
-        if count >= 10:
+        if count >= 900:
             break
 
         # get detections
