@@ -96,12 +96,13 @@ with open(csvPath, "w") as csv_file: # open csv writer
         if W is None or H is None:
             (H, W) = frame.shape[:2]
 
-        if count == 0:
-            outname = "out" + dt + ".avi"
-            out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
+        # if count == 0:
+        #     outname = "out" + dt + ".avi"
+        #     out = cv2.VideoWriter(outname, cv2.VideoWriter_fourcc('M','J','P','G'), fps, (W, H))
 
-        # if count >= 300:
-        #     break
+        if count >= 10:
+            break
+
         # get detections
         detections, texts, colors = getRectCoords(frame, avoid, numColors)
         rects = []
@@ -175,10 +176,10 @@ with open(csvPath, "w") as csv_file: # open csv writer
                 # object on the output frame
 
                 # text = "ID {}".format(objectID)
-                textBox = "Letter {}".format(text)
-                cv2.putText(frame, textBox, (centroid[0] - 10, centroid[1] - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
+                # textBox = "Letter {}".format(text)
+                # cv2.putText(frame, textBox, (centroid[0] - 10, centroid[1] - 10),
+                #     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                # cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
                 writer.writerow(info)
 
@@ -186,14 +187,14 @@ with open(csvPath, "w") as csv_file: # open csv writer
             # cv2.imwrite("maps_detect2/frame%04d.png" % count, frame)
             
             # Write the frame into the file 'output.avi'
-            cv2.imwrite("TEST_Frame.png", frame)
+            # cv2.imwrite("TEST_Frame.png", frame)
             # writer.write(frame)
 
-            out.write(frame)
+            # out.write(frame)
             count += 1
 
     # writer.close()
 
 # When everything done, release the video capture and video write objects
 cap.release()
-out.release()
+# out.release()
